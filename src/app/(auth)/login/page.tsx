@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, Loader2, ArrowRight } from "lucide-react";
+import { Eye, EyeOff, Loader2, ArrowRight, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
 import BrandPanel from "../_components/BrandPanel";
@@ -59,7 +59,12 @@ export default function LoginPage() {
 
         {/* Top bar */}
         <div className="flex items-center justify-between px-8 sm:px-12 py-5 border-b border-slate-100">
-          <div className="lg:hidden">
+          {/* Back to home — desktop */}
+          <Link href="/" className="hidden lg:inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-900 font-medium transition-colors">
+            <ArrowLeft className="h-4 w-4" /> Back to home
+          </Link>
+          {/* Mobile: logo (tappable, goes home) */}
+          <Link href="/" className="lg:hidden">
             <Image
               src="/logo.jpeg"
               alt="EduBridge AI"
@@ -68,8 +73,7 @@ export default function LoginPage() {
               className="h-9 w-auto object-contain"
               priority
             />
-          </div>
-          <div className="hidden lg:block" />
+          </Link>
           <p className="text-sm text-slate-500">
             New here?{" "}
             <Link href="/signup" className="text-[#1B3A8A] font-semibold hover:underline">

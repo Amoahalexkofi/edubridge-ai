@@ -86,7 +86,12 @@ export default function SignupPage() {
 
         {/* Top bar */}
         <div className="flex items-center justify-between px-8 sm:px-12 py-5 border-b border-slate-100">
-          <div className="lg:hidden">
+          {/* Back to home — desktop */}
+          <Link href="/" className="hidden lg:inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-900 font-medium transition-colors">
+            <ArrowLeft className="h-4 w-4" /> Back to home
+          </Link>
+          {/* Mobile: logo (tappable, goes home) */}
+          <Link href="/" className="lg:hidden">
             <Image
               src="/logo.jpeg"
               alt="EduBridge AI"
@@ -95,8 +100,7 @@ export default function SignupPage() {
               className="h-9 w-auto object-contain"
               priority
             />
-          </div>
-          <div className="hidden lg:block" />
+          </Link>
           <p className="text-sm text-slate-500">
             Already have an account?{" "}
             <Link href="/login" className="text-[#1B3A8A] font-semibold hover:underline">
