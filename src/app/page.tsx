@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Lora } from "next/font/google";
@@ -28,10 +28,10 @@ const navLinks = [
 ];
 
 const stats = [
-  { value: "22", label: "BECE & WASSCE subjects" },
-  { value: "10k+", label: "WAEC-style questions" },
-  { value: "24/7", label: "AI tutor availability" },
-  { value: "100%", label: "GES curriculum aligned" },
+  { end: 22,  suffix: "",   label: "BECE & WASSCE subjects" },
+  { end: 10,  suffix: "k+", label: "WAEC-style questions" },
+  { end: 24,  suffix: "/7", label: "AI tutor availability" },
+  { end: 100, suffix: "%",  label: "GES curriculum aligned" },
 ];
 
 const features = [
@@ -152,8 +152,50 @@ const leaderboard = [
 const weekDays = ["M", "T", "W", "T", "F", "S", "S"];
 const activeDays = [0, 1, 2, 3, 4];
 
+function StatNumber({ end, suffix, started, duration = 2200 }: {
+  end: number;
+  suffix: string;
+  started: boolean;
+  duration?: number;
+}) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!started) return;
+    setCount(0);
+    let raf: number;
+    let startTime: number | null = null;
+
+    const step = (ts: number) => {
+      if (!startTime) startTime = ts;
+      const progress = Math.min((ts - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.round(eased * end));
+      if (progress < 1) raf = requestAnimationFrame(step);
+    };
+
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [started, end, duration]);
+
+  return <>{count}{suffix}</>;
+}
+
 export default function LandingPage() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const statsRef = useRef<HTMLElement>(null);
+  const [statsStarted, setStatsStarted] = useState(false);
+
+  useEffect(() => {
+    const el = statsRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setStatsStarted(true); },
+      { threshold: 0.4 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div className={`${lora.variable} bg-white min-h-screen antialiased`}>
@@ -320,15 +362,26 @@ export default function LandingPage() {
       </section>
 
       {/* ─── STATS BAR ───────────────────────────────────────────────────── */}
-      <section className="bg-[#1B3A8A]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-4">
+      <section ref={statsRef} className="bg-[#1B3A8A] relative overflow-hidden">
+        {/* Subtle dot pattern */}
+        <div className="absolute inset-0 opacity-[0.04]"
+          style={{ backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-10 gap-x-6 lg:gap-0">
             {stats.map((s, i) => (
-              <div key={s.label} className={`text-center lg:text-left ${i < 3 ? "lg:border-r lg:border-white/20 lg:pr-8" : ""}`}>
-                <p className="font-[family-name:var(--font-lora)] text-4xl lg:text-5xl font-bold text-[#E8722A]">
-                  {s.value}
+              <div
+                key={s.label}
+                className={`flex flex-col items-center lg:items-start text-center lg:text-left ${
+                  i < 3 ? "lg:border-r lg:border-white/15 lg:pr-10" : ""
+                } ${i > 0 ? "lg:pl-10" : ""}`}
+              >
+                <p className="text-5xl lg:text-6xl xl:text-7xl font-black text-[#E8722A] tracking-tight leading-none tabular-nums">
+                  <StatNumber end={s.end} suffix={s.suffix} started={statsStarted} />
                 </p>
-                <p className="text-sm text-white/70 mt-1.5 font-medium">{s.label}</p>
+                <p className="text-sm text-white/60 mt-3 font-medium leading-snug max-w-[130px]">
+                  {s.label}
+                </p>
               </div>
             ))}
           </div>
