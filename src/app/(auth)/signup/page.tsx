@@ -103,7 +103,7 @@ export default function SignupPage() {
               </p>
               <Link
                 href="/login"
-                className="inline-flex items-center justify-center gap-2 w-full h-11 bg-[#1D4ED8] hover:bg-[#1e40af] text-white font-semibold rounded-xl text-sm transition-colors"
+                className="inline-flex items-center justify-center gap-2 w-full h-11 bg-[#1B3A8A] hover:bg-[#162f74] text-white font-semibold rounded-xl text-sm transition-colors"
               >
                 Go to sign in <ArrowRight className="h-4 w-4" />
               </Link>
@@ -114,7 +114,7 @@ export default function SignupPage() {
           {step === "role" && (
             <>
               <div className="mb-8">
-                <p className="text-xs font-semibold tracking-widest text-[#1D4ED8] uppercase mb-2">
+                <p className="text-xs font-semibold tracking-widest text-[#E8722A] uppercase mb-2">
                   Get started
                 </p>
                 <h1 className="font-display text-[1.75rem] font-bold text-[#0f172a] leading-tight">
@@ -136,23 +136,23 @@ export default function SignupPage() {
                       onClick={() => setSelectedRole(role.value)}
                       className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 text-left transition-all ${
                         active
-                          ? "border-[#1D4ED8] bg-[#EFF6FF]"
-                          : "border-[#E2E8F0] bg-[#F8FAFC] hover:border-[#93C5FD] hover:bg-white"
+                          ? "border-[#1B3A8A] bg-[#EEF2FF]"
+                          : "border-[#E2E8F0] bg-[#F8FAFC] hover:border-[#1B3A8A]/40 hover:bg-white"
                       }`}
                     >
                       <div className={`h-10 w-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors ${
-                        active ? "bg-[#1D4ED8]" : "bg-white border border-[#E2E8F0]"
+                        active ? "bg-[#1B3A8A]" : "bg-white border border-[#E2E8F0]"
                       }`}>
                         <Icon className={`h-[18px] w-[18px] ${active ? "text-white" : "text-[#64748B]"}`} />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className={`font-semibold text-sm ${active ? "text-[#1D4ED8]" : "text-[#0f172a]"}`}>
+                        <p className={`font-semibold text-sm ${active ? "text-[#1B3A8A]" : "text-[#0f172a]"}`}>
                           {role.label}
                         </p>
                         <p className="text-xs text-[#64748B] mt-0.5">{role.description}</p>
                       </div>
                       <div className={`h-5 w-5 rounded-full border-2 flex-shrink-0 transition-all ${
-                        active ? "border-[#1D4ED8] bg-[#1D4ED8]" : "border-[#CBD5E1]"
+                        active ? "border-[#1B3A8A] bg-[#1B3A8A]" : "border-[#CBD5E1]"
                       }`}>
                         {active && <CheckCircle2 className="h-full w-full text-white p-0.5" />}
                       </div>
@@ -165,14 +165,14 @@ export default function SignupPage() {
                 type="button"
                 onClick={() => selectedRole && setStep("details")}
                 disabled={!selectedRole}
-                className="w-full h-11 mt-6 flex items-center justify-center gap-2 bg-[#1D4ED8] hover:bg-[#1e40af] active:scale-[0.98] text-white font-semibold rounded-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed text-sm"
+                className="w-full h-11 mt-6 flex items-center justify-center gap-2 bg-[#1B3A8A] hover:bg-[#162f74] active:scale-[0.98] text-white font-semibold rounded-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed text-sm"
               >
                 Continue <ArrowRight className="h-4 w-4" />
               </button>
 
               <p className="text-center text-sm text-[#64748B] mt-5">
                 Already have an account?{" "}
-                <Link href="/login" className="text-[#1D4ED8] font-semibold hover:underline">
+                <Link href="/login" className="text-[#1B3A8A] font-semibold hover:underline">
                   Sign in
                 </Link>
               </p>
@@ -191,7 +191,7 @@ export default function SignupPage() {
                   <ArrowLeft className="h-4 w-4" /> Back
                 </button>
                 <div className="flex items-center gap-2 mb-2">
-                  <p className="text-xs font-semibold tracking-widest text-[#1D4ED8] uppercase">
+                  <p className="text-xs font-semibold tracking-widest text-[#E8722A] uppercase">
                     {selectedRole}
                   </p>
                 </div>
@@ -213,7 +213,7 @@ export default function SignupPage() {
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     required
-                    className="h-11 bg-[#F8FAFC] border-[#E2E8F0] focus:bg-white focus:border-[#1D4ED8] transition-colors rounded-xl text-[#0f172a] placeholder:text-[#94a3b8]"
+                    className="h-11 bg-[#F8FAFC] border-[#E2E8F0] focus:bg-white focus:border-[#1B3A8A] transition-colors rounded-xl text-[#0f172a] placeholder:text-[#94a3b8]"
                   />
                 </div>
 
@@ -228,7 +228,7 @@ export default function SignupPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="h-11 bg-[#F8FAFC] border-[#E2E8F0] focus:bg-white focus:border-[#1D4ED8] transition-colors rounded-xl text-[#0f172a] placeholder:text-[#94a3b8]"
+                    className="h-11 bg-[#F8FAFC] border-[#E2E8F0] focus:bg-white focus:border-[#1B3A8A] transition-colors rounded-xl text-[#0f172a] placeholder:text-[#94a3b8]"
                   />
                 </div>
 
@@ -245,7 +245,7 @@ export default function SignupPage() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
-                        className="h-11 bg-[#F8FAFC] border-[#E2E8F0] focus:bg-white focus:border-[#1D4ED8] transition-colors rounded-xl pr-9 text-[#0f172a] placeholder:text-[#94a3b8]"
+                        className="h-11 bg-[#F8FAFC] border-[#E2E8F0] focus:bg-white focus:border-[#1B3A8A] transition-colors rounded-xl pr-9 text-[#0f172a] placeholder:text-[#94a3b8]"
                       />
                       <button type="button" onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94a3b8] hover:text-[#475569]">
@@ -269,7 +269,7 @@ export default function SignupPage() {
                         className={`h-11 bg-[#F8FAFC] border-[#E2E8F0] focus:bg-white transition-colors rounded-xl pr-9 text-[#0f172a] placeholder:text-[#94a3b8] ${
                           confirmPassword && confirmPassword !== password
                             ? "border-[#EF4444] focus:border-[#EF4444]"
-                            : "focus:border-[#1D4ED8]"
+                            : "focus:border-[#1B3A8A]"
                         }`}
                       />
                       <button type="button" onClick={() => setShowConfirm(!showConfirm)}
@@ -286,7 +286,7 @@ export default function SignupPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full h-11 flex items-center justify-center gap-2 bg-[#1D4ED8] hover:bg-[#1e40af] active:scale-[0.98] text-white font-semibold rounded-xl transition-all disabled:opacity-60 disabled:cursor-not-allowed text-sm"
+                  className="w-full h-11 flex items-center justify-center gap-2 bg-[#1B3A8A] hover:bg-[#162f74] active:scale-[0.98] text-white font-semibold rounded-xl transition-all disabled:opacity-60 disabled:cursor-not-allowed text-sm"
                 >
                   {loading ? (
                     <><Loader2 className="h-4 w-4 animate-spin" /> Creating account…</>
@@ -298,7 +298,7 @@ export default function SignupPage() {
 
               <p className="text-center text-sm text-[#64748B] mt-5">
                 Already have an account?{" "}
-                <Link href="/login" className="text-[#1D4ED8] font-semibold hover:underline">
+                <Link href="/login" className="text-[#1B3A8A] font-semibold hover:underline">
                   Sign in
                 </Link>
               </p>

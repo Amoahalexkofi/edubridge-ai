@@ -74,7 +74,7 @@ export default function LoginPage() {
 
           {/* Heading */}
           <div className="mb-9">
-            <p className="text-xs font-semibold tracking-widest text-[#1D4ED8] uppercase mb-2">
+            <p className="text-xs font-semibold tracking-widest text-[#E8722A] uppercase mb-2">
               Welcome back
             </p>
             <h1 className="font-display text-[1.75rem] font-bold text-[#0f172a] leading-tight">
@@ -82,7 +82,7 @@ export default function LoginPage() {
             </h1>
             <p className="text-[#64748B] text-sm mt-2">
               Don&apos;t have one?{" "}
-              <Link href="/signup" className="text-[#1D4ED8] font-semibold hover:underline">
+              <Link href="/signup" className="text-[#1B3A8A] font-semibold hover:underline">
                 Create account
               </Link>
             </p>
@@ -110,7 +110,7 @@ export default function LoginPage() {
                 <Label htmlFor="password" className="text-xs font-semibold text-[#475569] uppercase tracking-wide">
                   Password
                 </Label>
-                <Link href="/forgot-password" className="text-xs text-[#1D4ED8] hover:underline font-medium">
+                <Link href="/forgot-password" className="text-xs text-[#1B3A8A] hover:underline font-medium">
                   Forgot password?
                 </Link>
               </div>
@@ -137,7 +137,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full h-11 mt-1 flex items-center justify-center gap-2 bg-[#1D4ED8] hover:bg-[#1e40af] active:scale-[0.98] text-white font-semibold rounded-xl transition-all disabled:opacity-60 disabled:cursor-not-allowed text-sm"
+              className="w-full h-11 mt-1 flex items-center justify-center gap-2 bg-[#1B3A8A] hover:bg-[#162f74] active:scale-[0.98] text-white font-semibold rounded-xl transition-all disabled:opacity-60 disabled:cursor-not-allowed text-sm"
             >
               {loading ? (
                 <><Loader2 className="h-4 w-4 animate-spin" /> Signing in…</>
