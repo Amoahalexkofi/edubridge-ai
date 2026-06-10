@@ -7,33 +7,43 @@ import {
   Eye, EyeOff, Loader2, BookOpen, Users, User,
   CheckCircle2, ArrowRight, ArrowLeft,
 } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
 import BrandPanel from "../_components/BrandPanel";
 
 type Role = "student" | "teacher" | "parent";
 
-const roles: { value: Role; label: string; description: string; icon: React.ElementType }[] = [
+const roles: { value: Role; label: string; description: string; icon: React.ElementType; color: string; iconBg: string }[] = [
   {
     value: "student",
     label: "Student",
-    description: "Prepare for BECE or WASSCE exams",
+    description: "Prepare for BECE or WASSCE with AI-powered lessons and mock exams",
     icon: BookOpen,
+    color: "border-[#1B3A8A] bg-[#EEF2FF]",
+    iconBg: "bg-[#1B3A8A]",
   },
   {
     value: "teacher",
     label: "Teacher",
-    description: "Upload lessons and track class progress",
+    description: "Upload lessons, create assessments and track class progress",
     icon: Users,
+    color: "border-[#E8722A] bg-orange-50",
+    iconBg: "bg-[#E8722A]",
   },
   {
     value: "parent",
-    label: "Parent",
-    description: "Monitor your child's learning journey",
+    label: "Parent / Guardian",
+    description: "Monitor your child's learning journey and exam readiness",
     icon: User,
+    color: "border-green-600 bg-green-50",
+    iconBg: "bg-green-600",
   },
+];
+
+const steps = [
+  { number: 1, label: "Your role" },
+  { number: 2, label: "Your details" },
+  { number: 3, label: "Done" },
 ];
 
 export default function SignupPage() {
@@ -46,6 +56,8 @@ export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const currentStep = step === "role" ? 1 : step === "details" ? 2 : 3;
 
   async function handleSignup(e: React.FormEvent) {
     e.preventDefault();
@@ -69,242 +81,271 @@ export default function SignupPage() {
     <div className="min-h-screen flex">
       <BrandPanel />
 
-      {/* Form panel */}
-      <div className="flex-1 flex flex-col justify-center px-4 py-12 sm:px-10 lg:px-16 bg-[#F8FAFC]">
-        <div className="w-full max-w-[420px] mx-auto bg-white rounded-2xl ring-1 ring-black/[0.06] shadow-[0_2px_4px_rgba(0,0,0,0.04),0_8px_20px_rgba(0,0,0,0.06),0_20px_40px_rgba(0,0,0,0.05)] px-8 py-10 sm:px-10">
+      {/* Right panel */}
+      <div className="flex-1 flex flex-col min-h-screen bg-white">
 
-          {/* Logo */}
-          <div className="flex justify-center mb-8">
+        {/* Top bar */}
+        <div className="flex items-center justify-between px-8 sm:px-12 py-5 border-b border-slate-100">
+          <div className="lg:hidden">
             <Image
               src="/logo.jpeg"
               alt="EduBridge AI"
-              width={220}
-              height={150}
-              className="h-16 w-auto object-contain"
+              width={140}
+              height={44}
+              className="h-9 w-auto object-contain"
               priority
             />
           </div>
+          <div className="hidden lg:block" />
+          <p className="text-sm text-slate-500">
+            Already have an account?{" "}
+            <Link href="/login" className="text-[#1B3A8A] font-semibold hover:underline">
+              Sign in
+            </Link>
+          </p>
+        </div>
 
-          {/* ── Step: success ── */}
-          {step === "success" && (
-            <div className="text-center">
-              <div className="flex justify-center mb-5">
-                <div className="h-16 w-16 rounded-full bg-[#22C55E]/10 ring-8 ring-[#22C55E]/5 flex items-center justify-center">
-                  <CheckCircle2 className="h-8 w-8 text-[#22C55E]" />
+        {/* Form area */}
+        <div className="flex-1 flex flex-col justify-center px-8 sm:px-12 lg:px-16 xl:px-24 py-14">
+          <div className="w-full max-w-[480px] mx-auto">
+
+            {/* ── Step progress ── */}
+            {step !== "success" && (
+              <div className="flex items-center gap-2 mb-10">
+                {steps.map((s, i) => (
+                  <div key={s.number} className="flex items-center gap-2">
+                    <div className={`flex items-center gap-2 ${currentStep >= s.number ? "opacity-100" : "opacity-30"}`}>
+                      <div className={`h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
+                        currentStep > s.number
+                          ? "bg-[#1B3A8A] text-white"
+                          : currentStep === s.number
+                          ? "bg-[#E8722A] text-white"
+                          : "bg-slate-200 text-slate-500"
+                      }`}>
+                        {currentStep > s.number ? <CheckCircle2 className="h-3.5 w-3.5" /> : s.number}
+                      </div>
+                      <span className={`text-xs font-semibold hidden sm:block ${
+                        currentStep === s.number ? "text-slate-900" : "text-slate-400"
+                      }`}>{s.label}</span>
+                    </div>
+                    {i < steps.length - 1 && (
+                      <div className={`h-px w-6 sm:w-10 transition-colors ${currentStep > s.number ? "bg-[#1B3A8A]" : "bg-slate-200"}`} />
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* ── Success ── */}
+            {step === "success" && (
+              <div className="text-center py-8">
+                <div className="flex justify-center mb-6">
+                  <div className="h-20 w-20 rounded-full bg-green-50 ring-8 ring-green-50/60 flex items-center justify-center">
+                    <CheckCircle2 className="h-10 w-10 text-green-500" />
+                  </div>
                 </div>
-              </div>
-              <h2 className="font-display text-2xl font-bold text-[#0f172a] mb-2">
-                Account created!
-              </h2>
-              <p className="text-sm text-[#64748B] mb-8 leading-relaxed">
-                We sent a verification link to{" "}
-                <span className="font-semibold text-[#0f172a]">{email}</span>.
-                {" "}Open it to activate your account.
-              </p>
-              <Link
-                href="/login"
-                className="inline-flex items-center justify-center gap-2 w-full h-11 bg-[#1B3A8A] hover:bg-[#162f74] text-white font-semibold rounded-xl text-sm transition-colors"
-              >
-                Go to sign in <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-          )}
-
-          {/* ── Step: role selection ── */}
-          {step === "role" && (
-            <>
-              <div className="mb-8">
-                <p className="text-xs font-semibold tracking-widest text-[#E8722A] uppercase mb-2">
-                  Get started
+                <h2 className="text-2xl font-bold text-slate-900 mb-2">Account created!</h2>
+                <p className="text-slate-500 text-sm mb-8 leading-relaxed max-w-sm mx-auto">
+                  We sent a verification link to{" "}
+                  <span className="font-semibold text-slate-800">{email}</span>.
+                  {" "}Open it to activate your account and start learning.
                 </p>
-                <h1 className="font-display text-[1.75rem] font-bold text-[#0f172a] leading-tight">
-                  Who are you?
-                </h1>
-                <p className="text-[#64748B] text-sm mt-2">
-                  Pick your role so we can personalise your experience.
-                </p>
-              </div>
-
-              <div className="space-y-3">
-                {roles.map((role) => {
-                  const Icon = role.icon;
-                  const active = selectedRole === role.value;
-                  return (
-                    <button
-                      key={role.value}
-                      type="button"
-                      onClick={() => setSelectedRole(role.value)}
-                      className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 text-left transition-all ${
-                        active
-                          ? "border-[#1B3A8A] bg-[#EEF2FF]"
-                          : "border-[#E2E8F0] bg-[#F8FAFC] hover:border-[#1B3A8A]/40 hover:bg-white"
-                      }`}
-                    >
-                      <div className={`h-10 w-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors ${
-                        active ? "bg-[#1B3A8A]" : "bg-white border border-[#E2E8F0]"
-                      }`}>
-                        <Icon className={`h-[18px] w-[18px] ${active ? "text-white" : "text-[#64748B]"}`} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className={`font-semibold text-sm ${active ? "text-[#1B3A8A]" : "text-[#0f172a]"}`}>
-                          {role.label}
-                        </p>
-                        <p className="text-xs text-[#64748B] mt-0.5">{role.description}</p>
-                      </div>
-                      <div className={`h-5 w-5 rounded-full border-2 flex-shrink-0 transition-all ${
-                        active ? "border-[#1B3A8A] bg-[#1B3A8A]" : "border-[#CBD5E1]"
-                      }`}>
-                        {active && <CheckCircle2 className="h-full w-full text-white p-0.5" />}
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-
-              <button
-                type="button"
-                onClick={() => selectedRole && setStep("details")}
-                disabled={!selectedRole}
-                className="w-full h-11 mt-6 flex items-center justify-center gap-2 bg-[#1B3A8A] hover:bg-[#162f74] active:scale-[0.98] text-white font-semibold rounded-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed text-sm"
-              >
-                Continue <ArrowRight className="h-4 w-4" />
-              </button>
-
-              <p className="text-center text-sm text-[#64748B] mt-5">
-                Already have an account?{" "}
-                <Link href="/login" className="text-[#1B3A8A] font-semibold hover:underline">
-                  Sign in
-                </Link>
-              </p>
-            </>
-          )}
-
-          {/* ── Step: details form ── */}
-          {step === "details" && (
-            <>
-              <div className="mb-8">
-                <button
-                  type="button"
-                  onClick={() => setStep("role")}
-                  className="inline-flex items-center gap-1.5 text-sm text-[#64748B] hover:text-[#0f172a] mb-4 transition-colors"
+                <Link
+                  href="/login"
+                  className="inline-flex items-center justify-center gap-2 w-full h-12 bg-[#E8722A] hover:bg-[#d4641e] text-white font-bold rounded-xl text-sm transition-all shadow-[0_4px_14px_rgba(232,114,42,0.35)]"
                 >
-                  <ArrowLeft className="h-4 w-4" /> Back
-                </button>
-                <div className="flex items-center gap-2 mb-2">
-                  <p className="text-xs font-semibold tracking-widest text-[#E8722A] uppercase">
-                    {selectedRole}
+                  Go to sign in <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            )}
+
+            {/* ── Role selection ── */}
+            {step === "role" && (
+              <>
+                <div className="mb-8">
+                  <p className="text-xs font-bold tracking-[0.15em] uppercase text-[#E8722A] mb-3">
+                    Get started — it&apos;s free
+                  </p>
+                  <h1 className="text-[2rem] font-bold text-slate-900 leading-tight tracking-tight">
+                    Who are you?
+                  </h1>
+                  <p className="text-slate-500 text-sm mt-2.5">
+                    Pick your role so we can personalise your experience.
                   </p>
                 </div>
-                <h1 className="font-display text-[1.75rem] font-bold text-[#0f172a] leading-tight">
-                  Create your account
-                </h1>
-                <p className="text-[#64748B] text-sm mt-2">Fill in your details below to get started.</p>
-              </div>
 
-              <form onSubmit={handleSignup} className="space-y-5">
-                <div className="space-y-1.5">
-                  <Label htmlFor="fullName" className="text-xs font-semibold text-[#475569] uppercase tracking-wide">
-                    Full name
-                  </Label>
-                  <Input
-                    id="fullName"
-                    type="text"
-                    placeholder="Kofi Mensah"
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    required
-                    className="h-11 bg-[#F8FAFC] border-[#E2E8F0] focus:bg-white focus:border-[#1B3A8A] transition-colors rounded-xl text-[#0f172a] placeholder:text-[#94a3b8]"
-                  />
+                <div className="space-y-3 mb-8">
+                  {roles.map((role) => {
+                    const Icon = role.icon;
+                    const active = selectedRole === role.value;
+                    return (
+                      <button
+                        key={role.value}
+                        type="button"
+                        onClick={() => setSelectedRole(role.value)}
+                        className={`w-full flex items-center gap-4 p-4 rounded-2xl border-2 text-left transition-all hover:shadow-sm ${
+                          active ? role.color : "border-slate-200 bg-white hover:border-slate-300"
+                        }`}
+                      >
+                        <div className={`h-11 w-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors ${
+                          active ? role.iconBg : "bg-slate-100"
+                        }`}>
+                          <Icon className={`h-5 w-5 ${active ? "text-white" : "text-slate-500"}`} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className={`font-bold text-sm ${active ? "text-slate-900" : "text-slate-800"}`}>
+                            {role.label}
+                          </p>
+                          <p className="text-xs text-slate-500 mt-0.5 leading-snug">{role.description}</p>
+                        </div>
+                        <div className={`h-5 w-5 rounded-full border-2 flex-shrink-0 transition-all ${
+                          active
+                            ? "border-[#1B3A8A] bg-[#1B3A8A]"
+                            : "border-slate-300"
+                        }`}>
+                          {active && <div className="h-full w-full rounded-full flex items-center justify-center">
+                            <div className="h-2 w-2 rounded-full bg-white" />
+                          </div>}
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
 
-                <div className="space-y-1.5">
-                  <Label htmlFor="email" className="text-xs font-semibold text-[#475569] uppercase tracking-wide">
-                    Email address
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="you@example.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="h-11 bg-[#F8FAFC] border-[#E2E8F0] focus:bg-white focus:border-[#1B3A8A] transition-colors rounded-xl text-[#0f172a] placeholder:text-[#94a3b8]"
-                  />
+                <button
+                  type="button"
+                  onClick={() => selectedRole && setStep("details")}
+                  disabled={!selectedRole}
+                  className="w-full h-12 flex items-center justify-center gap-2 bg-[#E8722A] hover:bg-[#d4641e] active:scale-[0.98] text-white font-bold rounded-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed shadow-[0_4px_14px_rgba(232,114,42,0.3)] hover:shadow-[0_6px_20px_rgba(232,114,42,0.38)] text-sm"
+                >
+                  Continue <ArrowRight className="h-4 w-4" />
+                </button>
+              </>
+            )}
+
+            {/* ── Details form ── */}
+            {step === "details" && (
+              <>
+                <div className="mb-8">
+                  <button
+                    type="button"
+                    onClick={() => setStep("role")}
+                    className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-900 mb-5 transition-colors font-medium"
+                  >
+                    <ArrowLeft className="h-4 w-4" /> Back
+                  </button>
+                  <p className="text-xs font-bold tracking-[0.15em] uppercase text-[#E8722A] mb-3">
+                    Signing up as a {selectedRole}
+                  </p>
+                  <h1 className="text-[2rem] font-bold text-slate-900 leading-tight tracking-tight">
+                    Create your account
+                  </h1>
+                  <p className="text-slate-500 text-sm mt-2.5">Fill in your details below to get started.</p>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="space-y-1.5">
-                    <Label htmlFor="password" className="text-xs font-semibold text-[#475569] uppercase tracking-wide">
+                <form onSubmit={handleSignup} className="space-y-5">
+                  <div className="space-y-2">
+                    <label htmlFor="fullName" className="block text-sm font-semibold text-slate-700">
+                      Full name
+                    </label>
+                    <input
+                      id="fullName"
+                      type="text"
+                      placeholder="Kofi Mensah"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      required
+                      className="w-full h-12 px-4 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label htmlFor="email" className="block text-sm font-semibold text-slate-700">
+                      Email address
+                    </label>
+                    <input
+                      id="email"
+                      type="email"
+                      placeholder="you@example.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      className="w-full h-12 px-4 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label htmlFor="password" className="block text-sm font-semibold text-slate-700">
                       Password
-                    </Label>
+                    </label>
                     <div className="relative">
-                      <Input
+                      <input
                         id="password"
                         type={showPassword ? "text" : "password"}
-                        placeholder="Min. 8 chars"
+                        placeholder="Min. 8 characters"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
-                        className="h-11 bg-[#F8FAFC] border-[#E2E8F0] focus:bg-white focus:border-[#1B3A8A] transition-colors rounded-xl pr-9 text-[#0f172a] placeholder:text-[#94a3b8]"
+                        className="w-full h-12 px-4 pr-12 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
                       />
                       <button type="button" onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94a3b8] hover:text-[#475569]">
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
                         {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </button>
                     </div>
                   </div>
 
-                  <div className="space-y-1.5">
-                    <Label htmlFor="confirm" className="text-xs font-semibold text-[#475569] uppercase tracking-wide">
-                      Confirm
-                    </Label>
+                  <div className="space-y-2">
+                    <label htmlFor="confirm" className="block text-sm font-semibold text-slate-700">
+                      Confirm password
+                    </label>
                     <div className="relative">
-                      <Input
+                      <input
                         id="confirm"
                         type={showConfirm ? "text" : "password"}
-                        placeholder="Re-enter"
+                        placeholder="Re-enter your password"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         required
-                        className={`h-11 bg-[#F8FAFC] border-[#E2E8F0] focus:bg-white transition-colors rounded-xl pr-9 text-[#0f172a] placeholder:text-[#94a3b8] ${
+                        className={`w-full h-12 px-4 pr-12 rounded-xl border bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:ring-4 transition-all ${
                           confirmPassword && confirmPassword !== password
-                            ? "border-[#EF4444] focus:border-[#EF4444]"
-                            : "focus:border-[#1B3A8A]"
+                            ? "border-red-400 focus:border-red-400 focus:ring-red-400/8"
+                            : "border-slate-200 focus:border-[#1B3A8A] focus:ring-[#1B3A8A]/8"
                         }`}
                       />
                       <button type="button" onClick={() => setShowConfirm(!showConfirm)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94a3b8] hover:text-[#475569]">
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
                         {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </button>
                     </div>
                     {confirmPassword && confirmPassword !== password && (
-                      <p className="text-[10px] text-[#EF4444] font-medium">Passwords don&apos;t match</p>
+                      <p className="text-xs text-red-500 font-medium">Passwords don&apos;t match</p>
                     )}
                   </div>
-                </div>
 
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full h-11 flex items-center justify-center gap-2 bg-[#1B3A8A] hover:bg-[#162f74] active:scale-[0.98] text-white font-semibold rounded-xl transition-all disabled:opacity-60 disabled:cursor-not-allowed text-sm"
-                >
-                  {loading ? (
-                    <><Loader2 className="h-4 w-4 animate-spin" /> Creating account…</>
-                  ) : (
-                    <>Create account <ArrowRight className="h-4 w-4" /></>
-                  )}
-                </button>
-              </form>
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full h-12 flex items-center justify-center gap-2 bg-[#E8722A] hover:bg-[#d4641e] active:scale-[0.98] text-white font-bold rounded-xl transition-all disabled:opacity-60 disabled:cursor-not-allowed shadow-[0_4px_14px_rgba(232,114,42,0.35)] hover:shadow-[0_6px_20px_rgba(232,114,42,0.4)] text-sm mt-2"
+                  >
+                    {loading ? (
+                      <><Loader2 className="h-4 w-4 animate-spin" /> Creating your account…</>
+                    ) : (
+                      <>Create my free account <ArrowRight className="h-4 w-4" /></>
+                    )}
+                  </button>
+                </form>
+              </>
+            )}
 
-              <p className="text-center text-sm text-[#64748B] mt-5">
-                Already have an account?{" "}
-                <Link href="/login" className="text-[#1B3A8A] font-semibold hover:underline">
-                  Sign in
-                </Link>
-              </p>
-            </>
-          )}
+          </div>
+        </div>
 
+        {/* Bottom bar */}
+        <div className="px-8 py-4 border-t border-slate-100">
+          <p className="text-xs text-slate-400 text-center">
+            © 2026 EduBridge Educational Solutions · Ghana 🇬🇭
+          </p>
         </div>
       </div>
     </div>

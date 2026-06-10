@@ -5,8 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Loader2, ArrowRight } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
 import BrandPanel from "../_components/BrandPanel";
@@ -56,100 +54,119 @@ export default function LoginPage() {
     <div className="min-h-screen flex">
       <BrandPanel />
 
-      {/* Form panel */}
-      <div className="flex-1 flex flex-col justify-center px-4 py-12 sm:px-10 lg:px-16 bg-[#F8FAFC]">
-        <div className="w-full max-w-[420px] mx-auto bg-white rounded-2xl ring-1 ring-black/[0.06] shadow-[0_2px_4px_rgba(0,0,0,0.04),0_8px_20px_rgba(0,0,0,0.06),0_20px_40px_rgba(0,0,0,0.05)] px-8 py-10 sm:px-10">
+      {/* Right panel — full white, no floating card */}
+      <div className="flex-1 flex flex-col min-h-screen bg-white">
 
-          {/* Logo — always visible on right panel */}
-          <div className="flex justify-center mb-8">
+        {/* Top bar */}
+        <div className="flex items-center justify-between px-8 sm:px-12 py-5 border-b border-slate-100">
+          <div className="lg:hidden">
             <Image
               src="/logo.jpeg"
               alt="EduBridge AI"
-              width={220}
-              height={150}
-              className="h-16 w-auto object-contain"
+              width={140}
+              height={44}
+              className="h-9 w-auto object-contain"
               priority
             />
           </div>
+          <div className="hidden lg:block" />
+          <p className="text-sm text-slate-500">
+            New here?{" "}
+            <Link href="/signup" className="text-[#1B3A8A] font-semibold hover:underline">
+              Create an account
+            </Link>
+          </p>
+        </div>
 
-          {/* Heading */}
-          <div className="mb-9">
-            <p className="text-xs font-semibold tracking-widest text-[#E8722A] uppercase mb-2">
-              Welcome back
-            </p>
-            <h1 className="font-display text-[1.75rem] font-bold text-[#0f172a] leading-tight">
-              Sign in to your account
-            </h1>
-            <p className="text-[#64748B] text-sm mt-2">
-              Don&apos;t have one?{" "}
-              <Link href="/signup" className="text-[#1B3A8A] font-semibold hover:underline">
-                Create account
-              </Link>
+        {/* Form area */}
+        <div className="flex-1 flex flex-col justify-center px-8 sm:px-12 lg:px-16 xl:px-24 py-14">
+          <div className="w-full max-w-[440px] mx-auto">
+
+            {/* Heading */}
+            <div className="mb-10">
+              <p className="text-xs font-bold tracking-[0.15em] uppercase text-[#E8722A] mb-3">
+                Welcome back
+              </p>
+              <h1 className="text-[2rem] font-bold text-slate-900 leading-tight tracking-tight">
+                Sign in to your account
+              </h1>
+              <p className="text-slate-500 text-sm mt-2.5 leading-relaxed">
+                Preparing for BECE or WASSCE? Let&apos;s pick up where you left off.
+              </p>
+            </div>
+
+            <form onSubmit={handleLogin} className="space-y-6">
+              {/* Email */}
+              <div className="space-y-2">
+                <label htmlFor="email" className="block text-sm font-semibold text-slate-700">
+                  Email address
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full h-12 px-4 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
+                />
+              </div>
+
+              {/* Password */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label htmlFor="password" className="block text-sm font-semibold text-slate-700">
+                    Password
+                  </label>
+                  <Link href="/forgot-password" className="text-xs text-[#1B3A8A] hover:underline font-semibold">
+                    Forgot password?
+                  </Link>
+                </div>
+                <div className="relative">
+                  <input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="w-full h-12 px-4 pr-12 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                  >
+                    {showPassword ? <EyeOff className="h-4.5 w-4.5" /> : <Eye className="h-4.5 w-4.5" />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Submit */}
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full h-12 flex items-center justify-center gap-2 bg-[#E8722A] hover:bg-[#d4641e] active:scale-[0.98] text-white font-bold rounded-xl transition-all disabled:opacity-60 disabled:cursor-not-allowed shadow-[0_4px_14px_rgba(232,114,42,0.35)] hover:shadow-[0_6px_20px_rgba(232,114,42,0.4)] text-sm"
+              >
+                {loading ? (
+                  <><Loader2 className="h-4 w-4 animate-spin" /> Signing in…</>
+                ) : (
+                  <>Sign in to EduBridge <ArrowRight className="h-4 w-4" /></>
+                )}
+              </button>
+            </form>
+
+            {/* Divider note */}
+            <p className="mt-10 text-center text-xs text-slate-400">
+              For students, teachers, parents &amp; administrators
             </p>
           </div>
+        </div>
 
-          {/* Form */}
-          <form onSubmit={handleLogin} className="space-y-5">
-            <div className="space-y-1.5">
-              <Label htmlFor="email" className="text-xs font-semibold text-[#475569] uppercase tracking-wide">
-                Email address
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="h-11 bg-[#F8FAFC] border-[#E2E8F0] focus:bg-white focus:border-[#1D4ED8] transition-colors rounded-xl text-[#0f172a] placeholder:text-[#94a3b8]"
-              />
-            </div>
-
-            <div className="space-y-1.5">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="password" className="text-xs font-semibold text-[#475569] uppercase tracking-wide">
-                  Password
-                </Label>
-                <Link href="/forgot-password" className="text-xs text-[#1B3A8A] hover:underline font-medium">
-                  Forgot password?
-                </Link>
-              </div>
-              <div className="relative">
-                <Input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="h-11 bg-[#F8FAFC] border-[#E2E8F0] focus:bg-white focus:border-[#1D4ED8] transition-colors rounded-xl pr-10 text-[#0f172a] placeholder:text-[#94a3b8]"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94a3b8] hover:text-[#475569] transition-colors"
-                >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full h-11 mt-1 flex items-center justify-center gap-2 bg-[#1B3A8A] hover:bg-[#162f74] active:scale-[0.98] text-white font-semibold rounded-xl transition-all disabled:opacity-60 disabled:cursor-not-allowed text-sm"
-            >
-              {loading ? (
-                <><Loader2 className="h-4 w-4 animate-spin" /> Signing in…</>
-              ) : (
-                <>Sign in <ArrowRight className="h-4 w-4" /></>
-              )}
-            </button>
-          </form>
-
-          {/* Footer note */}
-          <p className="mt-8 text-center text-xs text-[#94a3b8]">
-            For students, teachers, parents &amp; administrators
+        {/* Bottom bar */}
+        <div className="px-8 py-4 border-t border-slate-100">
+          <p className="text-xs text-slate-400 text-center">
+            © 2026 EduBridge Educational Solutions · Ghana 🇬🇭
           </p>
         </div>
       </div>
