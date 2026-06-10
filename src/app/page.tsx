@@ -2,17 +2,27 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { Lora } from "next/font/google";
 import {
   Brain, Clock, BookOpen, BarChart2, Zap, Shield,
   GraduationCap, BookMarked, Users, ShieldCheck,
-  Menu, X, ArrowRight, CheckCircle2, Flame, Trophy, Award, Star,
+  Menu, X, ArrowRight, CheckCircle2, Flame, Trophy,
+  Award, Star, PlayCircle, ClipboardCheck, TrendingUp,
+  ChevronRight,
 } from "lucide-react";
-import { Lora } from "next/font/google";
 
 const lora = Lora({ subsets: ["latin"], variable: "--font-lora" });
 
+// ─── Brand colors from logo ────────────────────────────────────────────
+// Primary: Deep Blue  #1B3A8A  (EDUBRIDGE text)
+// Accent:  Orange     #E8722A  (YOUTH ACADEMY text)
+// Support: Green      #1A6B3C  (Ghana arc)
+// ──────────────────────────────────────────────────────────────────────
+
 const navLinks = [
   { label: "Features", href: "#features" },
+  { label: "How it works", href: "#how-it-works" },
   { label: "Subjects", href: "#curriculum" },
   { label: "For everyone", href: "#for-everyone" },
 ];
@@ -21,23 +31,97 @@ const stats = [
   { value: "22", label: "BECE & WASSCE subjects" },
   { value: "10k+", label: "WAEC-style questions" },
   { value: "24/7", label: "AI tutor availability" },
-  { value: "100%", label: "Curriculum aligned" },
+  { value: "100%", label: "GES curriculum aligned" },
 ];
 
 const features = [
-  { icon: Brain, title: "AI tutor", desc: "Explains concepts in plain English or your own language, generates examples and quizzes on demand." },
-  { icon: Clock, title: "Mock exam engine", desc: "Timed, randomized WAEC-style papers with auto-save, flagging and instant marking." },
-  { icon: BookOpen, title: "Curriculum lessons", desc: "Video, text and interactive activities mapped to GES topics and WAEC blueprints." },
-  { icon: BarChart2, title: "Real-time analytics", desc: "Topic mastery, exam readiness and grade projections for students, teachers and parents." },
-  { icon: Zap, title: "Adaptive remediation", desc: "After every assessment, a personalized revision plan and follow-up practice." },
-  { icon: Shield, title: "Secure & private", desc: "Role-based access, encrypted at rest and in transit, examination-grade integrity." },
+  {
+    icon: Brain,
+    title: "AI Tutor",
+    desc: "Explains any concept in plain English or Twi, generates examples and quizzes on demand — available around the clock.",
+    accent: false,
+  },
+  {
+    icon: Clock,
+    title: "Mock Exam Engine",
+    desc: "Timed, randomised WAEC-style papers with auto-save, question flagging and instant detailed marking.",
+    accent: false,
+  },
+  {
+    icon: BookOpen,
+    title: "Curriculum Lessons",
+    desc: "Video, text and interactive activities mapped exactly to GES topics and WAEC blueprints.",
+    accent: true,
+  },
+  {
+    icon: BarChart2,
+    title: "Real-time Analytics",
+    desc: "Topic mastery, exam readiness and grade projections for students, teachers and parents.",
+    accent: false,
+  },
+  {
+    icon: Zap,
+    title: "Adaptive Remediation",
+    desc: "After every assessment, a personalised revision plan and follow-up practice targets your weak spots.",
+    accent: false,
+  },
+  {
+    icon: Shield,
+    title: "Secure & Private",
+    desc: "Role-based access, encrypted data at rest and in transit — examination-grade integrity guaranteed.",
+    accent: false,
+  },
+];
+
+const steps = [
+  {
+    number: "01",
+    icon: PlayCircle,
+    title: "Sign up & pick your exam",
+    desc: "Choose BECE or WASSCE, select your subjects, and get a personalised study plan ready in minutes.",
+    img: "/images/hero-student.jpg",
+  },
+  {
+    number: "02",
+    icon: BookOpen,
+    title: "Learn with AI-powered lessons",
+    desc: "Work through curriculum-aligned lessons, ask the AI tutor anything, and practice with topic quizzes as you go.",
+    img: "/images/classroom.jpg",
+  },
+  {
+    number: "03",
+    icon: ClipboardCheck,
+    title: "Sit mock exams & track progress",
+    desc: "Take timed WAEC-style mock papers, get instant results, and watch your readiness score climb.",
+    img: "/images/students-writing.jpg",
+  },
 ];
 
 const roles = [
-  { icon: GraduationCap, title: "Students", desc: "Personalized learning paths, daily goals, streaks and live tutoring." },
-  { icon: BookMarked, title: "Teachers", desc: "Author content, create questions and monitor every learner." },
-  { icon: Users, title: "Parents", desc: "Read-only view of progress, attendance and exam results." },
-  { icon: ShieldCheck, title: "Administrators", desc: "User management, content approval and platform analytics." },
+  {
+    icon: GraduationCap,
+    title: "Students",
+    desc: "Personalised learning paths, daily goals, streaks and an AI tutor that never sleeps.",
+    color: "bg-blue-50 text-blue-700",
+  },
+  {
+    icon: BookMarked,
+    title: "Teachers",
+    desc: "Author lessons, create questions, monitor every learner and spot who needs help early.",
+    color: "bg-orange-50 text-orange-700",
+  },
+  {
+    icon: Users,
+    title: "Parents",
+    desc: "Read-only view of your child's progress, attendance, quiz scores and exam readiness.",
+    color: "bg-green-50 text-green-700",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Administrators",
+    desc: "User management, content approval, platform analytics and school-wide reporting.",
+    color: "bg-purple-50 text-purple-700",
+  },
 ];
 
 const beceSubjects = [
@@ -72,60 +156,66 @@ export default function LandingPage() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className={`${lora.variable} bg-[#F8F5EE] min-h-screen`}>
+    <div className={`${lora.variable} bg-white min-h-screen antialiased`}>
 
-      {/* NAV */}
-      <header className="sticky top-0 z-50 bg-[#F8F5EE]/95 backdrop-blur-sm border-b border-black/[0.06]">
+      {/* ─── NAV ─────────────────────────────────────────────────────────── */}
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center gap-2.5 flex-shrink-0">
-              <div className="h-8 w-8 bg-[#1A4731] rounded-lg flex items-center justify-center">
-                <GraduationCap className="h-[18px] w-[18px] text-white" />
-              </div>
-              <span className="font-bold text-[#1A1A1A] text-[17px] tracking-tight">
-                EduBridge <span className="text-[#1A4731]">AI</span>
-              </span>
+
+            {/* Logo */}
+            <Link href="/" className="flex-shrink-0">
+              <Image
+                src="/logo.jpeg"
+                alt="EduBridge Youth Academy"
+                width={160}
+                height={50}
+                className="h-10 w-auto object-contain"
+                priority
+              />
             </Link>
 
-            <nav className="hidden md:flex items-center gap-8">
+            {/* Desktop nav */}
+            <nav className="hidden md:flex items-center gap-7">
               {navLinks.map((l) => (
                 <a key={l.label} href={l.href}
-                  className="text-sm text-[#4A4A4A] hover:text-[#1A4731] transition-colors font-medium">
+                  className="text-sm text-slate-600 hover:text-[#1B3A8A] transition-colors font-medium">
                   {l.label}
                 </a>
               ))}
             </nav>
 
             <div className="hidden md:flex items-center gap-3">
-              <Link href="/login" className="text-sm font-semibold text-[#1A4731] hover:underline px-3 py-2">
+              <Link href="/login" className="text-sm font-semibold text-[#1B3A8A] hover:underline px-3 py-2">
                 Sign in
               </Link>
               <Link href="/signup"
-                className="px-4 py-2 bg-[#1A4731] hover:bg-[#133626] text-white text-sm font-semibold rounded-lg transition-colors">
-                Get started
+                className="px-4 py-2 bg-[#E8722A] hover:bg-[#d4641e] text-white text-sm font-bold rounded-lg transition-colors shadow-sm">
+                Get started free
               </Link>
             </div>
 
-            <button className="md:hidden p-2 rounded-lg hover:bg-black/[0.05]" onClick={() => setMobileOpen(!mobileOpen)}>
+            <button className="md:hidden p-2 rounded-lg hover:bg-slate-100"
+              onClick={() => setMobileOpen(!mobileOpen)}>
               {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
         </div>
 
         {mobileOpen && (
-          <div className="md:hidden border-t border-black/[0.06] bg-[#F8F5EE] px-4 py-4 space-y-3">
+          <div className="md:hidden border-t border-slate-100 bg-white px-4 py-4 space-y-2">
             {navLinks.map((l) => (
               <a key={l.label} href={l.href}
-                className="block text-sm font-medium text-[#4A4A4A] py-1.5"
+                className="block text-sm font-medium text-slate-700 py-2"
                 onClick={() => setMobileOpen(false)}>
                 {l.label}
               </a>
             ))}
-            <div className="flex gap-3 pt-2 border-t border-black/[0.06] mt-2">
-              <Link href="/login" className="flex-1 text-center py-2.5 border border-[#1A4731] text-[#1A4731] text-sm font-semibold rounded-lg">
+            <div className="flex gap-3 pt-3 border-t border-slate-100">
+              <Link href="/login" className="flex-1 text-center py-2.5 border-2 border-[#1B3A8A] text-[#1B3A8A] text-sm font-bold rounded-lg">
                 Sign in
               </Link>
-              <Link href="/signup" className="flex-1 text-center py-2.5 bg-[#1A4731] text-white text-sm font-semibold rounded-lg">
+              <Link href="/signup" className="flex-1 text-center py-2.5 bg-[#E8722A] text-white text-sm font-bold rounded-lg">
                 Get started
               </Link>
             </div>
@@ -133,217 +223,378 @@ export default function LandingPage() {
         )}
       </header>
 
-      {/* HERO */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 lg:pt-24 lg:pb-28">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#1A4731]/20 bg-white text-sm text-[#1A4731] font-medium mb-8">
-              <span>✨</span>
-              <span>Built for Ghana&apos;s BECE &amp; WASSCE candidates</span>
-            </div>
-            <h1 className="font-[family-name:var(--font-lora)] leading-[1.1] mb-6">
-              <span className="block text-5xl lg:text-6xl text-[#1A1A1A]">Smart learning.</span>
-              <span className="block text-5xl lg:text-6xl text-[#1A4731] italic">Smarter assessment.</span>
-              <span className="block text-5xl lg:text-6xl text-[#1A4731] font-bold">Better outcomes.</span>
-            </h1>
-            <p className="text-[#5A5A5A] text-lg leading-relaxed mb-8 max-w-lg">
-              EduBridge AI prepares students for WAEC examinations with curriculum-aligned lessons,
-              adaptive mock exams, an always-on AI tutor and real-time analytics for teachers and parents.
-            </p>
-            <div className="flex flex-wrap gap-3 mb-10">
-              <Link href="/signup"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-[#1A4731] hover:bg-[#133626] text-white font-semibold rounded-xl transition-colors text-sm">
-                Start learning free <ArrowRight className="h-4 w-4" />
-              </Link>
-              <a href="#features"
-                className="inline-flex items-center gap-2 px-6 py-3 border border-[#1A1A1A]/20 hover:border-[#1A4731] hover:text-[#1A4731] text-[#1A1A1A] font-semibold rounded-xl transition-colors text-sm">
-                See how it works
-              </a>
-            </div>
-            <div className="flex flex-wrap items-center gap-5 text-sm text-[#5A5A5A]">
-              {["GES & WAEC aligned", "Works on low bandwidth", "Free for students"].map((t) => (
-                <span key={t} className="flex items-center gap-1.5">
-                  <CheckCircle2 className="h-4 w-4 text-[#1A4731] flex-shrink-0" /> {t}
-                </span>
-              ))}
-            </div>
-          </div>
+      {/* ─── HERO ────────────────────────────────────────────────────────── */}
+      <section className="bg-[#F0F4FF] overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-0 lg:pt-20">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-end">
 
-          {/* Hero visual */}
-          <div className="relative hidden lg:flex flex-col">
-            <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#1A4731]/15 via-[#2D6A4F]/10 to-[#1A4731]/5 aspect-[4/5] flex items-end justify-center">
-              {/* Decorative rings */}
-              <div className="absolute top-12 right-12 h-40 w-40 rounded-full border-2 border-[#1A4731]/10" />
-              <div className="absolute top-20 right-20 h-24 w-24 rounded-full border border-[#1A4731]/10" />
-              <div className="absolute bottom-24 left-8 h-20 w-20 rounded-full bg-[#1A4731]/5" />
+            {/* Left */}
+            <div className="pb-16 lg:pb-20">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#1B3A8A]/20 bg-white text-sm text-[#1B3A8A] font-semibold mb-8 shadow-sm">
+                <span>🇬🇭</span> Built for Ghana&apos;s BECE &amp; WASSCE candidates
+              </div>
 
-              {/* Mock lesson card */}
-              <div className="absolute top-10 left-8 bg-white rounded-2xl shadow-md p-4 w-44 border border-black/[0.04]">
+              <h1 className="font-[family-name:var(--font-lora)] leading-[1.1] mb-6">
+                <span className="block text-[2.8rem] lg:text-[3.5rem] text-slate-900">Smart learning.</span>
+                <span className="block text-[2.8rem] lg:text-[3.5rem] text-[#1B3A8A] italic">Smarter assessment.</span>
+                <span className="block text-[2.8rem] lg:text-[3.5rem] text-[#E8722A] font-bold">Better outcomes.</span>
+              </h1>
+
+              <p className="text-slate-600 text-lg leading-relaxed mb-8 max-w-lg">
+                EduBridge AI prepares students for WAEC examinations with curriculum-aligned lessons,
+                adaptive mock exams, an always-on AI tutor and real-time analytics for teachers and parents.
+              </p>
+
+              <div className="flex flex-wrap gap-3 mb-10">
+                <Link href="/signup"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#E8722A] hover:bg-[#d4641e] text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg text-sm">
+                  Start learning free <ArrowRight className="h-4 w-4" />
+                </Link>
+                <a href="#how-it-works"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 bg-white border-2 border-[#1B3A8A] text-[#1B3A8A] font-bold rounded-xl transition-all hover:bg-[#1B3A8A] hover:text-white text-sm">
+                  See how it works
+                </a>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-5 text-sm text-slate-600">
+                {["GES & WAEC aligned", "Works on low bandwidth", "Free for students"].map((t) => (
+                  <span key={t} className="flex items-center gap-1.5 font-medium">
+                    <CheckCircle2 className="h-4 w-4 text-[#1A6B3C] flex-shrink-0" /> {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Right — student photo */}
+            <div className="relative hidden lg:block">
+              <div className="relative rounded-t-3xl overflow-hidden h-[520px]">
+                <Image
+                  src="/images/hero-student.jpg"
+                  alt="Student learning with EduBridge AI"
+                  fill
+                  className="object-cover object-center"
+                  priority
+                />
+                {/* Overlay gradient at bottom */}
+                <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#F0F4FF] to-transparent" />
+              </div>
+
+              {/* Floating cards */}
+              <div className="absolute top-8 -left-6 bg-white rounded-2xl shadow-xl p-4 border border-slate-100 w-52">
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="h-7 w-7 rounded-lg bg-[#EFF6FF] flex items-center justify-center">
-                    <BookOpen className="h-3.5 w-3.5 text-[#1D4ED8]" />
+                  <div className="h-8 w-8 rounded-lg bg-[#1B3A8A]/10 flex items-center justify-center">
+                    <Brain className="h-4 w-4 text-[#1B3A8A]" />
                   </div>
-                  <span className="text-xs font-semibold text-[#1A1A1A]">Mathematics</span>
+                  <div>
+                    <p className="text-xs font-bold text-slate-800">AI Tutor Ready</p>
+                    <p className="text-[10px] text-slate-500">Ask anything</p>
+                  </div>
+                  <div className="ml-auto h-2 w-2 rounded-full bg-green-400" />
                 </div>
-                <p className="text-[10px] text-[#6B7280] mb-2">Quadratic Equations</p>
-                <div className="h-1.5 bg-[#E5E5E5] rounded-full">
-                  <div className="h-full w-[65%] bg-[#1A4731] rounded-full" />
+                <p className="text-[11px] text-slate-600 bg-slate-50 rounded-lg p-2 italic">
+                  &ldquo;Explain quadratic equations in simple terms&rdquo;
+                </p>
+              </div>
+
+              <div className="absolute top-44 -right-4 bg-white rounded-2xl shadow-xl p-4 border border-slate-100">
+                <p className="text-xs font-semibold text-slate-500 mb-1">Mock Exam Score</p>
+                <p className="text-3xl font-bold text-[#1B3A8A]">87<span className="text-lg">%</span></p>
+                <div className="flex items-center gap-1 mt-1">
+                  <TrendingUp className="h-3.5 w-3.5 text-green-500" />
+                  <span className="text-[11px] text-green-600 font-semibold">+12% this week</span>
                 </div>
-                <p className="text-[10px] text-[#1A4731] font-medium mt-1">65% complete</p>
               </div>
 
-              {/* Score badge */}
-              <div className="absolute top-10 right-6 bg-[#1A4731] rounded-2xl shadow-md p-3 text-center">
-                <p className="text-2xl font-bold text-white">87%</p>
-                <p className="text-[10px] text-white/70">Mock exam</p>
+              <div className="absolute bottom-20 -left-4 bg-[#1B3A8A] rounded-2xl shadow-xl p-3.5 border border-[#1B3A8A]/20 flex items-center gap-3 w-48">
+                <div className="h-8 w-8 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
+                  <Flame className="h-4 w-4 text-orange-300" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-white">12 day streak! 🔥</p>
+                  <p className="text-[10px] text-white/60">Keep it going</p>
+                </div>
               </div>
-
-              {/* Center illustration */}
-              <div className="flex flex-col items-center justify-center h-full pb-24 text-[#1A4731]/20">
-                <GraduationCap className="h-32 w-32" />
-              </div>
-            </div>
-
-            {/* Floating AI tutor card */}
-            <div className="absolute bottom-6 left-6 right-6 bg-white rounded-2xl shadow-lg p-4 flex items-center gap-3 border border-black/[0.06]">
-              <div className="h-10 w-10 rounded-xl bg-[#1A4731]/10 flex items-center justify-center flex-shrink-0">
-                <Brain className="h-5 w-5 text-[#1A4731]" />
-              </div>
-              <div>
-                <p className="font-semibold text-sm text-[#1A1A1A]">AI tutor ready</p>
-                <p className="text-xs text-[#6B7280]">Ask anything from your syllabus</p>
-              </div>
-              <div className="ml-auto h-2.5 w-2.5 rounded-full bg-[#22C55E] flex-shrink-0" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* STATS BAR */}
-      <section className="border-y border-[#1A4731]/10 bg-white">
+      {/* ─── STATS BAR ───────────────────────────────────────────────────── */}
+      <section className="bg-[#1B3A8A]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-            {stats.map((s) => (
-              <div key={s.label}>
-                <p className="font-[family-name:var(--font-lora)] text-4xl lg:text-5xl font-bold text-[#1A4731]">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-4">
+            {stats.map((s, i) => (
+              <div key={s.label} className={`text-center lg:text-left ${i < 3 ? "lg:border-r lg:border-white/20 lg:pr-8" : ""}`}>
+                <p className="font-[family-name:var(--font-lora)] text-4xl lg:text-5xl font-bold text-[#E8722A]">
                   {s.value}
                 </p>
-                <p className="text-sm text-[#6B7280] mt-1.5">{s.label}</p>
+                <p className="text-sm text-white/70 mt-1.5 font-medium">{s.label}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* FEATURES */}
-      <section id="features" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
-        <p className="text-xs font-bold tracking-widest uppercase text-[#1A4731] mb-4">Why EduBridge AI</p>
-        <h2 className="font-[family-name:var(--font-lora)] text-4xl lg:text-5xl text-[#1A1A1A] mb-14 max-w-xl leading-tight">
-          Everything a candidate needs in one beautiful place.
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {features.map((f, i) => {
-            const Icon = f.icon;
-            return (
-              <div key={f.title} className={`bg-white rounded-2xl p-6 border border-[#E5E5E5] ${i === 2 ? "lg:bg-[#1A4731] lg:border-[#1A4731] lg:text-white" : ""}`}>
-                <div className={`h-10 w-10 rounded-xl flex items-center justify-center mb-4 ${i === 2 ? "bg-white/15" : "bg-[#F0F7F3]"}`}>
-                  <Icon className={`h-5 w-5 ${i === 2 ? "text-white" : "text-[#1A4731]"}`} />
+      {/* ─── HOW IT WORKS ────────────────────────────────────────────────── */}
+      <section id="how-it-works" className="bg-white py-20 lg:py-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <p className="text-xs font-bold tracking-widest uppercase text-[#E8722A] mb-4">Simple to start</p>
+            <h2 className="font-[family-name:var(--font-lora)] text-4xl lg:text-5xl text-slate-900 leading-tight max-w-2xl mx-auto">
+              From sign-up to exam-ready in three steps.
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+            {steps.map((step) => {
+              const Icon = step.icon;
+              return (
+                <div key={step.number} className="group relative bg-slate-50 rounded-3xl overflow-hidden border border-slate-100 hover:border-[#1B3A8A]/30 hover:shadow-lg transition-all">
+                  <div className="relative h-52 overflow-hidden">
+                    <Image
+                      src={step.img}
+                      alt={step.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
+                    <div className="absolute bottom-4 left-4 flex items-center gap-2">
+                      <div className="h-9 w-9 rounded-xl bg-[#E8722A] flex items-center justify-center shadow-md">
+                        <Icon className="h-4.5 w-4.5 text-white" />
+                      </div>
+                      <span className="text-4xl font-[family-name:var(--font-lora)] font-bold text-white/30 leading-none">
+                        {step.number}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <h3 className="font-bold text-slate-900 text-lg mb-2">{step.title}</h3>
+                    <p className="text-sm text-slate-600 leading-relaxed">{step.desc}</p>
+                  </div>
                 </div>
-                <h3 className={`font-semibold text-[17px] mb-2 ${i === 2 ? "text-white" : "text-[#1A1A1A]"}`}>
-                  {f.title}
-                </h3>
-                <p className={`text-sm leading-relaxed ${i === 2 ? "text-white/70" : "text-[#6B7280]"}`}>
-                  {f.desc}
-                </p>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </section>
 
-      {/* GAMIFICATION */}
-      <section className="bg-white border-y border-[#E5E5E5] py-20 lg:py-28">
+      {/* ─── FEATURES ────────────────────────────────────────────────────── */}
+      <section id="features" className="bg-[#F8F9FF] py-20 lg:py-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-xs font-bold tracking-widest uppercase text-[#1A4731] mb-4">Learn. Earn. Level up.</p>
-          <h2 className="font-[family-name:var(--font-lora)] text-4xl lg:text-5xl text-[#1A1A1A] mb-6 max-w-2xl leading-tight">
-            Studying that feels like leveling up your favourite game.
-          </h2>
-          <p className="text-[#5A5A5A] text-lg mb-14 max-w-xl">
-            Earn XP for every lesson and quiz, keep your daily streak alive, unlock badges and climb the school leaderboard.
-          </p>
+          <div className="mb-14">
+            <p className="text-xs font-bold tracking-widest uppercase text-[#E8722A] mb-4">Why EduBridge AI</p>
+            <h2 className="font-[family-name:var(--font-lora)] text-4xl lg:text-5xl text-slate-900 leading-tight max-w-xl">
+              Everything a candidate needs in one beautiful place.
+            </h2>
+          </div>
 
-          <div className="grid lg:grid-cols-2 gap-6">
-            {/* Streak card */}
-            <div className="bg-[#1A4731] rounded-3xl p-7 text-white">
-              <div className="flex items-center gap-2 mb-5">
-                <Flame className="h-5 w-5 text-orange-400" />
-                <span className="text-sm font-medium text-white/80">Daily streak</span>
-              </div>
-              <div className="mb-5">
-                <span className="font-[family-name:var(--font-lora)] text-7xl font-bold">12</span>
-                <span className="text-2xl text-white/70 ml-2">days</span>
-              </div>
-              <div className="flex items-center justify-between text-xs text-white/60 mb-2">
-                <span>Level 8 · Scholar</span>
-                <span>4,385 / 5,000 XP</span>
-              </div>
-              <div className="h-2 bg-white/20 rounded-full mb-5">
-                <div className="h-full bg-[#F59E0B] rounded-full" style={{ width: "87.7%" }} />
-              </div>
-              <p className="text-xs text-white/50 mb-3">615 XP to Level 9 · Strategist</p>
-              <div className="flex gap-2">
-                {weekDays.map((d, i) => (
-                  <div key={i}
-                    className={`flex-1 h-9 rounded-lg flex items-center justify-center text-xs font-bold ${activeDays.includes(i)
-                      ? "bg-[#F59E0B] text-[#1A1A1A]"
-                      : "bg-white/10 text-white/30"
-                      }`}>
-                    {d}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {features.map((f) => {
+              const Icon = f.icon;
+              return (
+                <div key={f.title}
+                  className={`rounded-2xl p-6 border transition-all hover:shadow-md ${f.accent
+                    ? "bg-[#1B3A8A] border-[#1B3A8A] text-white"
+                    : "bg-white border-slate-200 hover:border-[#1B3A8A]/30"
+                    }`}>
+                  <div className={`h-11 w-11 rounded-xl flex items-center justify-center mb-5 ${f.accent ? "bg-white/15" : "bg-[#F0F4FF]"}`}>
+                    <Icon className={`h-5 w-5 ${f.accent ? "text-white" : "text-[#1B3A8A]"}`} />
                   </div>
-                ))}
-              </div>
+                  <h3 className={`font-bold text-[17px] mb-2 ${f.accent ? "text-white" : "text-slate-900"}`}>
+                    {f.title}
+                  </h3>
+                  <p className={`text-sm leading-relaxed ${f.accent ? "text-white/75" : "text-slate-500"}`}>
+                    {f.desc}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── GAMIFICATION ────────────────────────────────────────────────── */}
+      <section className="bg-white border-y border-slate-100 py-20 lg:py-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+            {/* Left text + cards */}
+            <div>
+              <p className="text-xs font-bold tracking-widest uppercase text-[#E8722A] mb-4">
+                Learn. Earn. Level up.
+              </p>
+              <h2 className="font-[family-name:var(--font-lora)] text-4xl lg:text-5xl text-slate-900 mb-5 leading-tight">
+                Studying that feels like leveling up your favourite game.
+              </h2>
+              <p className="text-slate-600 text-lg mb-8 leading-relaxed">
+                Earn XP for every lesson and quiz, keep your daily streak alive, unlock badges and
+                climb the school leaderboard.
+              </p>
+              <Link href="/signup"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-[#1B3A8A] hover:bg-[#162f74] text-white font-bold rounded-xl transition-colors text-sm">
+                Start earning XP <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
 
-            {/* Badges + leaderboard */}
-            <div className="space-y-5">
-              <div className="bg-[#F8F5EE] rounded-3xl p-5">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold text-[#1A1A1A]">Badges to unlock</h3>
-                  <span className="text-xs text-[#6B7280]">8 of 32 earned</span>
+            {/* Right widgets */}
+            <div className="space-y-4">
+              {/* Streak card */}
+              <div className="bg-[#1B3A8A] rounded-3xl p-6 text-white">
+                <div className="flex items-center gap-2 mb-4">
+                  <Flame className="h-5 w-5 text-orange-400" />
+                  <span className="text-sm font-semibold text-white/80">Daily streak</span>
                 </div>
-                <div className="grid grid-cols-4 gap-3">
+                <div className="flex items-end justify-between mb-4">
+                  <div>
+                    <span className="font-[family-name:var(--font-lora)] text-6xl font-bold">12</span>
+                    <span className="text-xl text-white/60 ml-1.5">days</span>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xs text-white/50">Level 8 · Scholar</p>
+                    <p className="text-sm font-bold text-[#E8722A]">4,385 / 5,000 XP</p>
+                  </div>
+                </div>
+                <div className="h-2 bg-white/20 rounded-full mb-4">
+                  <div className="h-full bg-[#E8722A] rounded-full" style={{ width: "87.7%" }} />
+                </div>
+                <div className="flex gap-1.5">
+                  {weekDays.map((d, i) => (
+                    <div key={i}
+                      className={`flex-1 h-8 rounded-lg flex items-center justify-center text-xs font-bold ${activeDays.includes(i)
+                        ? "bg-[#E8722A] text-white"
+                        : "bg-white/10 text-white/30"
+                        }`}>
+                      {d}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Badges row */}
+              <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-bold text-slate-800 text-sm">Badges to unlock</h3>
+                  <span className="text-xs text-slate-400">8 of 32 earned</span>
+                </div>
+                <div className="grid grid-cols-4 gap-2">
                   {badges.map((b) => {
                     const BIcon = b.icon;
                     return (
-                      <div key={b.label}
-                        className={`${b.bg} rounded-2xl p-3 flex flex-col items-center gap-2 border border-black/[0.04]`}>
-                        <BIcon className={`h-6 w-6 ${b.color}`} />
-                        <span className="text-[10px] font-medium text-center text-[#1A1A1A] leading-tight">
-                          {b.label}
-                        </span>
+                      <div key={b.label} className={`${b.bg} rounded-xl p-2.5 flex flex-col items-center gap-1.5`}>
+                        <BIcon className={`h-5 w-5 ${b.color}`} />
+                        <span className="text-[10px] font-semibold text-slate-700 text-center leading-tight">{b.label}</span>
                       </div>
                     );
                   })}
                 </div>
               </div>
 
-              <div className="bg-[#F8F5EE] rounded-3xl p-5">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2">
-                    <Trophy className="h-4 w-4 text-[#F59E0B]" />
-                    <h3 className="font-semibold text-[#1A1A1A] text-sm">School leaderboard</h3>
+              {/* Leaderboard */}
+              <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-1.5">
+                    <Trophy className="h-4 w-4 text-yellow-500" />
+                    <h3 className="font-bold text-slate-800 text-sm">School leaderboard</h3>
                   </div>
-                  <span className="text-xs text-[#6B7280]">This week</span>
+                  <span className="text-xs text-slate-400">This week</span>
                 </div>
-                <div className="space-y-3">
-                  {leaderboard.map((l) => (
-                    <div key={l.name} className="flex items-center gap-3">
-                      <div className="h-7 w-7 rounded-full bg-[#1A4731] text-white text-xs font-bold flex items-center justify-center flex-shrink-0">
-                        {l.rank}
-                      </div>
-                      <span className="flex-1 text-sm font-medium text-[#1A1A1A]">{l.name}</span>
-                      <span className="text-sm font-bold text-[#1A4731]">{l.xp}</span>
+                {leaderboard.map((l) => (
+                  <div key={l.name} className="flex items-center gap-3 py-1.5">
+                    <div className="h-6 w-6 rounded-full bg-[#1B3A8A] text-white text-xs font-bold flex items-center justify-center">
+                      {l.rank}
                     </div>
+                    <span className="flex-1 text-sm font-medium text-slate-800">{l.name}</span>
+                    <span className="text-sm font-bold text-[#E8722A]">{l.xp}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── FOR EVERYONE ────────────────────────────────────────────────── */}
+      <section id="for-everyone" className="bg-[#F8F9FF] py-20 lg:py-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            {/* Photo */}
+            <div className="relative rounded-3xl overflow-hidden h-80 lg:h-[500px] hidden lg:block">
+              <Image
+                src="/images/teacher.jpg"
+                alt="Teacher with students"
+                fill
+                className="object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1B3A8A]/50 to-transparent" />
+              <div className="absolute bottom-8 left-8 right-8 bg-white/90 backdrop-blur-sm rounded-2xl p-4">
+                <p className="font-bold text-slate-800 text-sm mb-1">Every role. One platform.</p>
+                <p className="text-xs text-slate-600">Students, teachers, parents and admins — all connected in real time.</p>
+              </div>
+            </div>
+
+            {/* Cards */}
+            <div>
+              <p className="text-xs font-bold tracking-widest uppercase text-[#E8722A] mb-4">Built for everyone</p>
+              <h2 className="font-[family-name:var(--font-lora)] text-4xl lg:text-5xl text-slate-900 mb-10 leading-tight">
+                One platform, four tailored experiences.
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {roles.map((r) => {
+                  const Icon = r.icon;
+                  return (
+                    <div key={r.title} className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-[#1B3A8A]/30 hover:shadow-sm transition-all">
+                      <div className={`h-9 w-9 rounded-xl ${r.color} bg-opacity-20 flex items-center justify-center mb-3`}>
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <h3 className="font-bold text-slate-900 mb-1.5">{r.title}</h3>
+                      <p className="text-sm text-slate-500 leading-relaxed">{r.desc}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── CURRICULUM ──────────────────────────────────────────────────── */}
+      <section id="curriculum" className="bg-white border-y border-slate-100 py-20 lg:py-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+            <div>
+              <p className="text-xs font-bold tracking-widest uppercase text-[#E8722A] mb-4">Curriculum</p>
+              <h2 className="font-[family-name:var(--font-lora)] text-4xl lg:text-5xl text-slate-900 mb-5 leading-tight">
+                BECE and WASSCE subjects, every one of them.
+              </h2>
+              <p className="text-slate-600 text-lg leading-relaxed mb-8">
+                Tap any subject to jump straight into its topics, notes, videos and practice questions.
+              </p>
+              <Link href="/signup"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-[#1B3A8A] hover:bg-[#162f74] text-white font-bold rounded-xl transition-colors text-sm">
+                Browse all subjects <ChevronRight className="h-4 w-4" />
+              </Link>
+            </div>
+
+            <div className="space-y-8">
+              <div>
+                <p className="text-xs font-bold tracking-widest text-slate-400 uppercase mb-3">BECE · Junior High</p>
+                <div className="flex flex-wrap gap-2">
+                  {beceSubjects.map((s) => (
+                    <Link key={s} href="/signup"
+                      className="px-3.5 py-1.5 rounded-full border border-slate-200 bg-slate-50 hover:border-[#1B3A8A] hover:bg-[#F0F4FF] hover:text-[#1B3A8A] text-sm text-slate-700 font-medium transition-all">
+                      {s}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <p className="text-xs font-bold tracking-widest text-slate-400 uppercase mb-3">WASSCE · Senior High</p>
+                <div className="flex flex-wrap gap-2">
+                  {wassceSubjects.map((s) => (
+                    <Link key={s} href="/signup"
+                      className="px-3.5 py-1.5 rounded-full border border-slate-200 bg-slate-50 hover:border-[#E8722A] hover:bg-orange-50 hover:text-[#E8722A] text-sm text-slate-700 font-medium transition-all">
+                      {s}
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -352,94 +603,99 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* FOR EVERYONE */}
-      <section id="for-everyone" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
-        <p className="text-xs font-bold tracking-widest uppercase text-[#1A4731] mb-4">Built for everyone</p>
-        <h2 className="font-[family-name:var(--font-lora)] text-4xl lg:text-5xl text-[#1A1A1A] mb-14 max-w-xl leading-tight">
-          One platform, four tailored experiences.
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {roles.map((r) => {
-            const Icon = r.icon;
-            return (
-              <div key={r.title} className="bg-white rounded-2xl p-6 border border-[#E5E5E5] hover:border-[#1A4731]/30 hover:shadow-sm transition-all">
-                <Icon className="h-7 w-7 text-[#1A4731] mb-4" />
-                <h3 className="font-semibold text-[#1A1A1A] text-[17px] mb-2">{r.title}</h3>
-                <p className="text-sm text-[#6B7280] leading-relaxed">{r.desc}</p>
-              </div>
-            );
-          })}
+      {/* ─── SOCIAL PROOF / PHOTO BREAK ──────────────────────────────────── */}
+      <section className="relative h-72 lg:h-96 overflow-hidden">
+        <Image
+          src="/images/classroom.jpg"
+          alt="Students in classroom"
+          fill
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-[#1B3A8A]/70" />
+        <div className="relative h-full flex flex-col items-center justify-center text-center px-4">
+          <p className="font-[family-name:var(--font-lora)] text-3xl lg:text-5xl text-white font-bold max-w-3xl leading-tight mb-4">
+            &ldquo;Every Ghanaian student deserves a world-class education.&rdquo;
+          </p>
+          <p className="text-white/70 text-sm font-medium">— EduBridge AI Mission</p>
         </div>
       </section>
 
-      {/* CURRICULUM */}
-      <section id="curriculum" className="bg-white border-y border-[#E5E5E5] py-20 lg:py-28">
+      {/* ─── CTA BANNER ──────────────────────────────────────────────────── */}
+      <section className="bg-[#F8F9FF] py-20 lg:py-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-xs font-bold tracking-widest uppercase text-[#1A4731] mb-4">Curriculum</p>
-          <h2 className="font-[family-name:var(--font-lora)] text-4xl lg:text-5xl text-[#1A1A1A] mb-4 max-w-xl leading-tight">
-            BECE and WASSCE subjects, every one of them.
-          </h2>
-          <p className="text-[#5A5A5A] text-lg mb-12 max-w-xl">
-            Tap a subject to jump straight into its topics, notes, videos and practice questions.
-          </p>
-          <div className="space-y-8">
-            <div>
-              <p className="text-xs font-bold tracking-widest text-[#6B7280] uppercase mb-4">BECE · Junior High</p>
-              <div className="flex flex-wrap gap-2.5">
-                {beceSubjects.map((s) => (
-                  <Link key={s} href="/signup"
-                    className="px-4 py-2 rounded-full border border-[#E5E5E5] bg-[#F8F5EE] hover:border-[#1A4731] hover:text-[#1A4731] text-sm text-[#1A1A1A] font-medium transition-colors">
-                    {s}
-                  </Link>
-                ))}
+          <div className="bg-[#1B3A8A] rounded-3xl px-8 py-16 sm:px-14 lg:px-20 relative overflow-hidden">
+            {/* Decorative circles */}
+            <div className="absolute top-0 right-0 h-64 w-64 rounded-full bg-white/5 -translate-y-1/2 translate-x-1/4" />
+            <div className="absolute bottom-0 left-0 h-40 w-40 rounded-full bg-[#E8722A]/20 translate-y-1/2 -translate-x-1/4" />
+
+            <div className="relative grid lg:grid-cols-2 gap-8 items-center">
+              <div>
+                <h2 className="font-[family-name:var(--font-lora)] text-4xl lg:text-5xl text-white mb-4 leading-tight">
+                  Your best result is one practice away.
+                </h2>
+                <p className="text-white/70 text-lg">
+                  Join EduBridge AI today. Free for students, always.
+                </p>
+              </div>
+              <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-3 lg:items-start xl:items-center">
+                <Link href="/signup"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#E8722A] hover:bg-[#d4641e] text-white font-bold rounded-xl transition-all shadow-lg text-sm">
+                  Create my free account <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link href="/login"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl transition-all text-sm border border-white/20">
+                  Sign in to dashboard
+                </Link>
               </div>
             </div>
-            <div>
-              <p className="text-xs font-bold tracking-widest text-[#6B7280] uppercase mb-4">WASSCE · Senior High</p>
-              <div className="flex flex-wrap gap-2.5">
-                {wassceSubjects.map((s) => (
-                  <Link key={s} href="/signup"
-                    className="px-4 py-2 rounded-full border border-[#E5E5E5] bg-[#F8F5EE] hover:border-[#1A4731] hover:text-[#1A4731] text-sm text-[#1A1A1A] font-medium transition-colors">
-                    {s}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="mt-10">
-            <Link href="/signup"
-              className="inline-flex items-center gap-2 px-5 py-2.5 border border-[#1A1A1A]/20 hover:border-[#1A4731] hover:text-[#1A4731] text-[#1A1A1A] text-sm font-semibold rounded-xl transition-colors">
-              Browse all subjects <ArrowRight className="h-4 w-4" />
-            </Link>
           </div>
         </div>
       </section>
 
-      {/* CTA BANNER */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
-        <div className="bg-[#1A4731] rounded-3xl px-8 py-16 sm:px-14 text-center">
-          <h2 className="font-[family-name:var(--font-lora)] text-4xl lg:text-5xl text-white mb-4 leading-tight max-w-2xl mx-auto">
-            Your best result is one practice away.
-          </h2>
-          <p className="text-white/70 text-lg mb-10">
-            Join EduBridge AI today. Free for students, always.
-          </p>
-          <Link href="/signup"
-            className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#E8902A] hover:bg-[#D17A1F] text-white font-bold rounded-xl transition-colors text-sm">
-            Create my free account <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="border-t border-[#1A4731]/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-sm text-[#6B7280]">
-            © 2026 EduBridge Educational Solutions. Made for Ghana 🇬🇭
-          </p>
-          <p className="text-sm text-[#6B7280]">
-            Smart Learning. Smarter Assessment. Better Outcomes.
-          </p>
+      {/* ─── FOOTER ──────────────────────────────────────────────────────── */}
+      <footer className="bg-slate-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
+            <div className="md:col-span-2">
+              <Image
+                src="/logo.jpeg"
+                alt="EduBridge Youth Academy"
+                width={140}
+                height={45}
+                className="h-10 w-auto object-contain mb-4 brightness-0 invert"
+              />
+              <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
+                Ghana&apos;s most advanced BECE and WASSCE exam preparation platform.
+                Curriculum-aligned, AI-powered, free for students.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-bold text-sm mb-4 text-white">Platform</h4>
+              <ul className="space-y-2.5 text-sm text-slate-400">
+                <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
+                <li><a href="#curriculum" className="hover:text-white transition-colors">Subjects</a></li>
+                <li><a href="#how-it-works" className="hover:text-white transition-colors">How it works</a></li>
+                <li><a href="#for-everyone" className="hover:text-white transition-colors">For everyone</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold text-sm mb-4 text-white">Get started</h4>
+              <ul className="space-y-2.5 text-sm text-slate-400">
+                <li><Link href="/signup" className="hover:text-white transition-colors">Create account</Link></li>
+                <li><Link href="/login" className="hover:text-white transition-colors">Sign in</Link></li>
+                <li><a href="#" className="hover:text-white transition-colors">For schools</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Contact us</a></li>
+              </ul>
+            </div>
+          </div>
+          <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p className="text-sm text-slate-400">
+              © 2026 EduBridge Educational Solutions. Made for Ghana 🇬🇭
+            </p>
+            <p className="text-sm text-slate-500">
+              Smart Learning. Smarter Assessment. Better Outcomes.
+            </p>
+          </div>
         </div>
       </footer>
 
