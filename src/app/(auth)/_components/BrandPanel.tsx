@@ -32,13 +32,13 @@ export default function BrandPanel() {
       <div className="relative z-10 flex flex-col justify-between h-full p-10 xl:p-14">
 
         {/* Logo */}
-        <div className="inline-flex bg-white rounded-2xl shadow-lg px-3 py-2">
+        <div className="inline-block bg-white rounded-2xl shadow-2xl p-4">
           <Image
             src="/logo.jpeg"
             alt="EduBridge Educational Solutions"
             width={160}
-            height={52}
-            className="h-10 w-auto object-contain"
+            height={160}
+            className="h-[120px] w-auto object-contain"
           />
         </div>
 

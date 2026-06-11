@@ -217,16 +217,13 @@ export default function LandingPage() {
           <div className="flex items-center justify-between h-16">
 
             {/* Logo */}
-            <Link href="/" className="flex-shrink-0">
-              <div className="bg-white rounded-xl shadow-sm ring-1 ring-slate-200 px-2 py-1 hover:shadow-md transition-shadow">
-                <Image
-                  src="/logo.jpeg"
-                  alt="EduBridge Educational Solutions"
-                  width={160}
-                  height={50}
-                  className="h-9 w-auto object-contain"
-                  priority
-                />
+            <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
+              <div className="relative h-10 w-10 overflow-hidden rounded-xl flex-shrink-0 shadow-sm ring-1 ring-slate-200">
+                <Image src="/logo.jpeg" alt="" fill sizes="80px" className="object-cover object-top scale-[2] origin-top" priority />
+              </div>
+              <div className="leading-none">
+                <div className="text-[17px] font-extrabold tracking-tight text-[#1B3A8A]">Edu<span className="text-[#0D9E92]">Bridge</span></div>
+                <div className="text-[9px] font-semibold uppercase tracking-[0.14em] text-slate-400 mt-0.5">Educational Solutions</div>
               </div>
             </Link>
 
