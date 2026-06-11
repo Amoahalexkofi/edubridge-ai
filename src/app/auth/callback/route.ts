@@ -1,47 +1,23 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
 
-const roleRedirects: Record<string, string> = {
-  student: "/student",
-  teacher: "/teacher",
-  parent: "/parent",
-  admin: "/admin",
-  super_admin: "/admin",
-};
-
+// Hand off to the client-side processing page which handles PKCE exchange
+// natively in the browser — avoids the server-side cookie-forwarding problem.
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  const roleParam = searchParams.get("role") ?? "student";
+  const role = searchParams.get("role") ?? "student";
+  const error = searchParams.get("error");
 
-  if (code) {
-    const supabase = await createClient();
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
-
-    if (!error) {
-      const { data: { user } } = await supabase.auth.getUser();
-
-      if (user) {
-        // Check if this user already has a role
-        const { data: existing } = await supabase
-          .from("user_roles")
-          .select("role")
-          .eq("user_id", user.id)
-          .single();
-
-        if (!existing) {
-          // New OAuth user — assign the role they chose before clicking Google
-          await supabase.from("user_roles").insert({
-            user_id: user.id,
-            role: roleParam,
-          });
-        }
-
-        const finalRole = existing?.role ?? roleParam;
-        return NextResponse.redirect(`${origin}${roleRedirects[finalRole] ?? "/student"}`);
-      }
-    }
+  if (error) {
+    return NextResponse.redirect(`${origin}/login?error=${error}`);
   }
 
-  return NextResponse.redirect(`${origin}/login?error=auth_callback_failed`);
+  if (!code) {
+    return NextResponse.redirect(`${origin}/login?error=no_code`);
+  }
+
+  const url = new URL(`${origin}/auth/processing`);
+  url.searchParams.set("code", code);
+  url.searchParams.set("role", role);
+  return NextResponse.redirect(url.toString());
 }

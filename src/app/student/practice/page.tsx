@@ -1,0 +1,71 @@
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+import PracticeClient from "./_components/PracticeClient";
+
+export default async function PracticePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ subject?: string }>;
+}) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("exam_target")
+    .eq("id", user.id)
+    .single();
+
+  const examTarget = profile?.exam_target ?? "BECE";
+  const { subject: subjectId } = await searchParams;
+
+  // Load all subjects for this exam type
+  const { data: subjects } = await supabase
+    .from("subjects")
+    .select("id, name, slug, icon")
+    .eq("exam_type", examTarget.toLowerCase())
+    .order("name");
+
+  // If a specific subject is selected (or first available), load its questions
+  const activeSubjectId = subjectId ?? subjects?.[0]?.id;
+
+  let questions: Array<{
+    id: string;
+    body: string;
+    options: Array<{ id: string; text: string }>;
+    correct_option: string;
+    explanation: string | null;
+    topic_id: string;
+    topics: { name: string } | null;
+  }> = [];
+
+  if (activeSubjectId) {
+    // Get all topic IDs for this subject
+    const { data: topicIds } = await supabase
+      .from("topics")
+      .select("id")
+      .eq("subject_id", activeSubjectId);
+
+    if (topicIds && topicIds.length > 0) {
+      const ids = topicIds.map((t) => t.id);
+      const { data: rawQuestions } = await supabase
+        .from("questions")
+        .select("id, body, options, correct_option, explanation, topic_id, topics(name)")
+        .in("topic_id", ids)
+        .limit(20);
+
+      // Shuffle
+      questions = ((rawQuestions ?? []) as unknown[]).sort(() => Math.random() - 0.5) as typeof questions;
+    }
+  }
+
+  return (
+    <PracticeClient
+      subjects={subjects ?? []}
+      activeSubjectId={activeSubjectId ?? null}
+      questions={questions}
+      examTarget={examTarget}
+    />
+  );
+}

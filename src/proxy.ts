@@ -30,6 +30,8 @@ export async function proxy(request: NextRequest) {
 
     const authPaths = ["/login", "/signup", "/forgot-password", "/reset-password"];
     const isAuthPage = authPaths.includes(request.nextUrl.pathname);
+    const isPublicAuthRoute =
+      request.nextUrl.pathname.startsWith("/auth/");
     const isDashboard =
       request.nextUrl.pathname.startsWith("/student") ||
       request.nextUrl.pathname.startsWith("/teacher") ||
@@ -38,6 +40,10 @@ export async function proxy(request: NextRequest) {
 
     if (!user && isDashboard) {
       return NextResponse.redirect(new URL("/login", request.url));
+    }
+
+    if (isPublicAuthRoute) {
+      return supabaseResponse;
     }
 
     if (user && isAuthPage) {

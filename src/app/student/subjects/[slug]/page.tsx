@@ -29,7 +29,7 @@ export default async function SubjectPage({
   // Fetch topics with lessons
   const { data: topics } = await supabase
     .from("topics")
-    .select("id, title, description, order_index, lessons(id, title)")
+    .select("id, name, description, order_index, lessons(id, title)")
     .eq("subject_id", subject.id)
     .order("order_index");
 
@@ -134,7 +134,7 @@ export default async function SubjectPage({
                       {/* Topic info */}
                       <div className="flex-1 min-w-0">
                         <p className="font-semibold text-sm sm:text-base text-[#0f172a] leading-snug">
-                          {topic.title}
+                          {topic.name}
                         </p>
                         {topic.description && (
                           <p className="text-xs text-[#94a3b8] mt-0.5 line-clamp-2 leading-relaxed">

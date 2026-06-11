@@ -47,7 +47,7 @@ export default async function SubjectsPage({
   const { data: subjects } = await supabase
     .from("subjects")
     .select("id, name, slug, icon, color, description, topics(id)")
-    .eq("exam_type", activeExam)
+    .eq("exam_type", activeExam.toLowerCase())
     .order("name");
 
   // Fetch student's lesson progress to compute per-subject progress

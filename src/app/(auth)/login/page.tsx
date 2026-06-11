@@ -15,16 +15,32 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [unverified, setUnverified] = useState(false);
+  const [resending, setResending] = useState(false);
+
+  async function handleResend() {
+    setResending(true);
+    const supabase = createClient();
+    const { error } = await supabase.auth.resend({ type: "signup", email });
+    setResending(false);
+    if (error) toast.error(error.message);
+    else toast.success("Verification email sent — check your inbox.");
+  }
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
+    setUnverified(false);
 
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
-      toast.error(error.message);
+      if (error.message.toLowerCase().includes("email not confirmed")) {
+        setUnverified(true);
+      } else {
+        toast.error(error.message);
+      }
       setLoading(false);
       return;
     }
@@ -98,6 +114,24 @@ export default function LoginPage() {
                 Preparing for BECE or WASSCE? Let&apos;s pick up where you left off.
               </p>
             </div>
+
+            {/* Unverified email notice */}
+            {unverified && (
+              <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
+                <p className="font-semibold mb-1">Email not verified yet</p>
+                <p className="text-xs text-amber-700 mb-3 leading-relaxed">
+                  We sent a verification link to <span className="font-semibold">{email}</span>. Click it to activate your account, then sign in.
+                </p>
+                <button
+                  type="button"
+                  onClick={handleResend}
+                  disabled={resending}
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-900 hover:underline disabled:opacity-60"
+                >
+                  {resending ? <><Loader2 className="h-3 w-3 animate-spin" /> Sending…</> : "Resend verification email"}
+                </button>
+              </div>
+            )}
 
             {/* Google */}
             <button

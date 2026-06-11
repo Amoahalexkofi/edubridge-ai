@@ -50,7 +50,7 @@ export default async function StudentDashboard() {
   const { data: subjects } = await supabase
     .from("subjects")
     .select("id, name, slug, icon, color, description")
-    .eq("exam_type", examTarget)
+    .eq("exam_type", examTarget.toLowerCase())
     .order("name");
 
   const { count: lessonsCompleted } = await supabase
