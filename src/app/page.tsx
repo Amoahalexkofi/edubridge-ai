@@ -79,14 +79,14 @@ const steps = [
     icon: PlayCircle,
     title: "Sign up & pick your exam",
     desc: "Choose BECE or WASSCE, select your subjects, and get a personalised study plan ready in minutes.",
-    img: "/images/hero-student.jpg",
+    img: "/images/student-laptop.jpg",
   },
   {
     number: "02",
     icon: BookOpen,
     title: "Learn with AI-powered lessons",
     desc: "Work through curriculum-aligned lessons, ask the AI tutor anything, and practice with topic quizzes as you go.",
-    img: "/images/classroom.jpg",
+    img: "/images/student-reading.jpg",
   },
   {
     number: "03",
@@ -219,7 +219,7 @@ export default function LandingPage() {
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
               <div className="relative h-10 w-10 overflow-hidden rounded-xl flex-shrink-0 shadow-sm ring-1 ring-slate-200">
-                <Image src="/logo.jpeg" alt="" fill sizes="80px" className="object-cover object-top scale-[2] origin-top" priority />
+                <Image src="/logo-no-bg.png" alt="" fill sizes="80px" className="object-cover object-top scale-[2] origin-top" priority />
               </div>
               <div className="leading-none">
                 <div className="text-[17px] font-extrabold tracking-tight text-[#1B3A8A]">Edu<span className="text-[#0D9E92]">Bridge</span></div>
@@ -722,7 +722,7 @@ export default function LandingPage() {
             <div className="md:col-span-2">
               <div className="inline-flex bg-white rounded-xl px-3 py-2 mb-4">
                 <Image
-                  src="/logo.jpeg"
+                  src="/logo-no-bg.png"
                   alt="EduBridge Educational Solutions"
                   width={140}
                   height={45}

@@ -34,7 +34,7 @@ export default function BrandPanel() {
         {/* Logo */}
         <div className="inline-block bg-white rounded-2xl shadow-2xl p-4">
           <Image
-            src="/logo.jpeg"
+            src="/logo-no-bg.png"
             alt="EduBridge Educational Solutions"
             width={160}
             height={160}
