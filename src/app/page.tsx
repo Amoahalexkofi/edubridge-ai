@@ -217,14 +217,8 @@ export default function LandingPage() {
           <div className="flex items-center justify-between h-16">
 
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
-              <div className="relative h-10 w-10 overflow-hidden rounded-xl flex-shrink-0 shadow-sm ring-1 ring-slate-200">
-                <Image src="/logo-no-bg.png" alt="" fill sizes="80px" className="object-cover object-top scale-[2] origin-top" priority />
-              </div>
-              <div className="leading-none">
-                <div className="text-[17px] font-extrabold tracking-tight text-[#1B3A8A]">Edu<span className="text-[#0D9E92]">Bridge</span></div>
-                <div className="text-[9px] font-semibold uppercase tracking-[0.14em] text-slate-400 mt-0.5">Educational Solutions</div>
-              </div>
+            <Link href="/" className="shrink-0">
+              <Image src="/logo-no-bg.png" alt="EduBridge Educational Solutions" width={140} height={140} className="h-12 w-auto object-contain" priority />
             </Link>
 
             {/* Desktop nav */}
@@ -730,14 +724,8 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
             <div className="md:col-span-2">
-              <div className="flex items-center gap-2.5 mb-4">
-                <div className="relative h-10 w-10 overflow-hidden rounded-xl flex-shrink-0 bg-white/10 ring-1 ring-white/20">
-                  <Image src="/logo-no-bg.png" alt="" fill sizes="80px" className="object-cover object-top scale-[2] origin-top" />
-                </div>
-                <div className="leading-none">
-                  <div className="text-[17px] font-extrabold tracking-tight text-white">Edu<span className="text-[#2DD4BF]">Bridge</span></div>
-                  <div className="text-[9px] font-semibold uppercase tracking-[0.13em] text-slate-400 mt-0.5">Educational Solutions</div>
-                </div>
+              <div className="mb-4">
+                <Image src="/logo-no-bg.png" alt="EduBridge Educational Solutions" width={130} height={130} className="h-16 w-auto object-contain" />
               </div>
               <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
                 Ghana&apos;s most advanced BECE and WASSCE exam preparation platform.

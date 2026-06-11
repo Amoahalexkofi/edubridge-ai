@@ -44,14 +44,8 @@ export default function StudentNav({ userName, examTarget, avatarUrl }: Props) {
     <>
       {/* ── Mobile top header ── */}
       <header className="lg:hidden fixed top-0 inset-x-0 z-40 h-14 bg-white border-b border-slate-100 flex items-center justify-between px-4 shadow-sm">
-        <Link href="/student" className="flex items-center gap-2 shrink-0">
-          <div className="relative h-9 w-9 overflow-hidden rounded-xl flex-shrink-0 shadow-sm ring-1 ring-slate-100">
-            <Image src="/logo-no-bg.png" alt="" fill sizes="72px" className="object-cover object-top scale-[2] origin-top" />
-          </div>
-          <div className="leading-none">
-            <div className="text-[14px] font-extrabold tracking-tight text-[#1B3A8A]">Edu<span className="text-[#0D9E92]">Bridge</span></div>
-            <div className="text-[7.5px] font-semibold uppercase tracking-[0.11em] text-slate-400 mt-0.5">Educational Solutions</div>
-          </div>
+        <Link href="/student">
+          <Image src="/logo-no-bg.png" alt="EduBridge Educational Solutions" width={120} height={120} className="h-9 w-auto object-contain" />
         </Link>
         <div className="flex items-center gap-2.5">
           {examTarget && (
@@ -94,14 +88,8 @@ export default function StudentNav({ userName, examTarget, avatarUrl }: Props) {
       <aside className="hidden lg:flex fixed inset-y-0 left-0 z-40 w-60 flex-col bg-white border-r border-slate-100">
         {/* Logo */}
         <div className="h-16 flex items-center px-4 border-b border-slate-100">
-          <Link href="/student" className="flex items-center gap-2.5">
-            <div className="relative h-10 w-10 overflow-hidden rounded-xl flex-shrink-0 shadow-sm ring-1 ring-slate-100">
-              <Image src="/logo-no-bg.png" alt="" fill sizes="80px" className="object-cover object-top scale-[2] origin-top" />
-            </div>
-            <div className="leading-none">
-              <div className="text-[16px] font-extrabold tracking-tight text-[#1B3A8A]">Edu<span className="text-[#0D9E92]">Bridge</span></div>
-              <div className="text-[8.5px] font-semibold uppercase tracking-[0.12em] text-slate-400 mt-0.5">Educational Solutions</div>
-            </div>
+          <Link href="/student">
+            <Image src="/logo-no-bg.png" alt="EduBridge Educational Solutions" width={140} height={140} className="h-12 w-auto object-contain" />
           </Link>
         </div>
 

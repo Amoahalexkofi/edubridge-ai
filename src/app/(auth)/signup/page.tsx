@@ -91,14 +91,8 @@ export default function SignupPage() {
             <ArrowLeft className="h-4 w-4" /> Back to home
           </Link>
           {/* Mobile: logo (tappable, goes home) */}
-          <Link href="/" className="lg:hidden flex items-center gap-2 shrink-0">
-            <div className="relative h-9 w-9 overflow-hidden rounded-xl flex-shrink-0 shadow-sm ring-1 ring-slate-100">
-              <Image src="/logo-no-bg.png" alt="" fill sizes="72px" className="object-cover object-top scale-[2] origin-top" priority />
-            </div>
-            <div className="leading-none">
-              <div className="text-[14px] font-extrabold tracking-tight text-[#1B3A8A]">Edu<span className="text-[#0D9E92]">Bridge</span></div>
-              <div className="text-[7.5px] font-semibold uppercase tracking-[0.11em] text-slate-400 mt-0.5">Educational Solutions</div>
-            </div>
+          <Link href="/" className="lg:hidden">
+            <Image src="/logo-no-bg.png" alt="EduBridge Educational Solutions" width={120} height={120} className="h-9 w-auto object-contain" priority />
           </Link>
           <p className="text-sm text-slate-500">
             Already have an account?{" "}
