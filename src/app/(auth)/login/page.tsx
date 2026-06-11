@@ -81,7 +81,7 @@ export default function LoginPage() {
           </Link>
           {/* Mobile: logo (tappable, goes home) */}
           <Link href="/" className="lg:hidden">
-            <Image src="/logo-no-bg.png" alt="EduBridge Educational Solutions" width={120} height={120} className="h-9 w-auto object-contain" priority />
+            <Image src="/logo-no-bg.png" alt="EduBridge Educational Solutions" width={120} height={120} className="h-11 w-auto object-contain" priority />
           </Link>
           <p className="text-sm text-slate-500">
             New here?{" "}

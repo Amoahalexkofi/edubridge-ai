@@ -45,7 +45,7 @@ export default function StudentNav({ userName, examTarget, avatarUrl }: Props) {
       {/* ── Mobile top header ── */}
       <header className="lg:hidden fixed top-0 inset-x-0 z-40 h-14 bg-white border-b border-slate-100 flex items-center justify-between px-4 shadow-sm">
         <Link href="/student">
-          <Image src="/logo-no-bg.png" alt="EduBridge Educational Solutions" width={120} height={120} className="h-9 w-auto object-contain" />
+          <Image src="/logo-no-bg.png" alt="EduBridge Educational Solutions" width={120} height={120} className="h-11 w-auto object-contain" />
         </Link>
         <div className="flex items-center gap-2.5">
           {examTarget && (
@@ -89,7 +89,7 @@ export default function StudentNav({ userName, examTarget, avatarUrl }: Props) {
         {/* Logo */}
         <div className="h-16 flex items-center px-4 border-b border-slate-100">
           <Link href="/student">
-            <Image src="/logo-no-bg.png" alt="EduBridge Educational Solutions" width={140} height={140} className="h-12 w-auto object-contain" />
+            <Image src="/logo-no-bg.png" alt="EduBridge Educational Solutions" width={140} height={140} className="h-16 w-auto object-contain" />
           </Link>
         </div>
 

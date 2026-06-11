@@ -33,7 +33,7 @@ export default function ParentNav({ userName }: { userName: string }) {
     <>
       <header className="lg:hidden fixed top-0 inset-x-0 z-40 h-14 bg-white border-b border-slate-100 flex items-center justify-between px-4 shadow-sm">
         <Link href="/parent">
-          <Image src="/logo-no-bg.png" alt="EduBridge Educational Solutions" width={120} height={120} className="h-9 w-auto object-contain" />
+          <Image src="/logo-no-bg.png" alt="EduBridge Educational Solutions" width={120} height={120} className="h-11 w-auto object-contain" />
         </Link>
         <div className="h-8 w-8 rounded-full bg-green-600 flex items-center justify-center text-white text-xs font-bold">{initials}</div>
       </header>
@@ -51,7 +51,7 @@ export default function ParentNav({ userName }: { userName: string }) {
       <aside className="hidden lg:flex fixed inset-y-0 left-0 z-40 w-60 flex-col bg-white border-r border-slate-100">
         <div className="h-16 flex items-center px-4 border-b border-slate-100">
           <Link href="/parent">
-            <Image src="/logo-no-bg.png" alt="EduBridge Educational Solutions" width={140} height={140} className="h-12 w-auto object-contain" />
+            <Image src="/logo-no-bg.png" alt="EduBridge Educational Solutions" width={140} height={140} className="h-16 w-auto object-contain" />
           </Link>
         </div>
         <div className="px-3 py-2 border-b border-slate-100">

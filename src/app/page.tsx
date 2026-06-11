@@ -214,11 +214,11 @@ export default function LandingPage() {
           : "bg-white/95 backdrop-blur-sm border-b border-slate-100"
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-20">
 
             {/* Logo */}
             <Link href="/" className="shrink-0">
-              <Image src="/logo-no-bg.png" alt="EduBridge Educational Solutions" width={140} height={140} className="h-12 w-auto object-contain" priority />
+              <Image src="/logo-no-bg.png" alt="EduBridge Educational Solutions" width={180} height={180} className="h-16 w-auto object-contain" priority />
             </Link>
 
             {/* Desktop nav */}
