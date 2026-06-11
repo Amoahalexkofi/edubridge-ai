@@ -183,8 +183,15 @@ function StatNumber({ end, suffix, started, duration = 2200 }: {
 
 export default function LandingPage() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const statsRef = useRef<HTMLElement>(null);
   const [statsStarted, setStatsStarted] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     const el = statsRef.current;
@@ -201,20 +208,26 @@ export default function LandingPage() {
     <div className={`${lora.variable} bg-white min-h-screen antialiased`}>
 
       {/* ─── NAV ─────────────────────────────────────────────────────────── */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-slate-100">
+      <header className={`sticky top-0 z-50 transition-all duration-300 ease-in-out ${
+        scrolled
+          ? "mx-3 mt-2 rounded-2xl bg-white/98 shadow-xl border border-slate-200/70 backdrop-blur-md"
+          : "bg-white/95 backdrop-blur-sm border-b border-slate-100"
+      }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
 
             {/* Logo */}
             <Link href="/" className="flex-shrink-0">
-              <Image
-                src="/logo.jpeg"
-                alt="EduBridge Youth Academy"
-                width={160}
-                height={50}
-                className="h-10 w-auto object-contain"
-                priority
-              />
+              <div className="bg-white rounded-xl shadow-sm ring-1 ring-slate-200 px-2 py-1 hover:shadow-md transition-shadow">
+                <Image
+                  src="/logo.jpeg"
+                  alt="EduBridge Educational Solutions"
+                  width={160}
+                  height={50}
+                  className="h-9 w-auto object-contain"
+                  priority
+                />
+              </div>
             </Link>
 
             {/* Desktop nav */}
@@ -713,7 +726,7 @@ export default function LandingPage() {
               <div className="inline-flex bg-white rounded-xl px-3 py-2 mb-4">
                 <Image
                   src="/logo.jpeg"
-                  alt="EduBridge Youth Academy"
+                  alt="EduBridge Educational Solutions"
                   width={140}
                   height={45}
                   className="h-9 w-auto object-contain"

@@ -35,7 +35,9 @@ export default function AdminNav({ userName }: { userName: string }) {
     <>
       <header className="lg:hidden fixed top-0 inset-x-0 z-40 h-14 bg-white border-b border-slate-100 flex items-center justify-between px-4 shadow-sm">
         <Link href="/admin">
-          <Image src="/logo.jpeg" alt="EduBridge AI" width={110} height={68} className="h-8 w-auto object-contain" />
+          <div className="bg-white rounded-lg shadow-sm ring-1 ring-slate-200 px-1.5 py-0.5">
+            <Image src="/logo.jpeg" alt="EduBridge Educational Solutions" width={110} height={68} className="h-7 w-auto object-contain" />
+          </div>
         </Link>
         <div className="h-8 w-8 rounded-full bg-slate-800 flex items-center justify-center text-white text-xs font-bold">{initials}</div>
       </header>
@@ -51,8 +53,10 @@ export default function AdminNav({ userName }: { userName: string }) {
         })}
       </nav>
       <aside className="hidden lg:flex fixed inset-y-0 left-0 z-40 w-60 flex-col bg-slate-900 border-r border-slate-800">
-        <div className="h-16 flex items-center px-5 border-b border-slate-800">
-          <Image src="/logo.jpeg" alt="EduBridge AI" width={130} height={88} className="h-9 w-auto object-contain brightness-0 invert" />
+        <div className="h-16 flex items-center px-4 border-b border-slate-800">
+          <div className="bg-white rounded-xl shadow-md px-2 py-1">
+            <Image src="/logo.jpeg" alt="EduBridge Educational Solutions" width={130} height={88} className="h-8 w-auto object-contain" />
+          </div>
         </div>
         <div className="px-3 py-2 border-b border-slate-800">
           <span className="text-[10px] font-bold tracking-widest uppercase text-slate-400 px-2">Admin Console</span>

@@ -45,7 +45,9 @@ export default function StudentNav({ userName, examTarget, avatarUrl }: Props) {
       {/* ── Mobile top header ── */}
       <header className="lg:hidden fixed top-0 inset-x-0 z-40 h-14 bg-white border-b border-slate-100 flex items-center justify-between px-4 shadow-sm">
         <Link href="/student">
-          <Image src="/logo.jpeg" alt="EduBridge AI" width={110} height={68} className="h-8 w-auto object-contain" />
+          <div className="bg-white rounded-lg shadow-sm ring-1 ring-slate-200 px-1.5 py-0.5">
+            <Image src="/logo.jpeg" alt="EduBridge Educational Solutions" width={110} height={68} className="h-7 w-auto object-contain" />
+          </div>
         </Link>
         <div className="flex items-center gap-2.5">
           {examTarget && (
@@ -87,8 +89,10 @@ export default function StudentNav({ userName, examTarget, avatarUrl }: Props) {
       {/* ── Desktop sidebar ── */}
       <aside className="hidden lg:flex fixed inset-y-0 left-0 z-40 w-60 flex-col bg-white border-r border-slate-100">
         {/* Logo */}
-        <div className="h-16 flex items-center px-5 border-b border-slate-100">
-          <Image src="/logo.jpeg" alt="EduBridge AI" width={130} height={88} className="h-9 w-auto object-contain" />
+        <div className="h-16 flex items-center px-4 border-b border-slate-100">
+          <div className="bg-white rounded-xl shadow-md ring-1 ring-slate-200 px-2 py-1 hover:shadow-lg transition-shadow">
+            <Image src="/logo.jpeg" alt="EduBridge Educational Solutions" width={130} height={88} className="h-8 w-auto object-contain" />
+          </div>
         </div>
 
         {/* Nav items */}
