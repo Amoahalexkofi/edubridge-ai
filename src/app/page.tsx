@@ -86,7 +86,7 @@ const steps = [
     icon: BookOpen,
     title: "Learn with AI-powered lessons",
     desc: "Work through curriculum-aligned lessons, ask the AI tutor anything, and practice with topic quizzes as you go.",
-    img: "/images/student-reading.jpg",
+    img: "/images/student-exam.jpg",
   },
   {
     number: "03",
@@ -669,10 +669,10 @@ export default function LandingPage() {
       {/* ─── SOCIAL PROOF / PHOTO BREAK ──────────────────────────────────── */}
       <section className="relative h-72 lg:h-96 overflow-hidden">
         <Image
-          src="/images/classroom.jpg"
-          alt="Students in classroom"
+          src="/images/bece-results.jpg"
+          alt="Students celebrating BECE results"
           fill
-          className="object-cover object-center"
+          className="object-cover object-top"
         />
         <div className="absolute inset-0 bg-[#1B3A8A]/70" />
         <div className="relative h-full flex flex-col items-center justify-center text-center px-4">
@@ -686,29 +686,39 @@ export default function LandingPage() {
       {/* ─── CTA BANNER ──────────────────────────────────────────────────── */}
       <section className="bg-[#F8F9FF] py-20 lg:py-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-[#1B3A8A] rounded-3xl px-8 py-16 sm:px-14 lg:px-20 relative overflow-hidden">
-            {/* Decorative circles */}
-            <div className="absolute top-0 right-0 h-64 w-64 rounded-full bg-white/5 -translate-y-1/2 translate-x-1/4" />
-            <div className="absolute bottom-0 left-0 h-40 w-40 rounded-full bg-[#E8722A]/20 translate-y-1/2 -translate-x-1/4" />
-
-            <div className="relative grid lg:grid-cols-2 gap-8 items-center">
-              <div>
-                <h2 className="font-[family-name:var(--font-lora)] text-4xl lg:text-5xl text-white mb-4 leading-tight">
-                  Your best result is one practice away.
-                </h2>
-                <p className="text-white/70 text-lg">
-                  Join EduBridge AI today. Free for students, always.
-                </p>
+          <div className="bg-[#1B3A8A] rounded-3xl relative overflow-hidden">
+            <div className="grid lg:grid-cols-2 gap-0 items-stretch">
+              {/* Left — text + buttons */}
+              <div className="px-8 py-16 sm:px-14 lg:px-16 relative z-10">
+                <div className="absolute top-0 left-0 h-40 w-40 rounded-full bg-[#E8722A]/20 -translate-y-1/2 -translate-x-1/4" />
+                <div className="relative">
+                  <h2 className="font-[family-name:var(--font-lora)] text-4xl lg:text-5xl text-white mb-4 leading-tight">
+                    Your best result is one practice away.
+                  </h2>
+                  <p className="text-white/70 text-lg mb-8">
+                    Join EduBridge AI today. Free for students, always.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Link href="/signup"
+                      className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#E8722A] hover:bg-[#d4641e] text-white font-bold rounded-xl transition-all shadow-lg text-sm">
+                      Create my free account <ArrowRight className="h-4 w-4" />
+                    </Link>
+                    <Link href="/login"
+                      className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl transition-all text-sm border border-white/20">
+                      Sign in to dashboard
+                    </Link>
+                  </div>
+                </div>
               </div>
-              <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-3 lg:items-start xl:items-center">
-                <Link href="/signup"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#E8722A] hover:bg-[#d4641e] text-white font-bold rounded-xl transition-all shadow-lg text-sm">
-                  Create my free account <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link href="/login"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl transition-all text-sm border border-white/20">
-                  Sign in to dashboard
-                </Link>
+              {/* Right — photo */}
+              <div className="relative hidden lg:block min-h-[340px]">
+                <Image
+                  src="/images/students-uniforms.jpg"
+                  alt="EduBridge students"
+                  fill
+                  className="object-cover object-center"
+                />
+                <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#1B3A8A]/60" />
               </div>
             </div>
           </div>
@@ -720,14 +730,14 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
             <div className="md:col-span-2">
-              <div className="inline-flex bg-white rounded-xl px-3 py-2 mb-4">
-                <Image
-                  src="/logo-no-bg.png"
-                  alt="EduBridge Educational Solutions"
-                  width={140}
-                  height={45}
-                  className="h-9 w-auto object-contain"
-                />
+              <div className="flex items-center gap-2.5 mb-4">
+                <div className="relative h-10 w-10 overflow-hidden rounded-xl flex-shrink-0 bg-white/10 ring-1 ring-white/20">
+                  <Image src="/logo-no-bg.png" alt="" fill sizes="80px" className="object-cover object-top scale-[2] origin-top" />
+                </div>
+                <div className="leading-none">
+                  <div className="text-[17px] font-extrabold tracking-tight text-white">Edu<span className="text-[#2DD4BF]">Bridge</span></div>
+                  <div className="text-[9px] font-semibold uppercase tracking-[0.13em] text-slate-400 mt-0.5">Educational Solutions</div>
+                </div>
               </div>
               <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
                 Ghana&apos;s most advanced BECE and WASSCE exam preparation platform.
