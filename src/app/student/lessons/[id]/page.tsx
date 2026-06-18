@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, CheckCircle2, BookOpen, ChevronRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import LessonCompleteButton from "./_components/LessonCompleteButton";
+import LessonContent from "./_components/LessonContent";
 
 export default async function LessonPage({
   params,
@@ -62,8 +63,6 @@ export default async function LessonPage({
 
   const isCompleted = progress?.completed ?? false;
 
-  const paragraphs: string[] = (lesson.content ?? "").split(/\n{2,}/).filter(Boolean);
-
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6">
 
@@ -110,34 +109,8 @@ export default async function LessonPage({
 
         {/* Body */}
         <div className="px-6 py-6">
-          {paragraphs.length > 0 ? (
-            <div className="prose prose-slate max-w-none space-y-4">
-              {paragraphs.map((para, i) => {
-                if (para.startsWith("# ")) {
-                  return <h2 key={i} className="text-lg font-bold text-[#0f172a] mt-6 mb-2">{para.slice(2)}</h2>;
-                }
-                if (para.startsWith("## ")) {
-                  return <h3 key={i} className="text-base font-bold text-[#334155] mt-5 mb-1.5">{para.slice(3)}</h3>;
-                }
-                if (para.startsWith("- ") || para.startsWith("• ")) {
-                  const items = para.split("\n").filter(Boolean);
-                  return (
-                    <ul key={i} className="list-disc pl-5 space-y-1.5">
-                      {items.map((item, j) => (
-                        <li key={j} className="text-[#334155] text-sm leading-relaxed">
-                          {item.replace(/^[-•]\s/, "")}
-                        </li>
-                      ))}
-                    </ul>
-                  );
-                }
-                return (
-                  <p key={i} className="text-[#334155] text-sm leading-relaxed">
-                    {para}
-                  </p>
-                );
-              })}
-            </div>
+          {lesson.content ? (
+            <LessonContent content={lesson.content} />
           ) : (
             <div className="text-center py-10">
               <BookOpen className="h-8 w-8 text-[#CBD5E1] mx-auto mb-3" />
