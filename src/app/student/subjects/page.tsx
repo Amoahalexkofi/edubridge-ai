@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { BookOpen, ArrowRight, ChevronRight } from "lucide-react";
+import { BookOpen, ChevronRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 
 const colorMap: Record<string, { bg: string; text: string; border: string }> = {
@@ -40,14 +40,8 @@ export default async function SubjectsPage({
     .eq("id", user.id)
     .single();
 
-  const params = await searchParams;
-
-  // Redirect to student's own exam type if no ?exam= param in URL
-  if (!params.exam && profile?.exam_target) {
-    redirect(`/student/subjects?exam=${profile.exam_target.toUpperCase()}`);
-  }
-
-  const activeExam = (params.exam ?? "BECE").toUpperCase() as "BECE" | "WASSCE";
+  // Always use the student's own exam target — ignore URL param
+  const activeExam = (profile?.exam_target ?? "bece").toUpperCase() as "BECE" | "WASSCE";
 
   // Fetch subjects with topic counts
   const { data: subjects } = await supabase
@@ -82,21 +76,14 @@ export default async function SubjectsPage({
         </p>
       </div>
 
-      {/* BECE / WASSCE tabs */}
-      <div className="flex gap-2">
-        {(["BECE", "WASSCE"] as const).map((exam) => (
-          <Link
-            key={exam}
-            href={`/student/subjects?exam=${exam}`}
-            className={`px-5 py-2 rounded-xl text-sm font-semibold border transition-all ${
-              activeExam === exam
-                ? "bg-[#1D4ED8] text-white border-[#1D4ED8] shadow-sm"
-                : "bg-white text-[#475569] border-[#E2E8F0] hover:border-[#1D4ED8]/40"
-            }`}
-          >
-            {exam}
-          </Link>
-        ))}
+      {/* Exam type badge */}
+      <div className="flex items-center gap-2">
+        <span className="px-4 py-1.5 rounded-xl text-sm font-bold bg-[#1D4ED8] text-white shadow-sm">
+          {activeExam}
+        </span>
+        <span className="text-sm text-[#64748B]">
+          {activeExam === "BECE" ? "Junior High School subjects" : "Senior High School subjects"}
+        </span>
       </div>
 
       {/* Subjects grid */}
@@ -152,15 +139,8 @@ export default async function SubjectsPage({
           </div>
           <p className="font-semibold text-[#334155]">No {activeExam} subjects yet</p>
           <p className="text-sm text-[#94a3b8] mt-1 max-w-xs mx-auto">
-            Subjects will appear here once a teacher or admin adds them.
+            Your {activeExam} subjects will appear here once content is added.
           </p>
-          <Link
-            href={`/student/subjects?exam=${activeExam === "BECE" ? "WASSCE" : "BECE"}`}
-            className="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-[#1D4ED8] hover:underline"
-          >
-            Browse {activeExam === "BECE" ? "WASSCE" : "BECE"} subjects instead
-            <ArrowRight className="h-4 w-4" />
-          </Link>
         </div>
       )}
     </div>
