@@ -21,9 +21,10 @@ interface Props {
   userName: string;
   examTarget: string | null;
   avatarUrl: string | null;
+  previewOffset?: boolean;
 }
 
-export default function StudentNav({ userName, examTarget, avatarUrl }: Props) {
+export default function StudentNav({ userName, examTarget, avatarUrl, previewOffset }: Props) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -85,7 +86,7 @@ export default function StudentNav({ userName, examTarget, avatarUrl }: Props) {
       </nav>
 
       {/* ── Desktop sidebar ── */}
-      <aside className="hidden lg:flex fixed inset-y-0 left-0 z-40 w-60 flex-col bg-white border-r border-slate-100">
+      <aside className={`hidden lg:flex fixed left-0 z-40 w-60 flex-col bg-white border-r border-slate-100 ${previewOffset ? "top-10 bottom-0" : "inset-y-0"}`}>
         {/* Logo */}
         <div className="h-16 flex items-center px-4 border-b border-slate-100">
           <Link href="/student">
