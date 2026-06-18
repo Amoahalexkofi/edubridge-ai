@@ -12,6 +12,12 @@ import { createClient } from "@/lib/supabase/client";
 import BrandPanel from "../_components/BrandPanel";
 
 type Role = "student" | "teacher" | "parent";
+type ExamTarget = "bece" | "wassce";
+
+const examOptions: { value: ExamTarget; label: string; badge: string; description: string }[] = [
+  { value: "bece", label: "BECE", badge: "JHS", description: "Junior High School — Basic Education Certificate Examination" },
+  { value: "wassce", label: "WASSCE", badge: "SHS", description: "Senior High School — West African Senior School Certificate" },
+];
 
 const roles: { value: Role; label: string; description: string; icon: React.ElementType; color: string; iconBg: string }[] = [
   {
@@ -49,6 +55,7 @@ const steps = [
 export default function SignupPage() {
   const [step, setStep] = useState<"role" | "details" | "success">("role");
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
+  const [examTarget, setExamTarget] = useState<ExamTarget | null>(null);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -63,17 +70,26 @@ export default function SignupPage() {
     e.preventDefault();
     if (password !== confirmPassword) { toast.error("Passwords do not match."); return; }
     if (password.length < 8) { toast.error("Password must be at least 8 characters."); return; }
+    if (selectedRole === "student" && !examTarget) { toast.error("Please select BECE or WASSCE."); return; }
 
     setLoading(true);
     const supabase = createClient();
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: { data: { full_name: fullName, role: selectedRole } },
     });
-    setLoading(false);
+    if (error) { setLoading(false); toast.error(error.message); return; }
 
-    if (error) { toast.error(error.message); return; }
+    // Save exam_target immediately for students
+    if (selectedRole === "student" && examTarget && data.user) {
+      await supabase.from("profiles").upsert({
+        id: data.user.id,
+        exam_target: examTarget,
+      });
+    }
+
+    setLoading(false);
     setStep("success");
   }
 
@@ -356,9 +372,43 @@ export default function SignupPage() {
                     )}
                   </div>
 
+                  {/* BECE / WASSCE — students only */}
+                  {selectedRole === "student" && (
+                    <div className="space-y-2">
+                      <label className="block text-sm font-semibold text-slate-700">
+                        Which exam are you preparing for?
+                      </label>
+                      <div className="grid grid-cols-2 gap-3">
+                        {examOptions.map((opt) => {
+                          const active = examTarget === opt.value;
+                          return (
+                            <button
+                              key={opt.value}
+                              type="button"
+                              onClick={() => setExamTarget(opt.value)}
+                              className={`flex flex-col items-start gap-1 p-4 rounded-xl border-2 text-left transition-all ${
+                                active
+                                  ? "border-[#1B3A8A] bg-[#EEF2FF]"
+                                  : "border-slate-200 bg-white hover:border-slate-300"
+                              }`}
+                            >
+                              <div className="flex items-center gap-2">
+                                <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${active ? "bg-[#1B3A8A] text-white" : "bg-slate-100 text-slate-600"}`}>
+                                  {opt.badge}
+                                </span>
+                                <span className={`font-bold text-sm ${active ? "text-[#1B3A8A]" : "text-slate-800"}`}>{opt.label}</span>
+                              </div>
+                              <p className="text-xs text-slate-500 leading-snug">{opt.description}</p>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
                   <button
                     type="submit"
-                    disabled={loading}
+                    disabled={loading || (selectedRole === "student" && !examTarget)}
                     className="w-full h-12 flex items-center justify-center gap-2 bg-[#E8722A] hover:bg-[#d4641e] active:scale-[0.98] text-white font-bold rounded-xl transition-all disabled:opacity-60 disabled:cursor-not-allowed shadow-[0_4px_14px_rgba(232,114,42,0.35)] hover:shadow-[0_6px_20px_rgba(232,114,42,0.4)] text-sm mt-2"
                   >
                     {loading ? (
