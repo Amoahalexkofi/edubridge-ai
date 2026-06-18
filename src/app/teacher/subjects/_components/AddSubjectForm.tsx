@@ -8,7 +8,11 @@ import { useRouter } from "next/navigation";
 
 const EMOJIS = ["📚", "📐", "📝", "🔬", "🌍", "💻", "🇫🇷", "✝️", "🔧", "📊", "⚗️", "🧬", "🌱", "🗺️"];
 
-export default function AddSubjectForm() {
+interface Props {
+  onSuccess?: () => void;
+}
+
+export default function AddSubjectForm({ onSuccess }: Props) {
   const router = useRouter();
   const [name, setName] = useState("");
   const [examType, setExamType] = useState<"BECE" | "WASSCE">("BECE");
@@ -38,6 +42,7 @@ export default function AddSubjectForm() {
     toast.success(`"${name}" added!`);
     setName("");
     setDescription("");
+    onSuccess?.();
     router.refresh();
   }
 
