@@ -25,20 +25,22 @@ export default function BrandPanel() {
         className="object-cover object-center"
         priority
       />
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0a1533]/97 via-[#0d1f50]/92 to-[#1B3A8A]/80" />
+      {/* Gradient overlay — solid enough to suppress the photo and make content crisp */}
+      <div className="absolute inset-0 bg-[#0a1533]" style={{ opacity: 0.93 }} />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0d1f50]/60 via-transparent to-[#1B3A8A]/40" />
 
       {/* Content */}
       <div className="relative z-10 flex flex-col justify-between h-full p-10 xl:p-14">
 
-        {/* Logo */}
-        <div className="inline-block bg-white rounded-2xl shadow-2xl p-4">
+        {/* Logo — sits cleanly on the dark bg, drop-shadow traces its shape */}
+        <div>
           <Image
             src="/logo-no-bg.png"
             alt="EduBridge Educational Solutions"
-            width={160}
-            height={160}
-            className="h-[120px] w-auto object-contain"
+            width={240}
+            height={240}
+            className="h-[160px] w-auto object-contain"
+            style={{ filter: "drop-shadow(0 2px 12px rgba(255,255,255,0.25)) drop-shadow(0 1px 4px rgba(0,0,0,0.6))" }}
           />
         </div>
 

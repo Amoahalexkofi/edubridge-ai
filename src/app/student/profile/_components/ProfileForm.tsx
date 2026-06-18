@@ -123,14 +123,14 @@ export default function ProfileForm({ userId, email, initial }: Props) {
           >
             <option value="">Select grade</option>
             <optgroup label="Junior High School">
-              <option value="JHS 1">JHS 1</option>
-              <option value="JHS 2">JHS 2</option>
-              <option value="JHS 3">JHS 3</option>
+              <option value="JHS1">JHS 1</option>
+              <option value="JHS2">JHS 2</option>
+              <option value="JHS3">JHS 3</option>
             </optgroup>
             <optgroup label="Senior High School">
-              <option value="SHS 1">SHS 1 / Form 1</option>
-              <option value="SHS 2">SHS 2 / Form 2</option>
-              <option value="SHS 3">SHS 3 / Form 3</option>
+              <option value="SHS1">SHS 1 / Form 1</option>
+              <option value="SHS2">SHS 2 / Form 2</option>
+              <option value="SHS3">SHS 3 / Form 3</option>
             </optgroup>
           </select>
         </div>

@@ -93,7 +93,7 @@ const steps = [
     icon: ClipboardCheck,
     title: "Sit mock exams & track progress",
     desc: "Take timed WAEC-style mock papers, get instant results, and watch your readiness score climb.",
-    img: "/images/students-writing.jpg",
+    img: "/images/classroom.jpg",
   },
 ];
 
@@ -315,7 +315,7 @@ export default function LandingPage() {
             <div className="relative hidden lg:block">
               <div className="relative rounded-t-3xl overflow-hidden h-[520px]">
                 <Image
-                  src="/images/hero-student.jpg"
+                  src="/images/students-writing.jpg"
                   alt="Student learning with EduBridge AI"
                   fill
                   className="object-cover object-center"

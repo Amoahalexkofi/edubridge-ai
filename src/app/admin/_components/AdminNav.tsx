@@ -52,7 +52,7 @@ export default function AdminNav({ userName }: { userName: string }) {
       </nav>
       <aside className="hidden lg:flex fixed inset-y-0 left-0 z-40 w-60 flex-col bg-slate-900 border-r border-slate-800">
         <div className="h-16 flex items-center px-4 border-b border-slate-800">
-          <Link href="/admin" className="inline-flex bg-white rounded-xl p-1.5">
+          <Link href="/admin" className="inline-flex">
             <Image src="/logo-no-bg.png" alt="EduBridge Educational Solutions" width={140} height={140} className="h-14 w-auto object-contain" />
           </Link>
         </div>

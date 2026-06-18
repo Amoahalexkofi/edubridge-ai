@@ -49,7 +49,7 @@ export default async function StudentDashboard() {
 
   const { data: subjects } = await supabase
     .from("subjects")
-    .select("id, name, slug, icon, color, description")
+    .select("id, name, slug, icon, color, description, topics(id)")
     .eq("exam_type", examTarget.toLowerCase())
     .order("name");
 
@@ -199,7 +199,7 @@ export default async function StudentDashboard() {
 
             {subjects && subjects.length > 0 ? (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {subjects.slice(0, 6).map((subject) => (
+                {[...subjects].sort((a, b) => (b.topics?.length ?? 0) - (a.topics?.length ?? 0)).map((subject) => (
                   <Link
                     key={subject.id}
                     href={`/student/subjects/${subject.slug}`}
