@@ -5,16 +5,18 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard, BookOpen, PenLine,
-  FileText, User, LogOut, GraduationCap, Flame,
+  FileText, User, LogOut, GraduationCap, Flame, Brain, Trophy,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 const navItems = [
-  { href: "/student",          label: "Home",     icon: LayoutDashboard },
-  { href: "/student/subjects", label: "Subjects", icon: BookOpen        },
-  { href: "/student/practice", label: "Practice", icon: PenLine         },
-  { href: "/student/exams",    label: "Exams",    icon: FileText        },
-  { href: "/student/profile",  label: "Profile",  icon: User            },
+  { href: "/student",             label: "Home",      icon: LayoutDashboard },
+  { href: "/student/subjects",    label: "Subjects",  icon: BookOpen        },
+  { href: "/student/practice",    label: "Practice",  icon: PenLine         },
+  { href: "/student/exams",       label: "Exams",     icon: FileText        },
+  { href: "/student/ai-tutor",    label: "AI Tutor",  icon: Brain           },
+  { href: "/student/leaderboard", label: "Rankings",  icon: Trophy          },
+  { href: "/student/profile",     label: "Profile",   icon: User            },
 ];
 
 interface Props {
