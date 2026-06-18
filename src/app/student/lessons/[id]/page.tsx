@@ -21,7 +21,7 @@ export default async function LessonPage({
       id, title, content, order_index,
       topic_id,
       topics(
-        id, name,
+        id, title,
         subject_id,
         subjects(id, name, slug, icon)
       )
@@ -79,7 +79,7 @@ export default async function LessonPage({
             <ChevronRight className="h-3.5 w-3.5 flex-shrink-0" />
           </>
         )}
-        <span className="text-[#0f172a] font-medium">{topic?.name}</span>
+        <span className="text-[#0f172a] font-medium">{topic?.title}</span>
       </nav>
 
       {/* Lesson card */}
