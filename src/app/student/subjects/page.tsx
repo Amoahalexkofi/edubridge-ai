@@ -41,7 +41,13 @@ export default async function SubjectsPage({
     .single();
 
   const params = await searchParams;
-  const activeExam = params.exam ?? profile?.exam_target ?? "BECE";
+
+  // Redirect to student's own exam type if no ?exam= param in URL
+  if (!params.exam && profile?.exam_target) {
+    redirect(`/student/subjects?exam=${profile.exam_target.toUpperCase()}`);
+  }
+
+  const activeExam = (params.exam ?? "BECE").toUpperCase() as "BECE" | "WASSCE";
 
   // Fetch subjects with topic counts
   const { data: subjects } = await supabase
