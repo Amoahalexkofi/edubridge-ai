@@ -24,7 +24,7 @@ export default function AddTopicForm({ subjectId, nextOrder }: Props) {
     const supabase = createClient();
     const { error } = await supabase.from("topics").insert({
       subject_id: subjectId,
-      name: name.trim(),
+      title: name.trim(),
       order_index: nextOrder,
     });
     setSaving(false);

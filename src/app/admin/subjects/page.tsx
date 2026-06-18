@@ -12,7 +12,7 @@ export default async function AdminSubjectsPage() {
 
   const { data: subjects } = await supabase
     .from("subjects")
-    .select("id, name, slug, icon, exam_type, description, topics(id, name, order_index)")
+    .select("id, name, slug, icon, exam_type, description, topics(id, title, order_index)")
     .order("exam_type")
     .order("name");
 
@@ -58,10 +58,10 @@ export default async function AdminSubjectsPage() {
                 {subject.topics && subject.topics.length > 0 && (
                   <div className="space-y-1.5">
                     {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                    {(subject.topics as any[]).sort((a, b) => a.order_index - b.order_index).map((topic: { id: string; name: string; order_index: number }) => (
+                    {(subject.topics as any[]).sort((a, b) => a.order_index - b.order_index).map((topic: { id: string; title: string; order_index: number }) => (
                       <div key={topic.id} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[#F8FAFC] text-sm">
                         <span className="h-5 w-5 rounded flex items-center justify-center text-xs font-bold text-[#94a3b8] flex-shrink-0">{topic.order_index}</span>
-                        <span className="flex-1 text-[#334155] font-medium">{topic.name}</span>
+                        <span className="flex-1 text-[#334155] font-medium">{topic.title}</span>
                       </div>
                     ))}
                   </div>
