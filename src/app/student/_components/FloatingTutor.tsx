@@ -89,8 +89,6 @@ export default function FloatingTutor({ firstName, examTarget }: Props) {
   // Hide on the AI Tutor page itself
   if (pathname === "/student/ai-tutor") return null;
 
-  const unreadCount = messages.filter(m => m.role === "assistant").length - 1;
-
   return (
     <>
       {/* ── Chat panel ──────────────────────────────────────────── */}
@@ -225,24 +223,37 @@ export default function FloatingTutor({ firstName, examTarget }: Props) {
       )}
 
       {/* ── Floating button ──────────────────────────────────────── */}
-      <button
-        onClick={() => { setOpen(!open); setMinimised(false); }}
-        className="fixed z-50 bottom-20 right-4 lg:bottom-6 lg:right-6 h-14 w-14 rounded-2xl bg-gradient-to-br from-[#1B3A8A] to-[#1D4ED8] text-white shadow-[0_8px_28px_rgba(27,58,138,0.45)] hover:shadow-[0_12px_36px_rgba(27,58,138,0.55)] hover:-translate-y-0.5 transition-all active:scale-95 flex items-center justify-center"
-        title="AI Tutor"
-      >
-        {open ? (
+      {!open && (
+        <button
+          onClick={() => { setOpen(true); setMinimised(false); }}
+          title="Ask the AI Tutor"
+          className="group fixed z-50 bottom-20 right-4 lg:bottom-6 lg:right-6 flex items-center h-14 w-14 sm:w-auto justify-center sm:justify-start rounded-full sm:gap-3 sm:pl-4 sm:pr-5 bg-gradient-to-br from-[#1B3A8A] to-[#1D4ED8] text-white shadow-[0_8px_28px_rgba(27,58,138,0.45)] hover:shadow-[0_14px_40px_rgba(27,58,138,0.55)] hover:-translate-y-0.5 transition-all active:scale-95"
+        >
+          {/* Icon with a soft pulse halo */}
+          <span className="relative flex items-center justify-center flex-shrink-0">
+            <span className="absolute inline-flex h-9 w-9 rounded-full bg-white/15 animate-ping" />
+            <Brain className="relative h-6 w-6" />
+          </span>
+          {/* Label — desktop only */}
+          <span className="hidden sm:flex flex-col items-start leading-none">
+            <span className="font-bold text-sm">Ask AI Tutor</span>
+            <span className="text-[10px] text-white/75 mt-1 flex items-center gap-1">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#4ade80]" /> Online · {examTarget}
+            </span>
+          </span>
+        </button>
+      )}
+
+      {/* Close button when the panel is open (mobile / quick dismiss) */}
+      {open && (
+        <button
+          onClick={() => setOpen(false)}
+          title="Close"
+          className="fixed z-40 bottom-20 right-4 lg:bottom-6 lg:right-6 h-14 w-14 rounded-2xl bg-gradient-to-br from-[#1B3A8A] to-[#1D4ED8] text-white shadow-[0_8px_28px_rgba(27,58,138,0.45)] flex items-center justify-center transition-all active:scale-95 lg:hidden"
+        >
           <X className="h-5 w-5" />
-        ) : (
-          <>
-            <Brain className="h-6 w-6" />
-            {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-[#E8722A] text-[10px] font-black text-white flex items-center justify-center border-2 border-white">
-                {unreadCount > 9 ? "9+" : unreadCount}
-              </span>
-            )}
-          </>
-        )}
-      </button>
+        </button>
+      )}
     </>
   );
 }
