@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Loader2, Save, Link2 } from "lucide-react";
+import { Loader2, Save, Link2, RotateCcw } from "lucide-react";
 import { toast } from "sonner";
 import { saveStudentProfile } from "../actions";
 
@@ -34,7 +34,11 @@ const GRADES: Record<string, { value: string; label: string }[]> = {
 
 export default function ProfileForm({ email, initial, parentLinked }: Props) {
   const [form, setForm] = useState(initial);
+  // Snapshot of the last saved state — used to detect/discard unsaved edits.
+  const [baseline, setBaseline] = useState(initial);
   const [saving, setSaving] = useState(false);
+
+  const isDirty = JSON.stringify(form) !== JSON.stringify(baseline);
 
   function set(key: keyof typeof form, val: string) {
     setForm((f) => ({ ...f, [key]: val }));
@@ -49,13 +53,18 @@ export default function ProfileForm({ email, initial, parentLinked }: Props) {
     });
   }
 
+  function discard() {
+    setForm(baseline);
+  }
+
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
     const result = await saveStudentProfile(form);
     setSaving(false);
-    if (result.error) toast.error(result.error);
-    else toast.success("Profile saved!");
+    if (result.error) { toast.error(result.error); return; }
+    setBaseline(form);          // new saved baseline
+    toast.success("Profile saved!");
   }
 
   const inputCls =
@@ -182,13 +191,30 @@ export default function ProfileForm({ email, initial, parentLinked }: Props) {
         </div>
       </div>
 
-      <button
-        type="submit"
-        disabled={saving}
-        className="w-full h-12 flex items-center justify-center gap-2 bg-[#E8722A] hover:bg-[#d4641e] text-white font-bold rounded-xl transition-all disabled:opacity-60 disabled:cursor-not-allowed shadow-[0_4px_14px_rgba(232,114,42,0.3)] text-sm"
-      >
-        {saving ? <><Loader2 className="h-4 w-4 animate-spin" /> Saving…</> : <><Save className="h-4 w-4" /> Save changes</>}
-      </button>
+      {/* Action bar — only meaningful when there are unsaved edits */}
+      <div className="flex items-center gap-3">
+        {isDirty && (
+          <button
+            type="button"
+            onClick={discard}
+            disabled={saving}
+            className="h-12 px-4 flex items-center gap-2 rounded-xl border border-[#E2E8F0] text-sm font-semibold text-[#64748B] hover:bg-[#F1F5F9] transition-all disabled:opacity-60"
+          >
+            <RotateCcw className="h-4 w-4" /> Discard
+          </button>
+        )}
+        <button
+          type="submit"
+          disabled={saving || !isDirty}
+          className="flex-1 h-12 flex items-center justify-center gap-2 bg-[#E8722A] hover:bg-[#d4641e] text-white font-bold rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_4px_14px_rgba(232,114,42,0.3)] text-sm"
+        >
+          {saving
+            ? <><Loader2 className="h-4 w-4 animate-spin" /> Saving…</>
+            : isDirty
+              ? <><Save className="h-4 w-4" /> Save changes</>
+              : <>All changes saved</>}
+        </button>
+      </div>
     </form>
   );
 }
