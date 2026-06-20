@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { GraduationCap, School, Mail, BadgeCheck } from "lucide-react";
+import { GraduationCap, School, BadgeCheck, Mail } from "lucide-react";
 import ProfileForm from "./_components/ProfileForm";
 import AvatarUpload from "./_components/AvatarUpload";
 import ParentInvite from "./_components/ParentInvite";
@@ -34,83 +34,70 @@ export default async function ProfilePage() {
   const parentLinked = !!parentLink;
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 lg:py-8">
 
-      {/* Page header */}
-      <div className="mb-6 lg:mb-8">
-        <h1 className="font-display text-2xl sm:text-3xl font-bold text-[#0f172a]">Profile settings</h1>
-        <p className="text-sm text-[#64748B] mt-1">Manage your account, academic details and parent link.</p>
+      {/* ── Cover-banner hero ── */}
+      <div className="bg-white rounded-3xl border border-[#E8ECF0] shadow-sm overflow-hidden">
+        {/* Cover */}
+        <div className="relative h-28 sm:h-32 bg-gradient-to-br from-[#1B3A8A] via-[#1D4ED8] to-[#2563EB]">
+          <div className="absolute -top-8 -right-6 h-40 w-40 rounded-full bg-white/10" />
+          <div className="absolute top-6 left-10 h-24 w-24 rounded-full bg-white/5" />
+        </div>
+
+        {/* Identity */}
+        <div className="px-6 pb-6 -mt-14 flex flex-col items-center text-center">
+          <AvatarUpload
+            userId={user.id}
+            avatarUrl={profile?.avatar_url ?? null}
+            fullName={fullName}
+          />
+          <h1 className="font-display text-xl sm:text-2xl font-bold text-[#0f172a] mt-3">
+            {fullName || "Your name"}
+          </h1>
+          <p className="text-sm text-[#94a3b8] flex items-center gap-1.5 mt-1">
+            <Mail className="h-3.5 w-3.5" /> {user.email}
+          </p>
+
+          {/* Chips */}
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EFF6FF] text-[#1B3A8A] text-xs font-bold tracking-wide">
+              <GraduationCap className="h-3.5 w-3.5" /> {examLabel} Candidate
+            </span>
+            {gradeLabel && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F1F5F9] text-[#475569] text-xs font-semibold">
+                {gradeLabel}
+              </span>
+            )}
+            {profile?.school && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F1F5F9] text-[#475569] text-xs font-semibold">
+                <School className="h-3.5 w-3.5" /> {profile.school}
+              </span>
+            )}
+            <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${
+              parentLinked ? "bg-[#F0FDF4] text-[#1A6B3C]" : "bg-[#F1F5F9] text-[#94a3b8]"
+            }`}>
+              <BadgeCheck className="h-3.5 w-3.5" /> {parentLinked ? "Parent linked" : "No parent linked"}
+            </span>
+          </div>
+        </div>
       </div>
 
-      <div className="grid lg:grid-cols-[300px_minmax(0,1fr)] gap-5 lg:gap-6 items-start">
-
-        {/* ── Left: identity summary (sticky on desktop) ── */}
-        <aside className="lg:sticky lg:top-8">
-          <div className="bg-white rounded-2xl border border-[#E8ECF0] shadow-sm overflow-hidden">
-            {/* Banner */}
-            <div className="h-20 bg-gradient-to-br from-[#1B3A8A] to-[#1D4ED8]" />
-            {/* Avatar overlapping banner */}
-            <div className="px-5 pb-5 -mt-12 flex flex-col items-center text-center">
-              <AvatarUpload
-                userId={user.id}
-                avatarUrl={profile?.avatar_url ?? null}
-                fullName={fullName}
-              />
-              <p className="font-bold text-lg text-[#0f172a] mt-3">{fullName || "Your name"}</p>
-              <p className="text-xs text-[#94a3b8] flex items-center gap-1 mt-0.5">
-                <Mail className="h-3 w-3" /> {user.email}
-              </p>
-              <span className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EFF6FF] text-[#1B3A8A] text-[11px] font-bold tracking-wider uppercase">
-                <GraduationCap className="h-3.5 w-3.5" /> {examLabel} Candidate
-              </span>
-            </div>
-
-            {/* Quick facts */}
-            <div className="border-t border-[#F1F5F9] divide-y divide-[#F1F5F9]">
-              <div className="flex items-center gap-3 px-5 py-3">
-                <School className="h-4 w-4 text-[#94a3b8] flex-shrink-0" />
-                <div className="min-w-0">
-                  <p className="text-[11px] text-[#94a3b8] uppercase tracking-wide font-semibold">School</p>
-                  <p className="text-sm text-[#334155] truncate">{profile?.school || "Not set"}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3 px-5 py-3">
-                <GraduationCap className="h-4 w-4 text-[#94a3b8] flex-shrink-0" />
-                <div className="min-w-0">
-                  <p className="text-[11px] text-[#94a3b8] uppercase tracking-wide font-semibold">Class</p>
-                  <p className="text-sm text-[#334155] truncate">{gradeLabel || "Not set"}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3 px-5 py-3">
-                <BadgeCheck className={`h-4 w-4 flex-shrink-0 ${parentLinked ? "text-[#1A6B3C]" : "text-[#CBD5E1]"}`} />
-                <div className="min-w-0">
-                  <p className="text-[11px] text-[#94a3b8] uppercase tracking-wide font-semibold">Parent / Guardian</p>
-                  <p className={`text-sm truncate ${parentLinked ? "text-[#1A6B3C] font-semibold" : "text-[#94a3b8]"}`}>
-                    {parentLinked ? "Linked" : "Not linked yet"}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </aside>
-
-        {/* ── Right: settings forms ── */}
-        <div className="space-y-5 lg:space-y-6 min-w-0">
-          <ProfileForm
-            userId={user.id}
-            email={user.email ?? ""}
-            parentLinked={parentLinked}
-            initial={{
-              full_name: fullName,
-              exam_target: profile?.exam_target ?? "bece",
-              phone: profile?.phone ?? "",
-              parent_phone: profile?.parent_phone ?? "",
-              school: profile?.school ?? "",
-              grade_level: profile?.grade_level ?? "",
-            }}
-          />
-          <ParentInvite />
-        </div>
+      {/* ── Settings sections ── */}
+      <div className="mt-6 space-y-5">
+        <ProfileForm
+          userId={user.id}
+          email={user.email ?? ""}
+          parentLinked={parentLinked}
+          initial={{
+            full_name: fullName,
+            exam_target: profile?.exam_target ?? "bece",
+            phone: profile?.phone ?? "",
+            parent_phone: profile?.parent_phone ?? "",
+            school: profile?.school ?? "",
+            grade_level: profile?.grade_level ?? "",
+          }}
+        />
+        <ParentInvite />
       </div>
     </div>
   );
