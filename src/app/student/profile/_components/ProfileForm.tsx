@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Loader2, Save, Link2, RotateCcw } from "lucide-react";
+import { Loader2, Save, Link2, RotateCcw, GraduationCap, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import { saveStudentProfile } from "../actions";
 
@@ -37,6 +37,7 @@ export default function ProfileForm({ email, initial, parentLinked }: Props) {
   // Snapshot of the last saved state — used to detect/discard unsaved edits.
   const [baseline, setBaseline] = useState(initial);
   const [saving, setSaving] = useState(false);
+  const [editingExam, setEditingExam] = useState(false);
 
   const isDirty = JSON.stringify(form) !== JSON.stringify(baseline);
 
@@ -55,6 +56,7 @@ export default function ProfileForm({ email, initial, parentLinked }: Props) {
 
   function discard() {
     setForm(baseline);
+    setEditingExam(false);
   }
 
   async function handleSave(e: React.FormEvent) {
@@ -64,6 +66,7 @@ export default function ProfileForm({ email, initial, parentLinked }: Props) {
     setSaving(false);
     if (result.error) { toast.error(result.error); return; }
     setBaseline(form);          // new saved baseline
+    setEditingExam(false);
     toast.success("Profile saved!");
   }
 
@@ -145,22 +148,47 @@ export default function ProfileForm({ email, initial, parentLinked }: Props) {
 
         <div>
           <label className={labelCls}>Exam target</label>
-          <div className="flex gap-2">
-            {(["BECE", "WASSCE"] as const).map((exam) => (
+
+          {!editingExam ? (
+            // Locked by default — chosen at registration, changing it switches
+            // the whole curriculum, so it isn't a casual one-tap toggle.
+            <div className="flex items-center justify-between gap-3 h-12 px-4 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC]">
+              <span className="flex items-center gap-2 text-sm font-semibold text-[#0f172a]">
+                <GraduationCap className="h-4 w-4 text-[#1B3A8A]" />
+                {form.exam_target === "wassce" ? "WASSCE · Senior High" : "BECE · Junior High"}
+              </span>
               <button
-                key={exam}
                 type="button"
-                onClick={() => changeExamTarget(exam.toLowerCase())}
-                className={`flex-1 h-11 rounded-xl border-2 text-sm font-bold transition-all ${
-                  form.exam_target === exam.toLowerCase()
-                    ? "border-[#1D4ED8] bg-[#EFF6FF] text-[#1D4ED8]"
-                    : "border-[#E2E8F0] bg-white text-[#64748B] hover:border-[#1D4ED8]/40"
-                }`}
+                onClick={() => setEditingExam(true)}
+                className="text-xs font-bold text-[#1D4ED8] hover:underline"
               >
-                {exam}
+                Change
               </button>
-            ))}
-          </div>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              <div className="flex gap-2">
+                {(["BECE", "WASSCE"] as const).map((exam) => (
+                  <button
+                    key={exam}
+                    type="button"
+                    onClick={() => changeExamTarget(exam.toLowerCase())}
+                    className={`flex-1 h-11 rounded-xl border-2 text-sm font-bold transition-all ${
+                      form.exam_target === exam.toLowerCase()
+                        ? "border-[#1D4ED8] bg-[#EFF6FF] text-[#1D4ED8]"
+                        : "border-[#E2E8F0] bg-white text-[#64748B] hover:border-[#1D4ED8]/40"
+                    }`}
+                  >
+                    {exam}
+                  </button>
+                ))}
+              </div>
+              <p className="text-xs text-[#D97706] flex items-start gap-1.5">
+                <AlertTriangle className="h-3.5 w-3.5 flex-shrink-0 mt-0.5" />
+                Changing this switches your entire curriculum — subjects, lessons, practice and mock exams.
+              </p>
+            </div>
+          )}
         </div>
 
         <div>
