@@ -91,8 +91,6 @@ export default function AvatarUpload({ userId: _userId, avatarUrl, fullName }: P
         </div>
       </button>
 
-      <p className="text-xs text-[#94a3b8]">JPG, PNG or WebP · Max 5 MB</p>
-
       <input
         ref={inputRef}
         type="file"

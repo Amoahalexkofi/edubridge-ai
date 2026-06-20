@@ -19,12 +19,34 @@ interface Props {
   parentLinked: boolean;
 }
 
+const GRADES: Record<string, { value: string; label: string }[]> = {
+  bece: [
+    { value: "JHS1", label: "JHS 1" },
+    { value: "JHS2", label: "JHS 2" },
+    { value: "JHS3", label: "JHS 3" },
+  ],
+  wassce: [
+    { value: "SHS1", label: "SHS 1 / Form 1" },
+    { value: "SHS2", label: "SHS 2 / Form 2" },
+    { value: "SHS3", label: "SHS 3 / Form 3" },
+  ],
+};
+
 export default function ProfileForm({ email, initial, parentLinked }: Props) {
   const [form, setForm] = useState(initial);
   const [saving, setSaving] = useState(false);
 
   function set(key: keyof typeof form, val: string) {
     setForm((f) => ({ ...f, [key]: val }));
+  }
+
+  // Switching exam target clears a class that no longer belongs to it
+  // (e.g. WASSCE selected while "JHS 2" was set).
+  function changeExamTarget(target: string) {
+    setForm((f) => {
+      const stillValid = GRADES[target]?.some((g) => g.value === f.grade_level);
+      return { ...f, exam_target: target, grade_level: stillValid ? f.grade_level : "" };
+    });
   }
 
   async function handleSave(e: React.FormEvent) {
@@ -119,7 +141,7 @@ export default function ProfileForm({ email, initial, parentLinked }: Props) {
               <button
                 key={exam}
                 type="button"
-                onClick={() => set("exam_target", exam.toLowerCase())}
+                onClick={() => changeExamTarget(exam.toLowerCase())}
                 className={`flex-1 h-11 rounded-xl border-2 text-sm font-bold transition-all ${
                   form.exam_target === exam.toLowerCase()
                     ? "border-[#1D4ED8] bg-[#EFF6FF] text-[#1D4ED8]"
@@ -144,23 +166,18 @@ export default function ProfileForm({ email, initial, parentLinked }: Props) {
         </div>
 
         <div>
-          <label className={labelCls}>Grade / Form level</label>
+          <label className={labelCls}>
+            Your class <span className="font-normal text-[#94a3b8]">({form.exam_target === "wassce" ? "SHS / Form" : "JHS"})</span>
+          </label>
           <select
             value={form.grade_level}
             onChange={(e) => set("grade_level", e.target.value)}
             className={inputCls}
           >
-            <option value="">Select grade</option>
-            <optgroup label="Junior High School">
-              <option value="JHS1">JHS 1</option>
-              <option value="JHS2">JHS 2</option>
-              <option value="JHS3">JHS 3</option>
-            </optgroup>
-            <optgroup label="Senior High School">
-              <option value="SHS1">SHS 1 / Form 1</option>
-              <option value="SHS2">SHS 2 / Form 2</option>
-              <option value="SHS3">SHS 3 / Form 3</option>
-            </optgroup>
+            <option value="">Select your class</option>
+            {(GRADES[form.exam_target] ?? GRADES.bece).map((g) => (
+              <option key={g.value} value={g.value}>{g.label}</option>
+            ))}
           </select>
         </div>
       </div>
