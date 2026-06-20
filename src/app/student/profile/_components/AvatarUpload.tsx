@@ -64,18 +64,18 @@ export default function AvatarUpload({ userId: _userId, avatarUrl, fullName }: P
         className="relative group focus:outline-none"
         aria-label="Change profile picture"
       >
-        <div className="h-24 w-24 rounded-full overflow-hidden border-4 border-white shadow-md bg-gradient-to-br from-[#1B3A8A] to-[#1D4ED8] flex items-center justify-center">
+        <div className="h-20 w-20 rounded-full overflow-hidden border-4 border-white shadow-md bg-gradient-to-br from-[#1B3A8A] to-[#1D4ED8] flex items-center justify-center">
           {preview ? (
             <Image
               src={preview}
               alt={fullName || "Avatar"}
-              width={96}
-              height={96}
+              width={80}
+              height={80}
               className="h-full w-full object-cover"
               unoptimized
             />
           ) : (
-            <span className="text-3xl font-black text-white">{initials}</span>
+            <span className="text-2xl font-black text-white">{initials}</span>
           )}
         </div>
 

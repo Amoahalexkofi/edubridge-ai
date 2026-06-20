@@ -34,32 +34,32 @@ export default async function ProfilePage() {
   const parentLinked = !!parentLink;
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 lg:py-8">
+    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-6 lg:py-8">
 
       {/* ── Cover-banner hero ── */}
       <div className="bg-white rounded-3xl border border-[#E8ECF0] shadow-sm overflow-hidden">
         {/* Cover */}
-        <div className="relative h-28 sm:h-32 bg-gradient-to-br from-[#1B3A8A] via-[#1D4ED8] to-[#2563EB]">
-          <div className="absolute -top-8 -right-6 h-40 w-40 rounded-full bg-white/10" />
-          <div className="absolute top-6 left-10 h-24 w-24 rounded-full bg-white/5" />
+        <div className="relative h-20 bg-gradient-to-br from-[#1B3A8A] via-[#1D4ED8] to-[#2563EB]">
+          <div className="absolute -top-8 -right-6 h-32 w-32 rounded-full bg-white/10" />
+          <div className="absolute top-4 left-10 h-20 w-20 rounded-full bg-white/5" />
         </div>
 
         {/* Identity */}
-        <div className="px-6 pb-6 -mt-14 flex flex-col items-center text-center">
+        <div className="px-6 pb-5 -mt-11 flex flex-col items-center text-center">
           <AvatarUpload
             userId={user.id}
             avatarUrl={profile?.avatar_url ?? null}
             fullName={fullName}
           />
-          <h1 className="font-display text-xl sm:text-2xl font-bold text-[#0f172a] mt-3">
+          <h1 className="font-display text-lg sm:text-xl font-bold text-[#0f172a] mt-2.5">
             {fullName || "Your name"}
           </h1>
-          <p className="text-sm text-[#94a3b8] flex items-center gap-1.5 mt-1">
+          <p className="text-[13px] text-[#94a3b8] flex items-center gap-1.5 mt-1">
             <Mail className="h-3.5 w-3.5" /> {user.email}
           </p>
 
           {/* Chips */}
-          <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-3.5">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EFF6FF] text-[#1B3A8A] text-xs font-bold tracking-wide">
               <GraduationCap className="h-3.5 w-3.5" /> {examLabel} Candidate
             </span>

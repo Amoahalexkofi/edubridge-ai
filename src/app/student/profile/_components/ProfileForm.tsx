@@ -221,12 +221,12 @@ export default function ProfileForm({ email, initial, parentLinked }: Props) {
 
 function SectionHeader({ icon: Icon, title, desc }: { icon: typeof User; title: string; desc: string }) {
   return (
-    <div className="flex items-center gap-3">
-      <div className="h-9 w-9 rounded-xl bg-[#EFF6FF] flex items-center justify-center flex-shrink-0">
-        <Icon className="h-[18px] w-[18px] text-[#1B3A8A]" />
+    <div className="flex items-center gap-2.5">
+      <div className="h-8 w-8 rounded-lg bg-[#EFF6FF] flex items-center justify-center flex-shrink-0">
+        <Icon className="h-4 w-4 text-[#1B3A8A]" />
       </div>
       <div className="min-w-0">
-        <h2 className="font-bold text-[#0f172a] leading-tight">{title}</h2>
+        <h2 className="text-[15px] font-bold text-[#0f172a] leading-tight">{title}</h2>
         <p className="text-xs text-[#94a3b8] mt-0.5">{desc}</p>
       </div>
     </div>
