@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Loader2, Save, Link2, RotateCcw, GraduationCap, AlertTriangle } from "lucide-react";
+import { Loader2, Save, Link2, RotateCcw, GraduationCap, AlertTriangle, User, Users } from "lucide-react";
 import { toast } from "sonner";
 import { saveStudentProfile } from "../actions";
 
@@ -71,178 +71,164 @@ export default function ProfileForm({ email, initial, parentLinked }: Props) {
   }
 
   const inputCls =
-    "w-full h-12 px-4 rounded-xl border border-[#E2E8F0] bg-white text-[#0f172a] text-sm placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1D4ED8] focus:ring-4 focus:ring-[#1D4ED8]/8 transition-all";
-  const labelCls = "block text-sm font-semibold text-[#334155] mb-1.5";
+    "w-full h-11 px-3.5 rounded-xl border border-[#E2E8F0] bg-white text-[#0f172a] text-sm placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1D4ED8] focus:ring-4 focus:ring-[#1D4ED8]/8 transition-all";
+  const labelCls = "block text-[13px] font-semibold text-[#334155] mb-1.5";
 
   return (
     <form onSubmit={handleSave} className="space-y-5">
-      <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5 sm:p-6 space-y-5">
-        <h2 className="font-bold text-[#0f172a]">Personal details</h2>
 
-        <div>
-          <label className={labelCls}>Full name</label>
-          <input
-            type="text"
-            value={form.full_name}
-            onChange={(e) => set("full_name", e.target.value)}
-            placeholder="Kofi Mensah"
-            className={inputCls}
-          />
+      {/* Personal details */}
+      <section className="bg-white rounded-2xl border border-[#E8ECF0] shadow-sm p-5 sm:p-6">
+        <SectionHeader icon={User} title="Personal details" desc="Your name and contact information" />
+        <div className="mt-5 space-y-4">
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label className={labelCls}>Full name</label>
+              <input type="text" value={form.full_name} onChange={(e) => set("full_name", e.target.value)} placeholder="Kofi Mensah" className={inputCls} />
+            </div>
+            <div>
+              <label className={labelCls}>Phone number <span className="font-normal text-[#94a3b8]">· optional</span></label>
+              <input type="tel" value={form.phone} onChange={(e) => set("phone", e.target.value)} placeholder="0244 123 456" className={inputCls} />
+            </div>
+          </div>
+          <div>
+            <label className={labelCls}>Email address</label>
+            <input type="email" value={email} disabled className={`${inputCls} bg-[#F8FAFC] text-[#94a3b8] cursor-not-allowed`} />
+            <p className="text-xs text-[#94a3b8] mt-1.5">Email cannot be changed here.</p>
+          </div>
         </div>
+      </section>
 
-        <div>
-          <label className={labelCls}>Email address</label>
-          <input
-            type="email"
-            value={email}
-            disabled
-            className={`${inputCls} bg-[#F8FAFC] text-[#94a3b8] cursor-not-allowed`}
-          />
-          <p className="text-xs text-[#94a3b8] mt-1.5">Email cannot be changed here.</p>
+      {/* Academic details */}
+      <section className="bg-white rounded-2xl border border-[#E8ECF0] shadow-sm p-5 sm:p-6">
+        <SectionHeader icon={GraduationCap} title="Academic details" desc="Your exam track, school and class" />
+        <div className="mt-5 space-y-4">
+          <div>
+            <label className={labelCls}>Exam target</label>
+            {!editingExam ? (
+              // Locked by default — chosen at registration, changing it switches
+              // the whole curriculum, so it isn't a casual one-tap toggle.
+              <div className="flex items-center justify-between gap-3 h-11 pl-3.5 pr-2 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC]">
+                <span className="flex items-center gap-2 text-sm font-semibold text-[#0f172a]">
+                  <GraduationCap className="h-4 w-4 text-[#1B3A8A]" />
+                  {form.exam_target === "wassce" ? "WASSCE · Senior High" : "BECE · Junior High"}
+                </span>
+                <button type="button" onClick={() => setEditingExam(true)} className="text-xs font-bold text-[#1D4ED8] hover:bg-[#EFF6FF] px-2.5 py-1.5 rounded-lg transition-colors">
+                  Change
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <div className="flex gap-2">
+                  {(["BECE", "WASSCE"] as const).map((exam) => (
+                    <button
+                      key={exam}
+                      type="button"
+                      onClick={() => changeExamTarget(exam.toLowerCase())}
+                      className={`flex-1 h-11 rounded-xl border-2 text-sm font-bold transition-all ${
+                        form.exam_target === exam.toLowerCase()
+                          ? "border-[#1D4ED8] bg-[#EFF6FF] text-[#1D4ED8]"
+                          : "border-[#E2E8F0] bg-white text-[#64748B] hover:border-[#1D4ED8]/40"
+                      }`}
+                    >
+                      {exam}
+                    </button>
+                  ))}
+                </div>
+                <p className="text-xs text-[#D97706] flex items-start gap-1.5">
+                  <AlertTriangle className="h-3.5 w-3.5 flex-shrink-0 mt-0.5" />
+                  Changing this switches your entire curriculum — subjects, lessons, practice and mock exams.
+                </p>
+              </div>
+            )}
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label className={labelCls}>School / Institution</label>
+              <input type="text" value={form.school} onChange={(e) => set("school", e.target.value)} placeholder="Accra Academy" className={inputCls} />
+            </div>
+            <div>
+              <label className={labelCls}>
+                Your class <span className="font-normal text-[#94a3b8]">· {form.exam_target === "wassce" ? "SHS / Form" : "JHS"}</span>
+              </label>
+              <select value={form.grade_level} onChange={(e) => set("grade_level", e.target.value)} className={inputCls}>
+                <option value="">Select your class</option>
+                {(GRADES[form.exam_target] ?? GRADES.bece).map((g) => (
+                  <option key={g.value} value={g.value}>{g.label}</option>
+                ))}
+              </select>
+            </div>
+          </div>
         </div>
+      </section>
 
-        <div>
-          <label className={labelCls}>Your phone number <span className="font-normal text-[#94a3b8]">(optional)</span></label>
-          <input
-            type="tel"
-            value={form.phone}
-            onChange={(e) => set("phone", e.target.value)}
-            placeholder="0244 123 456"
-            className={inputCls}
-          />
-        </div>
-      </div>
-
-      {/* Parent linking section */}
-      <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5 sm:p-6 space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="font-bold text-[#0f172a]">Parent / Guardian</h2>
+      {/* Parent / Guardian */}
+      <section className="bg-white rounded-2xl border border-[#E8ECF0] shadow-sm p-5 sm:p-6">
+        <div className="flex items-start justify-between gap-3">
+          <SectionHeader icon={Users} title="Parent / Guardian" desc="Link a parent to follow your progress" />
           {parentLinked && (
-            <span className="flex items-center gap-1.5 text-xs font-bold text-green-600 bg-green-50 px-3 py-1 rounded-full">
+            <span className="flex items-center gap-1.5 text-xs font-bold text-[#1A6B3C] bg-[#F0FDF4] px-3 py-1 rounded-full flex-shrink-0">
               <Link2 className="h-3 w-3" /> Linked
             </span>
           )}
         </div>
-
-        <div>
+        <div className="mt-5">
           <label className={labelCls}>
-            Parent&apos;s mobile number <span className="font-normal text-[#94a3b8]">(optional)</span>
+            Parent&apos;s mobile number <span className="font-normal text-[#94a3b8]">· optional</span>
           </label>
-          <input
-            type="tel"
-            value={form.parent_phone}
-            onChange={(e) => set("parent_phone", e.target.value)}
-            placeholder="0244 123 456"
-            className={inputCls}
-          />
+          <input type="tel" value={form.parent_phone} onChange={(e) => set("parent_phone", e.target.value)} placeholder="0244 123 456" className={inputCls} />
           <p className="text-xs text-[#94a3b8] mt-1.5">
             {parentLinked
               ? "Your parent is already linked. Update this if their number changes."
               : "When your parent signs up with this number, they'll be automatically linked to your account."}
           </p>
         </div>
-      </div>
+      </section>
 
-      <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5 sm:p-6 space-y-5">
-        <h2 className="font-bold text-[#0f172a]">Academic details</h2>
-
-        <div>
-          <label className={labelCls}>Exam target</label>
-
-          {!editingExam ? (
-            // Locked by default — chosen at registration, changing it switches
-            // the whole curriculum, so it isn't a casual one-tap toggle.
-            <div className="flex items-center justify-between gap-3 h-12 px-4 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC]">
-              <span className="flex items-center gap-2 text-sm font-semibold text-[#0f172a]">
-                <GraduationCap className="h-4 w-4 text-[#1B3A8A]" />
-                {form.exam_target === "wassce" ? "WASSCE · Senior High" : "BECE · Junior High"}
-              </span>
-              <button
-                type="button"
-                onClick={() => setEditingExam(true)}
-                className="text-xs font-bold text-[#1D4ED8] hover:underline"
-              >
-                Change
-              </button>
-            </div>
-          ) : (
-            <div className="space-y-2">
-              <div className="flex gap-2">
-                {(["BECE", "WASSCE"] as const).map((exam) => (
-                  <button
-                    key={exam}
-                    type="button"
-                    onClick={() => changeExamTarget(exam.toLowerCase())}
-                    className={`flex-1 h-11 rounded-xl border-2 text-sm font-bold transition-all ${
-                      form.exam_target === exam.toLowerCase()
-                        ? "border-[#1D4ED8] bg-[#EFF6FF] text-[#1D4ED8]"
-                        : "border-[#E2E8F0] bg-white text-[#64748B] hover:border-[#1D4ED8]/40"
-                    }`}
-                  >
-                    {exam}
-                  </button>
-                ))}
-              </div>
-              <p className="text-xs text-[#D97706] flex items-start gap-1.5">
-                <AlertTriangle className="h-3.5 w-3.5 flex-shrink-0 mt-0.5" />
-                Changing this switches your entire curriculum — subjects, lessons, practice and mock exams.
-              </p>
-            </div>
+      {/* Sticky action bar — floats at the bottom while editing */}
+      <div className="sticky bottom-4 z-10">
+        <div className={`flex items-center gap-3 rounded-2xl border p-2.5 pl-4 transition-all ${
+          isDirty
+            ? "bg-white/90 backdrop-blur border-[#E2E8F0] shadow-[0_8px_30px_rgba(0,0,0,0.10)]"
+            : "bg-[#F8FAFC] border-transparent"
+        }`}>
+          <p className={`flex-1 text-sm font-medium ${isDirty ? "text-[#0f172a]" : "text-[#94a3b8]"}`}>
+            {isDirty ? "You have unsaved changes" : "All changes saved"}
+          </p>
+          {isDirty && (
+            <button
+              type="button"
+              onClick={discard}
+              disabled={saving}
+              className="h-10 px-3.5 flex items-center gap-1.5 rounded-xl border border-[#E2E8F0] bg-white text-sm font-semibold text-[#64748B] hover:bg-[#F1F5F9] transition-all disabled:opacity-60"
+            >
+              <RotateCcw className="h-4 w-4" /> Discard
+            </button>
           )}
-        </div>
-
-        <div>
-          <label className={labelCls}>School / Institution</label>
-          <input
-            type="text"
-            value={form.school}
-            onChange={(e) => set("school", e.target.value)}
-            placeholder="Accra Academy"
-            className={inputCls}
-          />
-        </div>
-
-        <div>
-          <label className={labelCls}>
-            Your class <span className="font-normal text-[#94a3b8]">({form.exam_target === "wassce" ? "SHS / Form" : "JHS"})</span>
-          </label>
-          <select
-            value={form.grade_level}
-            onChange={(e) => set("grade_level", e.target.value)}
-            className={inputCls}
-          >
-            <option value="">Select your class</option>
-            {(GRADES[form.exam_target] ?? GRADES.bece).map((g) => (
-              <option key={g.value} value={g.value}>{g.label}</option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      {/* Action bar — only meaningful when there are unsaved edits */}
-      <div className="flex items-center gap-3">
-        {isDirty && (
           <button
-            type="button"
-            onClick={discard}
-            disabled={saving}
-            className="h-12 px-4 flex items-center gap-2 rounded-xl border border-[#E2E8F0] text-sm font-semibold text-[#64748B] hover:bg-[#F1F5F9] transition-all disabled:opacity-60"
+            type="submit"
+            disabled={saving || !isDirty}
+            className="h-10 px-5 flex items-center justify-center gap-2 bg-[#E8722A] hover:bg-[#d4641e] text-white font-bold rounded-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none shadow-[0_4px_14px_rgba(232,114,42,0.3)] text-sm"
           >
-            <RotateCcw className="h-4 w-4" /> Discard
+            {saving ? <><Loader2 className="h-4 w-4 animate-spin" /> Saving…</> : <><Save className="h-4 w-4" /> Save changes</>}
           </button>
-        )}
-        <button
-          type="submit"
-          disabled={saving || !isDirty}
-          className="flex-1 h-12 flex items-center justify-center gap-2 bg-[#E8722A] hover:bg-[#d4641e] text-white font-bold rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_4px_14px_rgba(232,114,42,0.3)] text-sm"
-        >
-          {saving
-            ? <><Loader2 className="h-4 w-4 animate-spin" /> Saving…</>
-            : isDirty
-              ? <><Save className="h-4 w-4" /> Save changes</>
-              : <>All changes saved</>}
-        </button>
+        </div>
       </div>
     </form>
+  );
+}
+
+function SectionHeader({ icon: Icon, title, desc }: { icon: typeof User; title: string; desc: string }) {
+  return (
+    <div className="flex items-center gap-3">
+      <div className="h-9 w-9 rounded-xl bg-[#EFF6FF] flex items-center justify-center flex-shrink-0">
+        <Icon className="h-[18px] w-[18px] text-[#1B3A8A]" />
+      </div>
+      <div className="min-w-0">
+        <h2 className="font-bold text-[#0f172a] leading-tight">{title}</h2>
+        <p className="text-xs text-[#94a3b8] mt-0.5">{desc}</p>
+      </div>
+    </div>
   );
 }
