@@ -1,12 +1,19 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { createClient as createServiceClient } from "@supabase/supabase-js";
 import { Users, BookOpen, PenLine, FileText, TrendingUp, ArrowRight } from "lucide-react";
 
 export default async function AdminDashboard() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
+
+  // Service role bypasses RLS so counts reflect all users, not just the caller's own row
+  const admin = createServiceClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
 
   const [
     { count: totalUsers },
@@ -17,13 +24,13 @@ export default async function AdminDashboard() {
     { count: totalQuestions },
     { count: totalAttempts },
   ] = await Promise.all([
-    supabase.from("user_roles").select("*", { count: "exact", head: true }),
-    supabase.from("user_roles").select("*", { count: "exact", head: true }).eq("role", "student"),
-    supabase.from("user_roles").select("*", { count: "exact", head: true }).eq("role", "teacher"),
-    supabase.from("subjects").select("*", { count: "exact", head: true }),
-    supabase.from("lessons").select("*", { count: "exact", head: true }),
-    supabase.from("questions").select("*", { count: "exact", head: true }),
-    supabase.from("exam_attempts").select("*", { count: "exact", head: true }).eq("status", "submitted"),
+    admin.from("user_roles").select("*", { count: "exact", head: true }),
+    admin.from("user_roles").select("*", { count: "exact", head: true }).eq("role", "student"),
+    admin.from("user_roles").select("*", { count: "exact", head: true }).eq("role", "teacher"),
+    admin.from("subjects").select("*", { count: "exact", head: true }),
+    admin.from("lessons").select("*", { count: "exact", head: true }),
+    admin.from("questions").select("*", { count: "exact", head: true }),
+    admin.from("exam_attempts").select("*", { count: "exact", head: true }).eq("status", "submitted"),
   ]);
 
   const stats = [

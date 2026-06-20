@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { createClient as createServiceClient } from "@supabase/supabase-js";
 import {
   BookOpen, PenLine, FileText, Users,
   ArrowRight, Plus, TrendingUp,
@@ -13,11 +14,17 @@ export default async function TeacherDashboard() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("full_name")
+    .select("full_name, exam_target")
     .eq("id", user.id)
     .single();
 
   const firstName = profile?.full_name?.split(" ")[0] ?? "Teacher";
+  const levelLabel = profile?.exam_target === "wassce" ? "SHS Teacher" : profile?.exam_target === "bece" ? "JHS Teacher" : null;
+
+  const admin = createServiceClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
 
   // Stats
   const { count: subjectCount } = await supabase
@@ -32,7 +39,8 @@ export default async function TeacherDashboard() {
     .from("questions")
     .select("*", { count: "exact", head: true });
 
-  const { count: studentCount } = await supabase
+  // Service role bypasses RLS so count reflects all students, not just caller's row
+  const { count: studentCount } = await admin
     .from("user_roles")
     .select("*", { count: "exact", head: true })
     .eq("role", "student");
@@ -56,6 +64,13 @@ export default async function TeacherDashboard() {
 
       {/* Greeting */}
       <div className="mb-7">
+        <div className="flex items-center gap-2 mb-2">
+          {levelLabel && (
+            <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-orange-50 text-[#E8722A] border border-orange-100">
+              {levelLabel}
+            </span>
+          )}
+        </div>
         <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">
           Welcome, {firstName}
         </h1>

@@ -16,12 +16,12 @@ export default async function TeacherQuestionsPage({
 
   const { data: topics } = await supabase
     .from("topics")
-    .select("id, name, subjects(name, exam_type)")
+    .select("id, title, subjects(name, exam_type)")
     .order("order_index");
 
   const query = supabase
     .from("questions")
-    .select("id, body, difficulty, topic_id, topics(name, subjects(name))")
+    .select("id, prompt, difficulty, topic_id, topics(title, subjects(name))")
     .order("created_at", { ascending: false });
 
   const { data: questions } = topicId
@@ -51,7 +51,7 @@ export default async function TeacherQuestionsPage({
           </Link>
           {topics.map((t) => (
             <Link key={t.id} href={`/teacher/questions?topic=${t.id}`} className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${topicId === t.id ? "bg-[#1D4ED8] text-white border-[#1D4ED8]" : "bg-white text-[#475569] border-[#E2E8F0] hover:border-[#1D4ED8]/40"}`}>
-              {t.name}
+              {(t as any).title}
             </Link>
           ))}
         </div>
@@ -67,9 +67,9 @@ export default async function TeacherQuestionsPage({
               <div key={q.id} className="bg-white rounded-2xl border border-[#E2E8F0] p-4 flex items-start gap-3">
                 <span className="h-6 w-6 rounded-lg bg-[#F1F5F9] text-xs font-bold text-[#94a3b8] flex items-center justify-center flex-shrink-0 mt-0.5">{i + 1}</span>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-[#0f172a] font-medium leading-snug">{q.body}</p>
+                  <p className="text-sm text-[#0f172a] font-medium leading-snug">{q.prompt}</p>
                   <div className="flex items-center gap-2 mt-1.5">
-                    <span className="text-xs text-[#94a3b8]">{topic?.subjects?.name} · {topic?.name}</span>
+                    <span className="text-xs text-[#94a3b8]">{topic?.subjects?.name} · {topic?.title}</span>
                     <span className={`text-xs font-semibold px-1.5 py-0.5 rounded-md ${
                       q.difficulty === "easy" ? "bg-green-50 text-green-700" :
                       q.difficulty === "hard" ? "bg-red-50 text-red-700" :

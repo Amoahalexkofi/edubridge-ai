@@ -121,11 +121,11 @@ export default async function LessonPage({
 
         {/* Footer actions */}
         <div className="px-6 py-4 border-t border-[#F1F5F9] flex items-center justify-between gap-3 flex-wrap">
-          <LessonCompleteButton lessonId={id} isCompleted={isCompleted} />
+          <LessonCompleteButton lessonId={id} userId={user.id} isCompleted={isCompleted} />
           {nextLesson && (
             <Link
               href={`/student/lessons/${nextLesson.id}`}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1D4ED8] hover:bg-[#1e40af] text-white text-sm font-semibold transition-colors"
+              className="flex items-center gap-1.5 px-4 py-2.5 h-10 rounded-xl bg-[#1D4ED8] hover:bg-[#1e40af] text-white text-sm font-semibold transition-colors"
             >
               Next lesson <ArrowRight className="h-4 w-4" />
             </Link>

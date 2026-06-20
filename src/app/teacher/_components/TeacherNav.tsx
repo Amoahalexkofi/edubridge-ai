@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import {
-  LayoutDashboard, BookOpen, PenLine, FileText, Users, LogOut,
+  LayoutDashboard, BookOpen, PenLine, FileText, Users, LogOut, BarChart2,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
@@ -14,6 +14,7 @@ const navItems = [
   { href: "/teacher/lessons",   label: "Lessons",   icon: FileText        },
   { href: "/teacher/questions", label: "Questions", icon: PenLine         },
   { href: "/teacher/students",  label: "Students",  icon: Users           },
+  { href: "/teacher/analytics", label: "Analytics", icon: BarChart2       },
 ];
 
 interface Props { userName: string }

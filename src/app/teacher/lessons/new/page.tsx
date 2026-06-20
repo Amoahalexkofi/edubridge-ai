@@ -15,10 +15,23 @@ export default async function NewLessonPage({
 
   const { topic: preselectedTopic } = await searchParams;
 
-  const { data: topics } = await supabase
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("exam_target")
+    .eq("id", user.id)
+    .single();
+
+  const teachingLevel = profile?.exam_target ?? null;
+
+  const { data: allTopics } = await supabase
     .from("topics")
-    .select("id, name, subject_id, order_index, subjects(name, exam_type)")
+    .select("id, title, subject_id, order_index, subjects(name, exam_type)")
     .order("order_index");
+
+  const topics = teachingLevel
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ? (allTopics ?? []).filter((t: any) => t.subjects?.exam_type === teachingLevel)
+    : allTopics;
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 space-y-6">

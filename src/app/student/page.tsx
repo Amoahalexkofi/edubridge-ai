@@ -7,27 +7,37 @@ import {
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 
-const subjectColors: Record<string, string> = {
-  mathematics:     "bg-blue-50   text-blue-600   border-blue-100",
-  english:         "bg-emerald-50 text-emerald-600 border-emerald-100",
-  science:         "bg-purple-50 text-purple-600 border-purple-100",
-  "social studies":"bg-orange-50 text-orange-600 border-orange-100",
-  ict:             "bg-cyan-50   text-cyan-600   border-cyan-100",
-  history:         "bg-amber-50  text-amber-600  border-amber-100",
-  geography:       "bg-teal-50   text-teal-600   border-teal-100",
-  economics:       "bg-rose-50   text-rose-600   border-rose-100",
-  physics:         "bg-indigo-50 text-indigo-600 border-indigo-100",
-  chemistry:       "bg-pink-50   text-pink-600   border-pink-100",
-  biology:         "bg-green-50  text-green-600  border-green-100",
-};
+const LESSON_XP = 10;
+const EXAM_XP = 20;
+const HIGH_SCORE_BONUS = 10;
 
-function subjectStyle(name: string, color?: string | null) {
-  if (color) return `bg-[${color}]/10 text-[${color}] border-[${color}]/20`;
-  const key = name.toLowerCase();
-  for (const [k, v] of Object.entries(subjectColors)) {
-    if (key.includes(k)) return v;
+const LEVELS = [
+  { level: 1, label: "Beginner",  min: 0    },
+  { level: 2, label: "Explorer",  min: 500  },
+  { level: 3, label: "Achiever",  min: 1000 },
+  { level: 4, label: "Scholar",   min: 2000 },
+  { level: 5, label: "Champion",  min: 4000 },
+];
+
+function getLevel(xp: number) {
+  return [...LEVELS].reverse().find((l) => xp >= l.min) ?? LEVELS[0];
+}
+
+function calculateStreak(dates: string[]): number {
+  if (!dates.length) return 0;
+  const uniqueDays = [...new Set(dates.map((d) => d.split("T")[0]))].sort().reverse();
+  const today = new Date().toISOString().split("T")[0];
+  const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0];
+  if (uniqueDays[0] !== today && uniqueDays[0] !== yesterday) return 0;
+  let streak = 1;
+  for (let i = 1; i < uniqueDays.length; i++) {
+    const diff = Math.round(
+      (new Date(uniqueDays[i - 1]).getTime() - new Date(uniqueDays[i]).getTime()) / 86400000
+    );
+    if (diff === 1) streak++;
+    else break;
   }
-  return "bg-slate-50 text-slate-600 border-slate-100";
+  return streak;
 }
 
 export default async function StudentDashboard() {
@@ -47,59 +57,74 @@ export default async function StudentDashboard() {
   const firstName = profile?.full_name?.split(" ")[0] ?? "there";
   const examTarget: string = profile?.exam_target ?? "BECE";
 
-  const { data: subjects } = await supabase
-    .from("subjects")
-    .select("id, name, slug, icon, color, description, topics(id)")
-    .eq("exam_type", examTarget.toLowerCase())
-    .order("name");
-
-  const { count: lessonsCompleted } = await supabase
-    .from("lesson_progress")
-    .select("*", { count: "exact", head: true })
-    .eq("user_id", user.id)
-    .eq("completed", true);
-
-  const { count: examsTaken } = await supabase
-    .from("exam_attempts")
-    .select("*", { count: "exact", head: true })
-    .eq("user_id", user.id)
-    .eq("status", "submitted");
-
-  const { data: examScores } = await supabase
-    .from("exam_attempts")
-    .select("score, total_marks")
-    .eq("user_id", user.id)
-    .eq("status", "submitted")
-    .not("score", "is", null);
+  const [
+    { data: subjects },
+    { count: lessonsCompleted },
+    { count: examsTaken },
+    { data: examScores },
+    { data: recentProgress },
+    { data: streakData },
+    { data: studentRoles },
+  ] = await Promise.all([
+    supabase.from("subjects").select("id, name, slug, icon, color, description, topics(id)").eq("exam_type", examTarget.toLowerCase()).order("name"),
+    supabase.from("lesson_progress").select("*", { count: "exact", head: true }).eq("user_id", user.id).eq("completed", true),
+    supabase.from("exam_attempts").select("*", { count: "exact", head: true }).eq("user_id", user.id).eq("status", "submitted"),
+    supabase.from("exam_attempts").select("score, total_marks").eq("user_id", user.id).eq("status", "submitted").not("score", "is", null),
+    supabase.from("lesson_progress").select("lesson_id, last_viewed_at, completed, lessons(title, topic_id, topics(title, subject_id, subjects(name, slug)))").eq("user_id", user.id).order("last_viewed_at", { ascending: false }).limit(1).single(),
+    supabase.from("lesson_progress").select("last_viewed_at").eq("user_id", user.id).eq("completed", true).order("last_viewed_at", { ascending: false }).limit(365),
+    supabase.from("user_roles").select("user_id").eq("role", "student"),
+  ]);
 
   const avgScore = examScores && examScores.length > 0
     ? Math.round(examScores.reduce((sum, e) => sum + (e.score / e.total_marks) * 100, 0) / examScores.length)
     : null;
 
-  const { data: recentProgress } = await supabase
-    .from("lesson_progress")
-    .select("lesson_id, last_viewed_at, completed, lessons(title, topic_id, topics(name, subject_id, subjects(name, slug)))")
-    .eq("user_id", user.id)
-    .order("last_viewed_at", { ascending: false })
-    .limit(1)
-    .single();
+  // XP
+  const bonusXP = (examScores ?? []).filter((e) => e.score / e.total_marks >= 0.8).length * HIGH_SCORE_BONUS;
+  const totalXP = (lessonsCompleted ?? 0) * LESSON_XP + (examsTaken ?? 0) * EXAM_XP + bonusXP;
+  const currentLevel = getLevel(totalXP);
+  const nextLevel = LEVELS.find((l) => l.level === currentLevel.level + 1);
+  const xpPct = nextLevel
+    ? Math.min(100, Math.round(((totalXP - currentLevel.min) / (nextLevel.min - currentLevel.min)) * 100))
+    : 100;
+
+  // Streak
+  const streak = calculateStreak((streakData ?? []).map((d) => d.last_viewed_at));
+
+  // Top 3 leaderboard teaser
+  const studentIds = studentRoles?.map((r) => r.user_id) ?? [];
+  const { data: peerProfiles } = studentIds.length > 0
+    ? await supabase.from("profiles").select("id, full_name").in("id", studentIds).eq("exam_target", examTarget)
+    : { data: [] };
+  const { data: peerProgress } = studentIds.length > 0
+    ? await supabase.from("lesson_progress").select("user_id").eq("completed", true).in("user_id", studentIds)
+    : { data: [] };
+
+  const peerCounts: Record<string, number> = {};
+  peerProgress?.forEach((p) => { peerCounts[p.user_id] = (peerCounts[p.user_id] ?? 0) + 1; });
+  const top3 = (peerProfiles ?? [])
+    .map((p) => ({ ...p, lessons: peerCounts[p.id] ?? 0 }))
+    .sort((a, b) => b.lessons - a.lessons)
+    .slice(0, 3);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const recent = recentProgress as any;
 
   const stats = [
-    { label: "Subjects",     value: subjects?.length ?? 0,          icon: BookOpen,   color: "bg-blue-50 text-blue-600",   href: "/student/subjects" },
-    { label: "Lessons done", value: lessonsCompleted ?? 0,           icon: TrendingUp, color: "bg-green-50 text-green-600", href: "/student/subjects" },
-    { label: "Mock exams",   value: examsTaken ?? 0,                 icon: FileText,   color: "bg-purple-50 text-purple-600", href: "/student/exams" },
-    { label: "Avg score",    value: avgScore != null ? `${avgScore}%` : "—", icon: Trophy, color: "bg-amber-50 text-amber-600", href: "/student/exams" },
+    { label: "Subjects",     value: subjects?.length ?? 0,                        icon: BookOpen,   color: "bg-blue-50 text-blue-600",     href: "/student/subjects" },
+    { label: "Lessons done", value: lessonsCompleted ?? 0,                         icon: TrendingUp, color: "bg-green-50 text-green-600",   href: "/student/subjects" },
+    { label: "Mock exams",   value: examsTaken ?? 0,                               icon: FileText,   color: "bg-purple-50 text-purple-600", href: "/student/exams"    },
+    { label: "Avg score",    value: avgScore != null ? `${avgScore}%` : "—",       icon: Trophy,     color: "bg-amber-50 text-amber-600",   href: "/student/exams"    },
   ];
 
   const quickActions = [
-    { href: "/student/subjects", label: "Browse subjects",  desc: "Explore all topics", icon: BookOpen, bg: "bg-[#1B3A8A]" },
-    { href: "/student/practice", label: "Quick practice",   desc: "Sharpen your skills", icon: PenLine,  bg: "bg-[#E8722A]" },
-    { href: "/student/exams",    label: "Start mock exam",  desc: "WAEC-style timed paper", icon: FileText, bg: "bg-purple-600" },
-    { href: "/student/ai-tutor", label: "Ask AI Tutor",    desc: "Get instant help", icon: Brain,    bg: "bg-teal-600" },
+    { href: "/student/subjects", label: "Browse subjects", desc: "Explore all topics",       icon: BookOpen, bg: "bg-[#1B3A8A]"   },
+    { href: "/student/practice", label: "Quick practice",  desc: "Sharpen your skills",      icon: PenLine,  bg: "bg-[#E8722A]"   },
+    { href: "/student/exams",    label: "Start mock exam", desc: "WAEC-style timed paper",   icon: FileText, bg: "bg-purple-600"  },
+    { href: "/student/ai-tutor", label: "Ask AI Tutor",   desc: "Get instant help",          icon: Brain,    bg: "bg-teal-600"    },
   ];
+
+  const medals = ["🥇", "🥈", "🥉"];
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 lg:py-8">
@@ -110,14 +135,16 @@ export default async function StudentDashboard() {
           <p className="text-sm text-slate-500 font-medium flex items-center gap-1.5">
             {greeting} <span>👋</span>
           </p>
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mt-0.5">
-            {firstName}
-          </h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mt-0.5">{firstName}</h1>
         </div>
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#E8722A]/10 border border-[#E8722A]/20">
-            <Flame className="h-3.5 w-3.5 text-[#E8722A]" />
-            <span className="text-xs font-bold text-[#E8722A]">0 day streak</span>
+          <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border ${
+            streak > 0 ? "bg-[#E8722A]/10 border-[#E8722A]/20" : "bg-slate-50 border-slate-200"
+          }`}>
+            <Flame className={`h-3.5 w-3.5 ${streak > 0 ? "text-[#E8722A]" : "text-slate-300"}`} />
+            <span className={`text-xs font-bold ${streak > 0 ? "text-[#E8722A]" : "text-slate-400"}`}>
+              {streak} day{streak !== 1 ? "s" : ""} streak
+            </span>
           </div>
           <span className="px-3 py-1.5 rounded-full bg-[#1B3A8A] text-white text-xs font-bold tracking-wider uppercase shadow-sm">
             {examTarget}
@@ -154,11 +181,9 @@ export default async function StudentDashboard() {
             <BookOpen className="h-6 w-6 text-white" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-xs text-blue-200 font-semibold mb-0.5 uppercase tracking-wide">
-              Continue learning
-            </p>
+            <p className="text-xs text-blue-200 font-semibold mb-0.5 uppercase tracking-wide">Continue learning</p>
             <p className="text-xs text-blue-200/70 mb-1">
-              {recent.lessons?.topics?.subjects?.name} · {recent.lessons?.topics?.name}
+              {recent.lessons?.topics?.subjects?.name} · {recent.lessons?.topics?.title}
             </p>
             <p className="font-bold text-white truncate text-lg">{recent.lessons?.title}</p>
           </div>
@@ -203,18 +228,18 @@ export default async function StudentDashboard() {
                   <Link
                     key={subject.id}
                     href={`/student/subjects/${subject.slug}`}
-                    className="bg-white rounded-2xl border border-slate-200 p-4 hover:border-[#1B3A8A]/40 hover:shadow-sm transition-all group flex flex-col gap-3"
+                    className="group bg-white rounded-2xl border border-[#E8ECF0] p-4 hover:border-[#1D4ED8]/30 hover:shadow-md transition-all flex flex-col gap-3"
                   >
-                    <div className={`h-10 w-10 rounded-xl border flex items-center justify-center text-lg ${subjectStyle(subject.name, subject.color)}`}>
+                    <div className="h-10 w-10 rounded-xl bg-[#F8FAFC] border border-[#E8ECF0] flex items-center justify-center text-lg">
                       {subject.icon ?? "📚"}
                     </div>
                     <div className="flex-1">
-                      <p className="font-bold text-sm text-slate-900 leading-snug">{subject.name}</p>
+                      <p className="font-semibold text-sm text-[#0f172a] leading-snug group-hover:text-[#1D4ED8] transition-colors">{subject.name}</p>
                       {subject.description && (
-                        <p className="text-xs text-slate-400 mt-0.5 line-clamp-2">{subject.description}</p>
+                        <p className="text-xs text-[#94a3b8] mt-0.5 line-clamp-2">{subject.description}</p>
                       )}
                     </div>
-                    <div className="flex items-center gap-1 text-[#1B3A8A] text-xs font-semibold">
+                    <div className="flex items-center gap-1 text-[#1D4ED8] text-xs font-semibold">
                       Open <ArrowRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
                     </div>
                   </Link>
@@ -265,14 +290,20 @@ export default async function StudentDashboard() {
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Star className="h-4 w-4 text-[#E8722A]" />
-                <span className="text-sm font-bold">Level 1 · Beginner</span>
+                <span className="text-sm font-bold">Level {currentLevel.level} · {currentLevel.label}</span>
               </div>
-              <span className="text-xs text-white/50">0 / 500 XP</span>
+              <span className="text-xs text-white/50 tabular-nums">
+                {totalXP.toLocaleString()}{nextLevel ? ` / ${nextLevel.min.toLocaleString()}` : ""} XP
+              </span>
             </div>
             <div className="h-2 bg-white/15 rounded-full mb-3">
-              <div className="h-full bg-[#E8722A] rounded-full w-0" />
+              <div className="h-full bg-[#E8722A] rounded-full transition-all" style={{ width: `${xpPct}%` }} />
             </div>
-            <p className="text-xs text-white/50">Complete lessons to earn XP and level up!</p>
+            <p className="text-xs text-white/50">
+              {nextLevel
+                ? `${(nextLevel.min - totalXP).toLocaleString()} XP to Level ${nextLevel.level} · ${nextLevel.label}`
+                : "Max level reached — Champion!"}
+            </p>
           </div>
 
           {/* Leaderboard teaser */}
@@ -281,21 +312,28 @@ export default async function StudentDashboard() {
               <Trophy className="h-4 w-4 text-amber-500" />
               <h3 className="font-bold text-slate-900 text-sm">Leaderboard</h3>
             </div>
-            <div className="space-y-2.5">
-              {[
-                { name: "Akosua M.", xp: "4,820 XP", rank: 1 },
-                { name: "Kwame O.", xp: "4,510 XP", rank: 2 },
-                { name: "Yaa A.",   xp: "4,270 XP", rank: 3 },
-              ].map((l) => (
-                <div key={l.name} className="flex items-center gap-2.5">
-                  <div className={`h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${
-                    l.rank === 1 ? "bg-amber-400 text-white" : l.rank === 2 ? "bg-slate-300 text-slate-700" : "bg-amber-700/20 text-amber-800"
-                  }`}>{l.rank}</div>
-                  <span className="flex-1 text-sm text-slate-700 font-medium">{l.name}</span>
-                  <span className="text-xs font-bold text-[#E8722A]">{l.xp}</span>
-                </div>
-              ))}
-            </div>
+            {top3.length > 0 ? (
+              <div className="space-y-2.5">
+                {top3.map((s, i) => {
+                  const isMe = s.id === user.id;
+                  return (
+                    <div key={s.id} className="flex items-center gap-2.5">
+                      <div className={`h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 ${
+                        i === 0 ? "bg-amber-400 text-white" : i === 1 ? "bg-slate-300 text-slate-700" : "bg-orange-300 text-orange-900"
+                      }`}>
+                        {medals[i]}
+                      </div>
+                      <span className={`flex-1 text-sm truncate ${isMe ? "font-bold text-[#1B3A8A]" : "font-medium text-slate-700"}`}>
+                        {s.full_name?.split(" ")[0] ?? "Student"}{isMe ? " (you)" : ""}
+                      </span>
+                      <span className="text-xs font-bold text-[#E8722A] tabular-nums">{s.lessons} lessons</span>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <p className="text-xs text-slate-400">No rankings yet — complete a lesson to appear here!</p>
+            )}
             <Link href="/student/leaderboard" className="mt-3 text-xs text-[#1B3A8A] font-semibold hover:underline flex items-center gap-0.5">
               View full leaderboard <ChevronRight className="h-3.5 w-3.5" />
             </Link>

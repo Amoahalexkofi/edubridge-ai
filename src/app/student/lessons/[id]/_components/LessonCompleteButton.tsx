@@ -6,9 +6,11 @@ import { createClient } from "@/lib/supabase/client";
 
 export default function LessonCompleteButton({
   lessonId,
+  userId,
   isCompleted: initial,
 }: {
   lessonId: string;
+  userId: string;
   isCompleted: boolean;
 }) {
   const [completed, setCompleted] = useState(initial);
@@ -18,13 +20,13 @@ export default function LessonCompleteButton({
     setLoading(true);
     const supabase = createClient();
     const next = !completed;
-    await supabase
+    const { error } = await supabase
       .from("lesson_progress")
       .upsert(
-        { lesson_id: lessonId, completed: next, last_viewed_at: new Date().toISOString() },
+        { user_id: userId, lesson_id: lessonId, completed: next, last_viewed_at: new Date().toISOString() },
         { onConflict: "user_id,lesson_id" }
       );
-    setCompleted(next);
+    if (!error) setCompleted(next);
     setLoading(false);
   }
 

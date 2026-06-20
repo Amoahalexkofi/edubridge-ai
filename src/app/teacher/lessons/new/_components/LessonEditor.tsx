@@ -8,7 +8,7 @@ import { createClient } from "@/lib/supabase/client";
 
 type Topic = {
   id: string;
-  name: string;
+  title: string;
   order_index: number;
   subject_id: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -95,7 +95,7 @@ export default function LessonEditor({
             <option value="">Select a topic…</option>
             {topics.map((t) => (
               <option key={t.id} value={t.id}>
-                {t.subjects?.name} ({t.subjects?.exam_type}) · {t.name}
+                {t.subjects?.name} ({t.subjects?.exam_type}) · {t.title}
               </option>
             ))}
           </select>

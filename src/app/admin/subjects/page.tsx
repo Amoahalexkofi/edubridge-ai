@@ -90,29 +90,13 @@ function SubjectSection({
   accentColor: "blue" | "green";
   subjects: SubjectWithTopics[];
 }) {
-  const colors = {
-    blue: {
-      badge: "bg-[#1D4ED8] text-white",
-      border: "border-l-[#1D4ED8]",
-      header: "text-[#1D4ED8]",
-      chip: "bg-[#EFF6FF] text-[#1D4ED8] border-[#BFDBFE]",
-      num: "text-[#93C5FD]",
-      empty: "text-[#93C5FD]",
-    },
-    green: {
-      badge: "bg-[#15803D] text-white",
-      border: "border-l-[#15803D]",
-      header: "text-[#15803D]",
-      chip: "bg-[#F0FDF4] text-[#15803D] border-[#BBF7D0]",
-      num: "text-[#86EFAC]",
-      empty: "text-[#86EFAC]",
-    },
-  }[accentColor];
+  const badge = accentColor === "blue" ? "bg-[#1D4ED8] text-white" : "bg-[#15803D] text-white";
+  const header = accentColor === "blue" ? "text-[#1D4ED8]" : "text-[#15803D]";
 
   if (subjects.length === 0) {
     return (
       <div>
-        <SectionHeader title={title} count={0} colors={colors} />
+        <SectionHeader title={title} count={0} badge={badge} header={header} />
         <div className="bg-white rounded-2xl border border-dashed border-[#E2E8F0] py-10 text-center mt-3">
           <p className="text-sm text-[#94a3b8]">No {title} subjects yet</p>
         </div>
@@ -122,13 +106,14 @@ function SubjectSection({
 
   return (
     <div className="space-y-3">
-      <SectionHeader title={title} count={subjects.length} colors={colors} />
+      <SectionHeader title={title} count={subjects.length} badge={badge} header={header} />
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
       {subjects.map((subject) => {
         const sortedTopics = (subject.topics ?? []).slice().sort((a, b) => a.order_index - b.order_index);
         return (
           <div
             key={subject.id}
-            className={`bg-white rounded-2xl border border-[#E2E8F0] border-l-4 ${colors.border} overflow-hidden hover:shadow-sm transition-shadow`}
+            className="bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden hover:shadow-sm transition-shadow"
           >
             {/* Subject header */}
             <div className="flex items-center gap-3 px-5 py-4">
@@ -138,7 +123,7 @@ function SubjectSection({
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
                   <p className="font-bold text-[#0f172a]">{subject.name}</p>
-                  <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${colors.badge}`}>
+                  <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${badge}`}>
                     {title}
                   </span>
                 </div>
@@ -172,9 +157,9 @@ function SubjectSection({
                   {sortedTopics.map((topic) => (
                     <span
                       key={topic.id}
-                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-medium ${colors.chip}`}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] text-xs font-medium text-[#475569]"
                     >
-                      <span className={`text-[10px] font-bold ${colors.num}`}>{topic.order_index}</span>
+                      <span className="text-[10px] font-bold text-[#CBD5E1]">{topic.order_index}</span>
                       {topic.title}
                     </span>
                   ))}
@@ -186,6 +171,7 @@ function SubjectSection({
           </div>
         );
       })}
+      </div>
     </div>
   );
 }
@@ -193,16 +179,18 @@ function SubjectSection({
 function SectionHeader({
   title,
   count,
-  colors,
+  badge,
+  header,
 }: {
   title: string;
   count: number;
-  colors: { header: string; badge: string };
+  badge: string;
+  header: string;
 }) {
   return (
     <div className="flex items-center gap-3">
-      <span className={`text-sm font-bold uppercase tracking-widest ${colors.header}`}>{title}</span>
-      <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${colors.badge}`}>{count}</span>
+      <span className={`text-sm font-bold uppercase tracking-widest ${header}`}>{title}</span>
+      <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${badge}`}>{count}</span>
       <div className="flex-1 h-px bg-[#E2E8F0]" />
     </div>
   );

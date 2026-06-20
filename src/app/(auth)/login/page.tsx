@@ -1,16 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff, Loader2, ArrowRight, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
 import BrandPanel from "../_components/BrandPanel";
 
 export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
+  );
+}
+
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const returnUrl = searchParams.get("returnUrl");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -54,6 +64,11 @@ export default function LoginPage() {
       .eq("user_id", user.id)
       .limit(1);
 
+    if (returnUrl) {
+      router.push(returnUrl);
+      return;
+    }
+
     const role = roles?.[0]?.role ?? "student";
     const redirectMap: Record<string, string> = {
       student: "/student",
@@ -74,7 +89,7 @@ export default function LoginPage() {
       <div className="flex-1 flex flex-col min-h-screen bg-white">
 
         {/* Top bar */}
-        <div className="flex items-center justify-between px-8 sm:px-12 py-5 border-b border-slate-100">
+        <div className="flex items-center justify-between px-4 sm:px-8 lg:px-12 py-5 border-b border-slate-100">
           {/* Back to home — desktop */}
           <Link href="/" className="hidden lg:inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-900 font-medium transition-colors">
             <ArrowLeft className="h-4 w-4" /> Back to home
@@ -132,9 +147,12 @@ export default function LoginPage() {
               onClick={async () => {
                 const { createClient } = await import("@/lib/supabase/client");
                 const supabase = createClient();
+                const callbackUrl = returnUrl
+                  ? `${window.location.origin}/auth/callback?returnUrl=${encodeURIComponent(returnUrl)}`
+                  : `${window.location.origin}/auth/callback`;
                 await supabase.auth.signInWithOAuth({
                   provider: "google",
-                  options: { redirectTo: `${window.location.origin}/auth/callback` },
+                  options: { redirectTo: callbackUrl },
                 });
               }}
               className="w-full h-12 flex items-center justify-center gap-3 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 rounded-xl transition-all text-sm font-semibold text-slate-700 shadow-sm"

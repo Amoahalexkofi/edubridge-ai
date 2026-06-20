@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { createClient as createServiceClient } from "@supabase/supabase-js";
 import { Users, TrendingUp } from "lucide-react";
 
 export default async function TeacherStudentsPage() {
@@ -7,8 +8,13 @@ export default async function TeacherStudentsPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  // Get all students
-  const { data: studentRoles } = await supabase
+  const admin = createServiceClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+
+  // Service role bypasses RLS so we see all students, not just the caller's own row
+  const { data: studentRoles } = await admin
     .from("user_roles")
     .select("user_id")
     .eq("role", "student");

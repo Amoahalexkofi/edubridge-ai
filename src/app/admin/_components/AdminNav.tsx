@@ -3,15 +3,16 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, Users, BookOpen, Link2, LogOut, Settings } from "lucide-react";
+import { LayoutDashboard, Users, BookOpen, Link2, LogOut, Settings, BarChart2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 const navItems = [
-  { href: "/admin",          label: "Dashboard", icon: LayoutDashboard },
-  { href: "/admin/users",    label: "Users",     icon: Users           },
-  { href: "/admin/subjects", label: "Subjects",  icon: BookOpen        },
-  { href: "/admin/links",    label: "Parent links", icon: Link2        },
-  { href: "/admin/settings", label: "Settings",  icon: Settings        },
+  { href: "/admin",           label: "Dashboard",   icon: LayoutDashboard },
+  { href: "/admin/users",     label: "Users",       icon: Users           },
+  { href: "/admin/subjects",  label: "Subjects",    icon: BookOpen        },
+  { href: "/admin/analytics", label: "Analytics",   icon: BarChart2       },
+  { href: "/admin/links",     label: "Parent links",icon: Link2           },
+  { href: "/admin/settings",  label: "Settings",    icon: Settings        },
 ];
 
 export default function AdminNav({ userName }: { userName: string }) {

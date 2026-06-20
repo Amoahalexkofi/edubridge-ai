@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import StudentNav from "./_components/StudentNav";
+import FloatingTutor from "./_components/FloatingTutor";
 import Link from "next/link";
 import { Eye, ArrowLeft } from "lucide-react";
 
@@ -15,6 +16,12 @@ export default async function StudentLayout({ children }: { children: React.Reac
   ]);
 
   const isPreviewingAdmin = roleRow?.role === "admin" || roleRow?.role === "teacher";
+
+  // Real students who never set an exam target (e.g. signed up via Google OAuth,
+  // which skips the details step) must pick one before using the app.
+  if (roleRow?.role === "student" && !profile?.exam_target) {
+    redirect("/onboarding");
+  }
 
   return (
     <div className="min-h-screen bg-[#F1F5F9]">
@@ -46,6 +53,11 @@ export default async function StudentLayout({ children }: { children: React.Reac
           {children}
         </div>
       </main>
+
+      <FloatingTutor
+        firstName={profile?.full_name?.split(" ")[0] ?? "there"}
+        examTarget={(profile?.exam_target ?? "bece").toUpperCase()}
+      />
     </div>
   );
 }

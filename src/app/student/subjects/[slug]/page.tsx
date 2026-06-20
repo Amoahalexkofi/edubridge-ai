@@ -173,7 +173,7 @@ export default async function SubjectPage({
                       {firstLesson ? (
                         <Link
                           href={`/student/lessons/${firstLesson.id}`}
-                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold flex-shrink-0 transition-all ${
+                          className={`flex items-center gap-1.5 px-3 py-2 min-h-[36px] rounded-xl text-xs font-semibold flex-shrink-0 transition-all ${
                             isComplete
                               ? "bg-[#F0FDF4] text-[#22C55E] hover:bg-[#DCFCE7]"
                               : topicCompleted > 0
@@ -222,7 +222,7 @@ export default async function SubjectPage({
           </div>
           <Link
             href={`/student/practice?subject=${subject.id}`}
-            className="flex items-center gap-1.5 px-4 py-2.5 bg-[#1D4ED8] hover:bg-[#1e40af] text-white text-sm font-semibold rounded-xl transition-colors flex-shrink-0"
+            className="flex items-center gap-1.5 px-4 py-3 h-11 bg-[#1D4ED8] hover:bg-[#1e40af] text-white text-sm font-semibold rounded-xl transition-colors flex-shrink-0"
           >
             Practice <ChevronRight className="h-4 w-4" />
           </Link>

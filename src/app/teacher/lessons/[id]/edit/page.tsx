@@ -25,7 +25,7 @@ export default async function EditLessonPage({
 
   const { data: topics } = await supabase
     .from("topics")
-    .select("id, name, subject_id, order_index, subjects(name, exam_type)")
+    .select("id, title, subject_id, order_index, subjects(name, exam_type)")
     .order("order_index");
 
   return (

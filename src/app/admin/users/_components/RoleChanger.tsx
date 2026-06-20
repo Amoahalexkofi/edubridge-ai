@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Loader2, Check, ChevronDown } from "lucide-react";
 import { toast } from "sonner";
-import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
 const ROLES = ["student", "teacher", "parent", "admin"] as const;
@@ -26,13 +25,18 @@ export default function RoleChanger({ userId, currentRole }: { userId: string; c
   async function changeRole(newRole: Role) {
     if (newRole === role) { setOpen(false); return; }
     setSaving(true);
-    const supabase = createClient();
-    const { error } = await supabase
-      .from("user_roles")
-      .upsert({ user_id: userId, role: newRole }, { onConflict: "user_id" });
-    setSaving(false);
     setOpen(false);
-    if (error) { toast.error(error.message); return; }
+    const res = await fetch("/api/admin/users/role", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId, role: newRole }),
+    });
+    setSaving(false);
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      toast.error(body.error ?? "Failed to update role");
+      return;
+    }
     setRole(newRole);
     toast.success(`Role updated to ${newRole}`);
     router.refresh();

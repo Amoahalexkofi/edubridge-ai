@@ -3,16 +3,16 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Clock, AlertTriangle, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
+import { toast } from "sonner";
 
 type Question = {
   id: string;
-  body: string;
+  prompt: string;
   options: Array<{ id: string; text: string }>;
-  correct_option: string;
+  correct_answer: string;
   explanation: string | null;
   topic_id: string;
-  topics: { name: string } | null;
+  topics: { title: string } | null;
 };
 
 interface Props {
@@ -46,20 +46,25 @@ export default function ExamTaker({ attemptId, subject, questions, durationMinut
     submitted.current = true;
     setSubmitting(true);
 
-    const supabase = createClient();
-    const score = questions.filter((q) => answers[q.id] === q.correct_option).length;
+    try {
+      const res = await fetch("/api/student/exam/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ attemptId, answers }),
+      });
 
-    await supabase
-      .from("exam_attempts")
-      .update({
-        answers,
-        score,
-        status: "submitted",
-        submitted_at: new Date().toISOString(),
-      })
-      .eq("id", attemptId);
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error ?? "Submission failed");
+      }
 
-    router.replace(`/student/exams/${attemptId}`);
+      router.replace(`/student/exams/${attemptId}`);
+    } catch (err) {
+      console.error(err);
+      submitted.current = false;
+      setSubmitting(false);
+      toast.error("Could not submit exam. Please try again.");
+    }
   }
 
   // Countdown timer
@@ -141,16 +146,16 @@ export default function ExamTaker({ attemptId, subject, questions, durationMinut
 
         {/* Question card */}
         <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5 sm:p-6">
-          {current.topics?.name && (
+          {current.topics?.title && (
             <p className="text-xs font-semibold text-[#94a3b8] uppercase tracking-wider mb-3">
-              {current.topics.name}
+              {current.topics.title}
             </p>
           )}
           <p className="text-sm font-semibold text-[#64748B] mb-3">
             Question {currentIdx + 1} of {questions.length}
           </p>
           <p className="text-sm sm:text-base font-semibold text-[#0f172a] leading-relaxed mb-5">
-            {current.body}
+            {current.prompt}
           </p>
 
           <div className="space-y-2.5">
@@ -183,21 +188,21 @@ export default function ExamTaker({ attemptId, subject, questions, durationMinut
           <button
             onClick={() => setCurrentIdx((i) => Math.max(0, i - 1))}
             disabled={currentIdx === 0}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-[#E2E8F0] text-sm font-semibold text-[#475569] hover:bg-[#F8FAFC] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex items-center gap-1.5 px-4 h-10 rounded-xl bg-white border border-[#E2E8F0] text-sm font-semibold text-[#475569] hover:bg-[#F8FAFC] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <ChevronLeft className="h-4 w-4" /> Previous
           </button>
           {currentIdx < questions.length - 1 ? (
             <button
               onClick={() => setCurrentIdx((i) => Math.min(questions.length - 1, i + 1))}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-[#E2E8F0] text-sm font-semibold text-[#475569] hover:bg-[#F8FAFC] transition-colors"
+              className="flex items-center gap-1.5 px-4 h-10 rounded-xl bg-white border border-[#E2E8F0] text-sm font-semibold text-[#475569] hover:bg-[#F8FAFC] transition-colors"
             >
               Next <ChevronRight className="h-4 w-4" />
             </button>
           ) : (
             <button
               onClick={() => setShowConfirm(true)}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1D4ED8] hover:bg-[#1e40af] text-white text-sm font-bold transition-colors"
+              className="flex items-center gap-1.5 px-4 h-10 rounded-xl bg-[#1D4ED8] hover:bg-[#1e40af] text-white text-sm font-bold transition-colors"
             >
               Finish <ChevronRight className="h-4 w-4" />
             </button>

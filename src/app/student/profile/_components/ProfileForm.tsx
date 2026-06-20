@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Loader2, Save } from "lucide-react";
+import { Loader2, Save, Link2 } from "lucide-react";
 import { toast } from "sonner";
-import { createClient } from "@/lib/supabase/client";
+import { saveStudentProfile } from "../actions";
 
 interface Props {
   userId: string;
@@ -12,12 +12,14 @@ interface Props {
     full_name: string;
     exam_target: string;
     phone: string;
+    parent_phone: string;
     school: string;
     grade_level: string;
   };
+  parentLinked: boolean;
 }
 
-export default function ProfileForm({ userId, email, initial }: Props) {
+export default function ProfileForm({ email, initial, parentLinked }: Props) {
   const [form, setForm] = useState(initial);
   const [saving, setSaving] = useState(false);
 
@@ -28,12 +30,9 @@ export default function ProfileForm({ userId, email, initial }: Props) {
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
-    const supabase = createClient();
-    const { error } = await supabase
-      .from("profiles")
-      .upsert({ id: userId, ...form, updated_at: new Date().toISOString() });
+    const result = await saveStudentProfile(form);
     setSaving(false);
-    if (error) toast.error(error.message);
+    if (result.error) toast.error(result.error);
     else toast.success("Profile saved!");
   }
 
@@ -69,14 +68,44 @@ export default function ProfileForm({ userId, email, initial }: Props) {
         </div>
 
         <div>
-          <label className={labelCls}>Phone number</label>
+          <label className={labelCls}>Your phone number <span className="font-normal text-[#94a3b8]">(optional)</span></label>
           <input
             type="tel"
             value={form.phone}
             onChange={(e) => set("phone", e.target.value)}
-            placeholder="+233 XX XXX XXXX"
+            placeholder="0244 123 456"
             className={inputCls}
           />
+        </div>
+      </div>
+
+      {/* Parent linking section */}
+      <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5 sm:p-6 space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="font-bold text-[#0f172a]">Parent / Guardian</h2>
+          {parentLinked && (
+            <span className="flex items-center gap-1.5 text-xs font-bold text-green-600 bg-green-50 px-3 py-1 rounded-full">
+              <Link2 className="h-3 w-3" /> Linked
+            </span>
+          )}
+        </div>
+
+        <div>
+          <label className={labelCls}>
+            Parent&apos;s mobile number <span className="font-normal text-[#94a3b8]">(optional)</span>
+          </label>
+          <input
+            type="tel"
+            value={form.parent_phone}
+            onChange={(e) => set("parent_phone", e.target.value)}
+            placeholder="0244 123 456"
+            className={inputCls}
+          />
+          <p className="text-xs text-[#94a3b8] mt-1.5">
+            {parentLinked
+              ? "Your parent is already linked. Update this if their number changes."
+              : "When your parent signs up with this number, they'll be automatically linked to your account."}
+          </p>
         </div>
       </div>
 

@@ -16,7 +16,7 @@ export default async function TeacherLessonsPage({
 
   const { data: topics } = await supabase
     .from("topics")
-    .select("id, name, subject_id, subjects(name, exam_type)")
+    .select("id, title, subject_id, subjects(name, exam_type)")
     .order("order_index");
 
   const { data: lessons } = await supabase
@@ -30,7 +30,7 @@ export default async function TeacherLessonsPage({
     ? { data: lessons }
     : await supabase
         .from("lessons")
-        .select("id, title, order_index, topic_id, topics(name, subjects(name))")
+        .select("id, title, order_index, topic_id, topics(title, subjects(name))")
         .order("order_index");
 
   return (
@@ -71,7 +71,7 @@ export default async function TeacherLessonsPage({
                 topicId === t.id ? "bg-[#1D4ED8] text-white border-[#1D4ED8]" : "bg-white text-[#475569] border-[#E2E8F0] hover:border-[#1D4ED8]/40"
               }`}
             >
-              {t.name}
+              {(t as any).title}
             </Link>
           ))}
         </div>
@@ -91,7 +91,7 @@ export default async function TeacherLessonsPage({
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold text-sm text-[#0f172a]">{lesson.title}</p>
                   <p className="text-xs text-[#94a3b8] mt-0.5">
-                    {topic?.subjects?.name} · {topic?.name}
+                    {topic?.subjects?.name} · {topic?.title}
                   </p>
                 </div>
                 <Link

@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { createClient as createServiceClient } from "@supabase/supabase-js";
 import ExamTaker from "./_components/ExamTaker";
 
 export default async function TakeExamPage({
@@ -22,44 +23,42 @@ export default async function TakeExamPage({
 
   if (!subject) redirect("/student/exams");
 
-  // Get all topics for this subject
   const { data: topics } = await supabase
     .from("topics")
     .select("id")
     .eq("subject_id", subjectId);
 
-  if (!topics || topics.length === 0) {
-    redirect(`/student/exams?error=no_questions`);
-  }
+  if (!topics || topics.length === 0) redirect("/student/exams?error=no_questions");
 
   const topicIds = topics.map((t) => t.id);
 
-  // Get questions (up to 40, shuffled)
-  const { data: rawQuestions } = await supabase
+  // Service role required — correct_answer is revoked from authenticated users
+  const admin = createServiceClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+
+  const { data: rawQuestions } = await admin
     .from("questions")
-    .select("id, body, options, correct_option, explanation, topic_id, topics(name)")
+    .select("id, prompt, options, correct_answer, explanation, topic_id, topics(title)")
     .in("topic_id", topicIds)
     .limit(60);
 
-  if (!rawQuestions || rawQuestions.length === 0) {
-    redirect(`/student/exams?error=no_questions`);
-  }
+  if (!rawQuestions || rawQuestions.length === 0) redirect("/student/exams?error=no_questions");
 
-  // Shuffle and take 40
-  const questions = (rawQuestions as unknown[])
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 40) as Array<{
-      id: string;
-      body: string;
-      options: Array<{ id: string; text: string }>;
-      correct_option: string;
-      explanation: string | null;
-      topic_id: string;
-      topics: { name: string } | null;
-    }>;
+  // Shuffle and take up to 40
+  const questions = ([...rawQuestions] as unknown as Array<{
+    id: string;
+    prompt: string;
+    options: Array<{ id: string; text: string }>;
+    correct_answer: string;
+    explanation: string | null;
+    topic_id: string;
+    topics: { title: string } | null;
+  }>).sort(() => Math.random() - 0.5).slice(0, 40);
 
-  // Create an attempt record
-  const { data: attempt } = await supabase
+  // Use service role for insert — RLS INSERT policy may not allow all columns
+  const { data: attempt, error: insertError } = await admin
     .from("exam_attempts")
     .insert({
       user_id: user.id,
@@ -71,7 +70,7 @@ export default async function TakeExamPage({
     .select("id")
     .single();
 
-  if (!attempt) redirect("/student/exams");
+  if (!attempt || insertError) redirect("/student/exams?error=insert_failed");
 
   return (
     <ExamTaker

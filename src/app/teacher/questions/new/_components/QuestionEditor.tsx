@@ -8,7 +8,7 @@ import { createClient } from "@/lib/supabase/client";
 
 type Topic = {
   id: string;
-  name: string;
+  title: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   subjects: any;
 };
@@ -26,7 +26,7 @@ interface Props {
   topics: Topic[];
   preselectedTopicId: string | null;
   questionId?: string;
-  initialBody?: string;
+  initialPrompt?: string;
   initialOptions?: OptionItem[];
   initialCorrect?: string;
   initialExplanation?: string;
@@ -37,7 +37,7 @@ export default function QuestionEditor({
   topics,
   preselectedTopicId,
   questionId,
-  initialBody = "",
+  initialPrompt = "",
   initialOptions = DEFAULT_OPTIONS,
   initialCorrect = "a",
   initialExplanation = "",
@@ -45,7 +45,7 @@ export default function QuestionEditor({
 }: Props) {
   const router = useRouter();
   const [topicId, setTopicId] = useState(preselectedTopicId ?? topics[0]?.id ?? "");
-  const [body, setBody] = useState(initialBody);
+  const [prompt, setPrompt] = useState(initialPrompt);
   const [options, setOptions] = useState<OptionItem[]>(initialOptions);
   const [correct, setCorrect] = useState(initialCorrect);
   const [explanation, setExplanation] = useState(initialExplanation);
@@ -72,7 +72,7 @@ export default function QuestionEditor({
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
-    if (!body.trim()) { toast.error("Question body is required."); return; }
+    if (!prompt.trim()) { toast.error("Question prompt is required."); return; }
     if (options.some((o) => !o.text.trim())) { toast.error("All options must have text."); return; }
     if (!topicId) { toast.error("Please select a topic."); return; }
 
@@ -80,9 +80,9 @@ export default function QuestionEditor({
     const supabase = createClient();
     const payload = {
       topic_id: topicId,
-      body: body.trim(),
+      prompt: prompt.trim(),
       options,
-      correct_option: correct,
+      correct_answer: correct,
       explanation: explanation.trim() || null,
       difficulty,
     };
@@ -99,7 +99,7 @@ export default function QuestionEditor({
       if (error) { toast.error(error.message); return; }
       toast.success("Question added!");
       if (addAnother) {
-        setBody("");
+        setPrompt("");
         setOptions(DEFAULT_OPTIONS);
         setCorrect("a");
         setExplanation("");
@@ -121,7 +121,7 @@ export default function QuestionEditor({
             <select value={topicId} onChange={(e) => setTopicId(e.target.value)} required className={inputCls}>
               <option value="">Select topic…</option>
               {topics.map((t) => (
-                <option key={t.id} value={t.id}>{t.subjects?.name} · {t.name}</option>
+                <option key={t.id} value={t.id}>{t.subjects?.name} · {t.title}</option>
               ))}
             </select>
           </div>
@@ -148,12 +148,12 @@ export default function QuestionEditor({
           </div>
         </div>
 
-        {/* Question body */}
+        {/* Question prompt */}
         <div>
           <label className="block text-sm font-semibold text-[#334155] mb-1.5">Question</label>
           <textarea
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
             placeholder="Write the question here…"
             required
             rows={3}

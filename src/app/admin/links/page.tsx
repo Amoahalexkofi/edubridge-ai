@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { createClient as createServiceClient } from "@supabase/supabase-js";
 import { Link2 } from "lucide-react";
 import LinkParentForm from "./_components/LinkParentForm";
 
@@ -7,6 +8,11 @@ export default async function AdminLinksPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
+
+  const admin = createServiceClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
 
   // Get all parent-student links
   const { data: links } = await supabase
@@ -25,9 +31,9 @@ export default async function AdminLinksPage() {
   const nameMap: Record<string, string> = {};
   profiles?.forEach((p) => { nameMap[p.id] = p.full_name ?? "—"; });
 
-  // Get all parents and students for the form
-  const { data: parentRoles } = await supabase.from("user_roles").select("user_id").eq("role", "parent");
-  const { data: studentRoles } = await supabase.from("user_roles").select("user_id").eq("role", "student");
+  // Get all parents and students for the form — service role bypasses RLS
+  const { data: parentRoles } = await admin.from("user_roles").select("user_id").eq("role", "parent");
+  const { data: studentRoles } = await admin.from("user_roles").select("user_id").eq("role", "student");
 
   const parentIds = parentRoles?.map((r) => r.user_id) ?? [];
   const studentIds = studentRoles?.map((r) => r.user_id) ?? [];

@@ -32,12 +32,12 @@ export default async function PracticePage({
 
   let questions: Array<{
     id: string;
-    body: string;
+    prompt: string;
     options: Array<{ id: string; text: string }>;
-    correct_option: string;
+    correct_answer: string;
     explanation: string | null;
     topic_id: string;
-    topics: { name: string } | null;
+    topics: { title: string } | null;
   }> = [];
 
   if (activeSubjectId) {
@@ -51,7 +51,7 @@ export default async function PracticePage({
       const ids = topicIds.map((t) => t.id);
       const { data: rawQuestions } = await supabase
         .from("questions")
-        .select("id, body, options, correct_option, explanation, topic_id, topics(name)")
+        .select("id, prompt, options, correct_answer, explanation, topic_id, topics(title)")
         .in("topic_id", ids)
         .limit(20);
 

@@ -8,7 +8,6 @@ import {
   CheckCircle2, ArrowRight, ArrowLeft,
 } from "lucide-react";
 import { toast } from "sonner";
-import { createClient } from "@/lib/supabase/client";
 import BrandPanel from "../_components/BrandPanel";
 
 type Role = "student" | "teacher" | "parent";
@@ -63,6 +62,10 @@ export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [phone, setPhone] = useState("");
+  const [parentPhone, setParentPhone] = useState("");
+  const [school, setSchool] = useState("");
+  const [gradeLevel, setGradeLevel] = useState("");
 
   const currentStep = step === "role" ? 1 : step === "details" ? 2 : 3;
 
@@ -71,25 +74,32 @@ export default function SignupPage() {
     if (password !== confirmPassword) { toast.error("Passwords do not match."); return; }
     if (password.length < 8) { toast.error("Password must be at least 8 characters."); return; }
     if (selectedRole === "student" && !examTarget) { toast.error("Please select BECE or WASSCE."); return; }
+    if (selectedRole === "teacher" && !examTarget) { toast.error("Please select the level you teach (JHS or SHS)."); return; }
 
     setLoading(true);
-    const supabase = createClient();
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { data: { full_name: fullName, role: selectedRole } },
+    const res = await fetch("/api/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email,
+        password,
+        fullName,
+        role: selectedRole,
+        examTarget: examTarget ?? null,
+        phone: phone || null,
+        parentPhone: parentPhone || null,
+        school: school || null,
+        gradeLevel: gradeLevel || null,
+      }),
     });
-    if (error) { setLoading(false); toast.error(error.message); return; }
+    setLoading(false);
 
-    // Save exam_target immediately for students
-    if (selectedRole === "student" && examTarget && data.user) {
-      await supabase.from("profiles").upsert({
-        id: data.user.id,
-        exam_target: examTarget,
-      });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      toast.error(data.error ?? "Something went wrong. Please try again.");
+      return;
     }
 
-    setLoading(false);
     setStep("success");
   }
 
@@ -101,7 +111,7 @@ export default function SignupPage() {
       <div className="flex-1 flex flex-col min-h-screen bg-white">
 
         {/* Top bar */}
-        <div className="flex items-center justify-between px-8 sm:px-12 py-5 border-b border-slate-100">
+        <div className="flex items-center justify-between px-4 sm:px-8 lg:px-12 py-5 border-b border-slate-100">
           {/* Back to home — desktop */}
           <Link href="/" className="hidden lg:inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-900 font-medium transition-colors">
             <ArrowLeft className="h-4 w-4" /> Back to home
@@ -372,7 +382,7 @@ export default function SignupPage() {
                     )}
                   </div>
 
-                  {/* BECE / WASSCE — students only */}
+                  {/* BECE / WASSCE — students */}
                   {selectedRole === "student" && (
                     <div className="space-y-2">
                       <label className="block text-sm font-semibold text-slate-700">
@@ -385,7 +395,7 @@ export default function SignupPage() {
                             <button
                               key={opt.value}
                               type="button"
-                              onClick={() => setExamTarget(opt.value)}
+                              onClick={() => { setExamTarget(opt.value); setGradeLevel(""); }}
                               className={`flex flex-col items-start gap-1 p-4 rounded-xl border-2 text-left transition-all ${
                                 active
                                   ? "border-[#1B3A8A] bg-[#EEF2FF]"
@@ -406,9 +416,120 @@ export default function SignupPage() {
                     </div>
                   )}
 
+                  {/* JHS / SHS — teachers */}
+                  {selectedRole === "teacher" && (
+                    <div className="space-y-2">
+                      <label className="block text-sm font-semibold text-slate-700">
+                        Which level do you teach?
+                      </label>
+                      <div className="grid grid-cols-2 gap-3">
+                        {[
+                          { value: "bece" as ExamTarget, badge: "JHS", label: "Junior High", description: "BECE — Junior High School (JHS 1–3)" },
+                          { value: "wassce" as ExamTarget, badge: "SHS", label: "Senior High", description: "WASSCE — Senior High School (SHS 1–3)" },
+                        ].map((opt) => {
+                          const active = examTarget === opt.value;
+                          return (
+                            <button
+                              key={opt.value}
+                              type="button"
+                              onClick={() => setExamTarget(opt.value)}
+                              className={`flex flex-col items-start gap-1 p-4 rounded-xl border-2 text-left transition-all ${
+                                active
+                                  ? "border-[#E8722A] bg-orange-50"
+                                  : "border-slate-200 bg-white hover:border-slate-300"
+                              }`}
+                            >
+                              <div className="flex items-center gap-2">
+                                <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${active ? "bg-[#E8722A] text-white" : "bg-slate-100 text-slate-600"}`}>
+                                  {opt.badge}
+                                </span>
+                                <span className={`font-bold text-sm ${active ? "text-[#E8722A]" : "text-slate-800"}`}>{opt.label}</span>
+                              </div>
+                              <p className="text-xs text-slate-500 leading-snug">{opt.description}</p>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Grade / class — students only, appears after exam is chosen */}
+                  {selectedRole === "student" && examTarget && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <label htmlFor="gradeLevel" className="block text-sm font-semibold text-slate-700">
+                          Your class <span className="text-slate-400 font-normal">(optional)</span>
+                        </label>
+                        <select
+                          id="gradeLevel"
+                          value={gradeLevel}
+                          onChange={(e) => setGradeLevel(e.target.value)}
+                          className="w-full h-12 px-4 rounded-xl border border-slate-200 bg-white text-slate-900 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all appearance-none"
+                        >
+                          <option value="">Select class</option>
+                          {(examTarget === "bece"
+                            ? ["JHS 1", "JHS 2", "JHS 3"]
+                            : ["SHS 1", "SHS 2", "SHS 3"]
+                          ).map((g) => (
+                            <option key={g} value={g}>{g}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="space-y-2">
+                        <label htmlFor="school" className="block text-sm font-semibold text-slate-700">
+                          School name <span className="text-slate-400 font-normal">(optional)</span>
+                        </label>
+                        <input
+                          id="school"
+                          type="text"
+                          placeholder="e.g. Accra Academy"
+                          value={school}
+                          onChange={(e) => setSchool(e.target.value)}
+                          className="w-full h-12 px-4 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Parent phone — students only */}
+                  {selectedRole === "student" && (
+                    <div className="space-y-2">
+                      <label htmlFor="parentPhone" className="block text-sm font-semibold text-slate-700">
+                        Parent / Guardian phone <span className="text-slate-400 font-normal">(optional)</span>
+                      </label>
+                      <input
+                        id="parentPhone"
+                        type="tel"
+                        placeholder="0244 123 456"
+                        value={parentPhone}
+                        onChange={(e) => setParentPhone(e.target.value)}
+                        className="w-full h-12 px-4 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
+                      />
+                      <p className="text-xs text-slate-400">When your parent signs up with this number, they&apos;ll be auto-linked to your account.</p>
+                    </div>
+                  )}
+
+                  {/* Own phone — parents only */}
+                  {selectedRole === "parent" && (
+                    <div className="space-y-2">
+                      <label htmlFor="phone" className="block text-sm font-semibold text-slate-700">
+                        Your mobile number <span className="text-slate-400 font-normal">(optional)</span>
+                      </label>
+                      <input
+                        id="phone"
+                        type="tel"
+                        placeholder="0244 123 456"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        className="w-full h-12 px-4 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
+                      />
+                      <p className="text-xs text-slate-400">If your child has already registered and entered this number, you&apos;ll be auto-linked.</p>
+                    </div>
+                  )}
+
                   <button
                     type="submit"
-                    disabled={loading || (selectedRole === "student" && !examTarget)}
+                    disabled={loading || ((selectedRole === "student" || selectedRole === "teacher") && !examTarget)}
                     className="w-full h-12 flex items-center justify-center gap-2 bg-[#E8722A] hover:bg-[#d4641e] active:scale-[0.98] text-white font-bold rounded-xl transition-all disabled:opacity-60 disabled:cursor-not-allowed shadow-[0_4px_14px_rgba(232,114,42,0.35)] hover:shadow-[0_6px_20px_rgba(232,114,42,0.4)] text-sm mt-2"
                   >
                     {loading ? (
