@@ -19,6 +19,7 @@ interface Props {
 }
 
 const STORAGE_KEY = (examTarget: string) => `edubridge-chat-${examTarget}`;
+const SEEN_KEY = (examTarget: string) => `edubridge-chat-seen-${examTarget}`;
 
 function welcomeMsg(firstName: string, examTarget: string): Message {
   return {
@@ -56,6 +57,8 @@ export default function FloatingTutor({ firstName, examTarget }: Props) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [minimised, setMinimised] = useState(false);
+  // How many assistant messages the student has already seen (-1 = not yet initialised)
+  const [lastSeen, setLastSeen] = useState<number>(-1);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -85,6 +88,26 @@ export default function FloatingTutor({ firstName, examTarget }: Props) {
       setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [open, minimised]);
+
+  const assistantCount = messages.filter((m) => m.role === "assistant").length;
+
+  // Initialise "seen" to the current count on first mount (existing history
+  // isn't treated as unread), reading any previously stored value.
+  useEffect(() => {
+    const stored = (() => { try { return localStorage.getItem(SEEN_KEY(examTarget)); } catch { return null; } })();
+    setLastSeen(stored != null ? parseInt(stored, 10) : assistantCount);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [examTarget]);
+
+  // While the panel is open and visible, everything is considered seen.
+  useEffect(() => {
+    if (open && !minimised) {
+      setLastSeen(assistantCount);
+      try { localStorage.setItem(SEEN_KEY(examTarget), String(assistantCount)); } catch {}
+    }
+  }, [open, minimised, assistantCount, examTarget]);
+
+  const unread = lastSeen < 0 ? 0 : Math.max(0, assistantCount - lastSeen);
 
   // Hide on the AI Tutor page itself
   if (pathname === "/student/ai-tutor") return null;
@@ -229,18 +252,29 @@ export default function FloatingTutor({ firstName, examTarget }: Props) {
           title="Ask the AI Tutor"
           className="group fixed z-50 bottom-20 right-4 lg:bottom-6 lg:right-6 flex items-center h-14 w-14 sm:w-auto justify-center sm:justify-start rounded-full sm:gap-3 sm:pl-4 sm:pr-5 bg-gradient-to-br from-[#1B3A8A] to-[#1D4ED8] text-white shadow-[0_8px_28px_rgba(27,58,138,0.45)] hover:shadow-[0_14px_40px_rgba(27,58,138,0.55)] hover:-translate-y-0.5 transition-all active:scale-95"
         >
-          {/* Icon with a soft pulse halo */}
+          {/* Icon — pulse halo only when there's a new message */}
           <span className="relative flex items-center justify-center flex-shrink-0">
-            <span className="absolute inline-flex h-9 w-9 rounded-full bg-white/15 animate-ping" />
+            {unread > 0 && (
+              <span className="absolute inline-flex h-9 w-9 rounded-full bg-white/20 animate-ping" />
+            )}
             <Brain className="relative h-6 w-6" />
           </span>
           {/* Label — desktop only */}
           <span className="hidden sm:flex flex-col items-start leading-none">
             <span className="font-bold text-sm">Ask AI Tutor</span>
             <span className="text-[10px] text-white/75 mt-1 flex items-center gap-1">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#4ade80]" /> Online · {examTarget}
+              {unread > 0
+                ? <><span className="h-1.5 w-1.5 rounded-full bg-[#E8722A]" /> {unread} new {unread === 1 ? "reply" : "replies"}</>
+                : <><span className="h-1.5 w-1.5 rounded-full bg-[#4ade80]" /> Online · {examTarget}</>}
             </span>
           </span>
+
+          {/* Unread badge */}
+          {unread > 0 && (
+            <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1.5 rounded-full bg-[#E8722A] text-[10px] font-black text-white flex items-center justify-center border-2 border-white shadow-sm">
+              {unread > 9 ? "9+" : unread}
+            </span>
+          )}
         </button>
       )}
 
