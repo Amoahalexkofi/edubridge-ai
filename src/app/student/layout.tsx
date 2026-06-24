@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import StudentNav from "./_components/StudentNav";
 import FloatingTutor from "./_components/FloatingTutor";
+import VerifyEmailBanner from "./_components/VerifyEmailBanner";
 import Link from "next/link";
 import { Eye, ArrowLeft } from "lucide-react";
 
@@ -16,12 +17,17 @@ export default async function StudentLayout({ children }: { children: React.Reac
   ]);
 
   const isPreviewingAdmin = roleRow?.role === "admin" || roleRow?.role === "teacher";
+  const isRealStudent = roleRow?.role === "student";
 
   // Real students who never set an exam target (e.g. signed up via Google OAuth,
   // which skips the details step) must pick one before using the app.
-  if (roleRow?.role === "student" && !profile?.exam_target) {
+  if (isRealStudent && !profile?.exam_target) {
     redirect("/onboarding");
   }
+
+  // Unverified students get limited access (dashboard + profile only). Feature
+  // pages enforce this server-side; here we surface the banner + nav locks.
+  const locked = isRealStudent && !user.email_confirmed_at;
 
   return (
     <div className="min-h-screen bg-[#F1F5F9]">
@@ -45,20 +51,29 @@ export default async function StudentLayout({ children }: { children: React.Reac
         examTarget={profile?.exam_target ?? null}
         avatarUrl={profile?.avatar_url ?? null}
         previewOffset={isPreviewingAdmin}
+        locked={locked}
       />
 
       {/* Desktop: offset for sidebar. Mobile: top header + bottom nav spacers */}
       <main className={`lg:pl-60 min-h-screen ${isPreviewingAdmin ? "pt-10" : ""}`}>
         <div className="pt-14 pb-20 lg:pt-0 lg:pb-0">
+          {locked && (
+            <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-6">
+              <VerifyEmailBanner email={user.email ?? ""} />
+            </div>
+          )}
           {children}
         </div>
       </main>
 
-      <FloatingTutor
-        userId={user.id}
-        firstName={profile?.full_name?.split(" ")[0] ?? "there"}
-        examTarget={(profile?.exam_target ?? "bece").toUpperCase()}
-      />
+      {/* AI Tutor is a gated feature — hide the launcher until verified */}
+      {!locked && (
+        <FloatingTutor
+          userId={user.id}
+          firstName={profile?.full_name?.split(" ")[0] ?? "there"}
+          examTarget={(profile?.exam_target ?? "bece").toUpperCase()}
+        />
+      )}
     </div>
   );
 }

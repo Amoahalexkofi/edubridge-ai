@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/client";
 import {
   Eye, EyeOff, Loader2, BookOpen, Users, User,
   CheckCircle2, ArrowRight, ArrowLeft, ChevronDown,
@@ -67,8 +69,28 @@ export default function SignupPage() {
   const [parentPhone, setParentPhone] = useState("");
   const [school, setSchool] = useState("");
   const [gradeLevel, setGradeLevel] = useState("");
+  const [continuing, setContinuing] = useState(false);
+  const router = useRouter();
 
   const currentStep = step === "role" ? 1 : step === "details" ? 2 : 3;
+
+  const ROLE_HOME: Record<Role, string> = { student: "/student", teacher: "/teacher", parent: "/parent" };
+
+  // Log the brand-new (still unverified) user straight in and take them to their
+  // dashboard. Email verification is enforced as feature gating inside the app.
+  async function continueToDashboard() {
+    setContinuing(true);
+    const supabase = createClient();
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      setContinuing(false);
+      // Falls here if Supabase still requires email confirmation to sign in.
+      toast.error("Account created. Please sign in to continue.");
+      router.push("/login");
+      return;
+    }
+    router.push(ROLE_HOME[selectedRole ?? "student"] ?? "/student");
+  }
 
   async function handleSignup(e: React.FormEvent) {
     e.preventDefault();
@@ -183,14 +205,16 @@ export default function SignupPage() {
                 <p className="text-slate-500 text-sm mb-8 leading-relaxed max-w-sm mx-auto">
                   We sent a verification link to{" "}
                   <span className="font-semibold text-slate-800">{email}</span>.
-                  {" "}Open it to activate your account and start learning.
+                  {" "}Verify it to unlock everything — meanwhile you can get started now.
                 </p>
-                <Link
-                  href="/login"
-                  className="inline-flex items-center justify-center gap-2 w-full h-12 bg-[#E8722A] hover:bg-[#d4641e] text-white font-bold rounded-xl text-sm transition-all shadow-[0_4px_14px_rgba(232,114,42,0.35)]"
+                <button
+                  type="button"
+                  onClick={continueToDashboard}
+                  disabled={continuing}
+                  className="inline-flex items-center justify-center gap-2 w-full h-12 bg-[#E8722A] hover:bg-[#d4641e] text-white font-bold rounded-xl text-sm transition-all shadow-[0_4px_14px_rgba(232,114,42,0.35)] disabled:opacity-60"
                 >
-                  Go to sign in <ArrowRight className="h-4 w-4" />
-                </Link>
+                  {continuing ? <><Loader2 className="h-4 w-4 animate-spin" /> Taking you in…</> : <>Continue <ArrowRight className="h-4 w-4" /></>}
+                </button>
               </div>
             )}
 

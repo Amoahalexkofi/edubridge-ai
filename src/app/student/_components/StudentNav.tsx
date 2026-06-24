@@ -5,18 +5,19 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard, BookOpen, PenLine,
-  FileText, User, LogOut, GraduationCap, Flame, Brain, Trophy,
+  FileText, User, LogOut, GraduationCap, Flame, Brain, Trophy, Lock,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
+// `locks: true` means the item requires a verified email.
 const navItems = [
-  { href: "/student",             label: "Home",      icon: LayoutDashboard },
-  { href: "/student/subjects",    label: "Subjects",  icon: BookOpen        },
-  { href: "/student/practice",    label: "Practice",  icon: PenLine         },
-  { href: "/student/exams",       label: "Exams",     icon: FileText        },
-  { href: "/student/ai-tutor",    label: "AI Tutor",  icon: Brain           },
-  { href: "/student/leaderboard", label: "Rankings",  icon: Trophy          },
-  { href: "/student/profile",     label: "Profile",   icon: User            },
+  { href: "/student",             label: "Home",      icon: LayoutDashboard, locks: false },
+  { href: "/student/subjects",    label: "Subjects",  icon: BookOpen,        locks: true  },
+  { href: "/student/practice",    label: "Practice",  icon: PenLine,         locks: true  },
+  { href: "/student/exams",       label: "Exams",     icon: FileText,        locks: true  },
+  { href: "/student/ai-tutor",    label: "AI Tutor",  icon: Brain,           locks: true  },
+  { href: "/student/leaderboard", label: "Rankings",  icon: Trophy,          locks: true  },
+  { href: "/student/profile",     label: "Profile",   icon: User,            locks: false },
 ];
 
 interface Props {
@@ -24,9 +25,10 @@ interface Props {
   examTarget: string | null;
   avatarUrl: string | null;
   previewOffset?: boolean;
+  locked?: boolean;
 }
 
-export default function StudentNav({ userName, examTarget, avatarUrl, previewOffset }: Props) {
+export default function StudentNav({ userName, examTarget, avatarUrl, previewOffset, locked }: Props) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -75,8 +77,20 @@ export default function StudentNav({ userName, examTarget, avatarUrl, previewOff
 
       {/* ── Mobile bottom tab bar ── */}
       <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-slate-100 flex items-center justify-around px-2 pb-safe shadow-[0_-1px_3px_rgba(0,0,0,0.06)]" style={{ height: "64px" }}>
-        {navItems.map(({ href, label, icon: Icon }) => {
+        {navItems.map(({ href, label, icon: Icon, locks }) => {
           const active = isActive(href);
+          const isLocked = locked && locks;
+          if (isLocked) {
+            return (
+              <div key={href} title="Verify your email to unlock" className="flex flex-col items-center justify-center gap-0.5 min-w-[52px] py-1.5 rounded-xl text-slate-300 cursor-not-allowed">
+                <div className="relative">
+                  <Icon className="h-5 w-5 stroke-[1.75]" />
+                  <Lock className="h-2.5 w-2.5 absolute -top-1 -right-1.5 text-amber-500" />
+                </div>
+                <span className="text-[10px] font-semibold">{label}</span>
+              </div>
+            );
+          }
           return (
             <Link
               key={href}
@@ -105,8 +119,22 @@ export default function StudentNav({ userName, examTarget, avatarUrl, previewOff
 
         {/* Nav items */}
         <nav className="flex-1 overflow-y-auto py-5 px-3 space-y-1">
-          {navItems.map(({ href, label, icon: Icon }) => {
+          {navItems.map(({ href, label, icon: Icon, locks }) => {
             const active = isActive(href);
+            const isLocked = locked && locks;
+            if (isLocked) {
+              return (
+                <div
+                  key={href}
+                  title="Verify your email to unlock"
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-300 cursor-not-allowed"
+                >
+                  <Icon className="h-[18px] w-[18px] flex-shrink-0 stroke-2" />
+                  {label}
+                  <Lock className="ml-auto h-3.5 w-3.5 text-amber-400" />
+                </div>
+              );
+            }
             return (
               <Link
                 key={href}

@@ -20,6 +20,7 @@ export default async function ExamsPage({
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
+  if (!user.email_confirmed_at) redirect("/student?verify=1"); // unverified students are limited to dashboard + profile
 
   const { error: errorCode } = await searchParams;
   const errorMessage = errorCode ? (ERROR_MESSAGES[errorCode] ?? "Something went wrong. Please try again.") : null;
