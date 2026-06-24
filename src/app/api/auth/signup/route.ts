@@ -127,13 +127,19 @@ export async function POST(request: Request) {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
-  // Create user + generate confirmation link in one call (no default Supabase email)
+  // Create user + generate confirmation link in one call (no default Supabase email).
+  // Pass full_name + role as user_metadata so the handle_new_user DB trigger sets
+  // them atomically at user creation — this is the authoritative capture and does
+  // not depend on the follow-up profile upsert succeeding.
   const redirectTo = `${origin}/auth/callback?role=${encodeURIComponent(role)}`;
   const { data: linkData, error: linkError } = await admin.auth.admin.generateLink({
     type: "signup",
     email,
     password,
-    options: { redirectTo },
+    options: {
+      data: { full_name: fullName, role },
+      redirectTo,
+    },
   });
 
   if (linkError || !linkData.properties?.action_link) {
@@ -147,8 +153,11 @@ export async function POST(request: Request) {
   const normPhone = phone ? normalizePhone(phone) : null;
   const normParentPhone = parentPhone ? normalizePhone(parentPhone) : null;
 
-  // Save profile data
-  await admin.from("profiles").upsert({
+  // Save the rest of the profile. The trigger has already set full_name + role,
+  // so we also re-assert full_name here and add exam target / school / phones.
+  // Retry once to absorb any race with the trigger's initial INSERT; surface a
+  // real error instead of failing silently.
+  const profilePayload = {
     id: userId,
     full_name: fullName,
     ...(examTarget ? { exam_target: examTarget } : {}),
@@ -156,7 +165,17 @@ export async function POST(request: Request) {
     ...(normParentPhone ? { parent_phone: normParentPhone } : {}),
     ...(school ? { school } : {}),
     ...(gradeLevel ? { grade_level: gradeLevel } : {}),
-  });
+  };
+  let { error: profileError } = await admin.from("profiles").upsert(profilePayload);
+  if (profileError) {
+    await new Promise((r) => setTimeout(r, 400));
+    ({ error: profileError } = await admin.from("profiles").upsert(profilePayload));
+  }
+  if (profileError) {
+    // Name + role are safe (set by the trigger via metadata); only extra fields
+    // like exam target may be missing — onboarding will catch that. Log loudly.
+    console.error("signup: profile upsert failed:", profileError.message);
+  }
 
   // Fix role — DB trigger auto-inserts "student", override if needed
   if (role !== "student") {
