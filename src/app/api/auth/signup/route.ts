@@ -119,6 +119,14 @@ export async function POST(request: Request) {
   if (!email || !password || !fullName || !role) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
   }
+  // Students must provide exam target, class, and a parent/guardian phone.
+  if (role === "student") {
+    if (!examTarget) return NextResponse.json({ error: "Please select BECE or WASSCE." }, { status: 400 });
+    if (!gradeLevel) return NextResponse.json({ error: "Please select your class." }, { status: 400 });
+    if (!parentPhone || !String(parentPhone).trim()) {
+      return NextResponse.json({ error: "Parent / guardian phone number is required." }, { status: 400 });
+    }
+  }
 
   const origin = new URL(request.url).origin;
 

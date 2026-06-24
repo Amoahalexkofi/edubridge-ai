@@ -75,6 +75,8 @@ export default function SignupPage() {
     if (password.length < 8) { toast.error("Password must be at least 8 characters."); return; }
     if (selectedRole === "student" && !examTarget) { toast.error("Please select BECE or WASSCE."); return; }
     if (selectedRole === "teacher" && !examTarget) { toast.error("Please select the level you teach (JHS or SHS)."); return; }
+    if (selectedRole === "student" && !gradeLevel) { toast.error("Please select your class."); return; }
+    if (selectedRole === "student" && !parentPhone.trim()) { toast.error("Please enter your parent / guardian's phone number."); return; }
 
     setLoading(true);
     const res = await fetch("/api/auth/signup", {
@@ -458,20 +460,21 @@ export default function SignupPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <label htmlFor="gradeLevel" className="block text-sm font-semibold text-slate-700">
-                          Your class <span className="text-slate-400 font-normal">(optional)</span>
+                          Your class <span className="text-red-500">*</span>
                         </label>
                         <select
                           id="gradeLevel"
                           value={gradeLevel}
                           onChange={(e) => setGradeLevel(e.target.value)}
+                          required
                           className="w-full h-12 px-4 rounded-xl border border-slate-200 bg-white text-slate-900 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all appearance-none"
                         >
                           <option value="">Select class</option>
                           {(examTarget === "bece"
-                            ? ["JHS 1", "JHS 2", "JHS 3"]
-                            : ["SHS 1", "SHS 2", "SHS 3"]
+                            ? [{ v: "JHS1", l: "JHS 1" }, { v: "JHS2", l: "JHS 2" }, { v: "JHS3", l: "JHS 3" }]
+                            : [{ v: "SHS1", l: "SHS 1 / Form 1" }, { v: "SHS2", l: "SHS 2 / Form 2" }, { v: "SHS3", l: "SHS 3 / Form 3" }]
                           ).map((g) => (
-                            <option key={g} value={g}>{g}</option>
+                            <option key={g.v} value={g.v}>{g.l}</option>
                           ))}
                         </select>
                       </div>
@@ -495,7 +498,7 @@ export default function SignupPage() {
                   {selectedRole === "student" && (
                     <div className="space-y-2">
                       <label htmlFor="parentPhone" className="block text-sm font-semibold text-slate-700">
-                        Parent / Guardian phone <span className="text-slate-400 font-normal">(optional)</span>
+                        Parent / Guardian phone <span className="text-red-500">*</span>
                       </label>
                       <input
                         id="parentPhone"
@@ -503,6 +506,7 @@ export default function SignupPage() {
                         placeholder="0244 123 456"
                         value={parentPhone}
                         onChange={(e) => setParentPhone(e.target.value)}
+                        required
                         className="w-full h-12 px-4 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
                       />
                       <p className="text-xs text-slate-400">When your parent signs up with this number, they&apos;ll be auto-linked to your account.</p>
@@ -529,7 +533,11 @@ export default function SignupPage() {
 
                   <button
                     type="submit"
-                    disabled={loading || ((selectedRole === "student" || selectedRole === "teacher") && !examTarget)}
+                    disabled={
+                      loading ||
+                      ((selectedRole === "student" || selectedRole === "teacher") && !examTarget) ||
+                      (selectedRole === "student" && (!gradeLevel || !parentPhone.trim()))
+                    }
                     className="w-full h-12 flex items-center justify-center gap-2 bg-[#E8722A] hover:bg-[#d4641e] active:scale-[0.98] text-white font-bold rounded-xl transition-all disabled:opacity-60 disabled:cursor-not-allowed shadow-[0_4px_14px_rgba(232,114,42,0.35)] hover:shadow-[0_6px_20px_rgba(232,114,42,0.4)] text-sm mt-2"
                   >
                     {loading ? (
