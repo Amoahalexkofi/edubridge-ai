@@ -46,8 +46,11 @@ function LoginForm() {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
-      if (error.message.toLowerCase().includes("email not confirmed")) {
+      const msg = error.message.toLowerCase();
+      if (msg.includes("email not confirmed")) {
         setUnverified(true);
+      } else if (msg.includes("banned") || msg.includes("deactivat")) {
+        toast.error("This account has been deactivated. Please contact support.");
       } else {
         toast.error(error.message);
       }

@@ -4,6 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { Users, AlertTriangle } from "lucide-react";
 import RoleChanger from "./_components/RoleChanger";
 import VerifyButton from "./_components/VerifyButton";
+import DeactivateButton from "./_components/DeactivateButton";
 
 const roleColors: Record<string, string> = {
   student: "bg-blue-50 text-blue-700",
@@ -41,9 +42,12 @@ export default async function AdminUsersPage({
   const roleMap: Record<string, string> = {};
   roles?.forEach((r) => { roleMap[r.user_id] = r.role; });
 
-  const authMap: Record<string, { email: string; verified: boolean }> = {};
+  const authMap: Record<string, { email: string; verified: boolean; deactivated: boolean }> = {};
   authData?.users?.forEach((u) => {
-    authMap[u.id] = { email: u.email ?? "", verified: !!u.email_confirmed_at };
+    // banned_until set and in the future ⇒ account is deactivated
+    const bannedUntil = (u as { banned_until?: string }).banned_until;
+    const deactivated = !!bannedUntil && new Date(bannedUntil) > new Date();
+    authMap[u.id] = { email: u.email ?? "", verified: !!u.email_confirmed_at, deactivated };
   });
 
   let combined = (profiles ?? []).map((p) => ({
@@ -51,6 +55,7 @@ export default async function AdminUsersPage({
     role: roleMap[p.id] ?? "student",
     email: authMap[p.id]?.email ?? "",
     verified: authMap[p.id]?.verified ?? false,
+    deactivated: authMap[p.id]?.deactivated ?? false,
   }));
 
   if (filterRole) combined = combined.filter((u) => u.role === filterRole);
@@ -154,7 +159,14 @@ export default async function AdminUsersPage({
                     {initials(u.full_name ?? "")}
                   </div>
                   <div className="min-w-0">
-                    <p className="text-sm font-semibold text-slate-900 truncate">{u.full_name ?? "—"}</p>
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm font-semibold text-slate-900 truncate">{u.full_name ?? "—"}</p>
+                      {u.deactivated && (
+                        <span className="inline-flex items-center gap-1 text-[10px] font-bold text-red-600 bg-red-50 px-1.5 py-0.5 rounded-full flex-shrink-0">
+                          Deactivated
+                        </span>
+                      )}
+                    </div>
                     {!u.verified && <VerifyButton userId={u.id} />}
                   </div>
                 </div>
@@ -176,8 +188,11 @@ export default async function AdminUsersPage({
                 {/* Joined */}
                 <p className="text-xs text-slate-400">{formatDate(u.created_at)}</p>
 
-                {/* Role */}
-                <RoleChanger userId={u.id} currentRole={u.role} />
+                {/* Role + actions */}
+                <div className="flex items-center gap-2 justify-end">
+                  <RoleChanger userId={u.id} currentRole={u.role} />
+                  <DeactivateButton userId={u.id} deactivated={u.deactivated} isSelf={u.id === user.id} />
+                </div>
               </div>
             ))}
           </div>
