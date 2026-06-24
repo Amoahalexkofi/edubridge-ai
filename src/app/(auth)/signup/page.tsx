@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   Eye, EyeOff, Loader2, BookOpen, Users, User,
-  CheckCircle2, ArrowRight, ArrowLeft,
+  CheckCircle2, ArrowRight, ArrowLeft, ChevronDown,
 } from "lucide-react";
 import { toast } from "sonner";
 import BrandPanel from "../_components/BrandPanel";
@@ -473,21 +473,24 @@ export default function SignupPage() {
                         <label htmlFor="gradeLevel" className="block text-sm font-semibold text-slate-700">
                           Your class <span className="text-red-500">*</span>
                         </label>
-                        <select
-                          id="gradeLevel"
-                          value={gradeLevel}
-                          onChange={(e) => setGradeLevel(e.target.value)}
-                          required
-                          className="w-full h-12 px-4 rounded-xl border border-slate-200 bg-white text-slate-900 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all appearance-none"
-                        >
-                          <option value="">Select class</option>
-                          {(examTarget === "bece"
-                            ? [{ v: "JHS1", l: "JHS 1" }, { v: "JHS2", l: "JHS 2" }, { v: "JHS3", l: "JHS 3" }]
-                            : [{ v: "SHS1", l: "SHS 1 / Form 1" }, { v: "SHS2", l: "SHS 2 / Form 2" }, { v: "SHS3", l: "SHS 3 / Form 3" }]
-                          ).map((g) => (
-                            <option key={g.v} value={g.v}>{g.l}</option>
-                          ))}
-                        </select>
+                        <div className="relative">
+                          <select
+                            id="gradeLevel"
+                            value={gradeLevel}
+                            onChange={(e) => setGradeLevel(e.target.value)}
+                            required
+                            className="w-full h-12 pl-4 pr-10 rounded-xl border border-slate-200 bg-white text-slate-900 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all appearance-none cursor-pointer"
+                          >
+                            <option value="">Select class</option>
+                            {(examTarget === "bece"
+                              ? [{ v: "JHS1", l: "JHS 1" }, { v: "JHS2", l: "JHS 2" }, { v: "JHS3", l: "JHS 3" }]
+                              : [{ v: "SHS1", l: "SHS 1 / Form 1" }, { v: "SHS2", l: "SHS 2 / Form 2" }, { v: "SHS3", l: "SHS 3 / Form 3" }]
+                            ).map((g) => (
+                              <option key={g.v} value={g.v}>{g.l}</option>
+                            ))}
+                          </select>
+                          <ChevronDown className="h-4 w-4 text-slate-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                        </div>
                       </div>
                       <div className="space-y-2">
                         <label htmlFor="school" className="block text-sm font-semibold text-slate-700">
