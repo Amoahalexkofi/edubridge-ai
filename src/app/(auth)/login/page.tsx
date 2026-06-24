@@ -1,10 +1,9 @@
 "use client";
 
 import { useState, Suspense } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Eye, EyeOff, Loader2, ArrowRight, ArrowLeft } from "lucide-react";
+import { Eye, EyeOff, Loader2, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
 import BrandPanel from "../_components/BrandPanel";
@@ -90,24 +89,6 @@ function LoginForm() {
 
       {/* Right panel — full white, no floating card */}
       <div className="flex-1 flex flex-col min-h-screen bg-white">
-
-        {/* Top bar */}
-        <div className="flex items-center justify-between px-4 sm:px-8 lg:px-12 py-5 border-b border-slate-100">
-          {/* Back to home — desktop */}
-          <Link href="/" className="hidden lg:inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-900 font-medium transition-colors">
-            <ArrowLeft className="h-4 w-4" /> Back to home
-          </Link>
-          {/* Mobile: logo (tappable, goes home) */}
-          <Link href="/" className="lg:hidden">
-            <Image src="/logo-no-bg.png" alt="EduBridge Educational Solutions" width={120} height={120} className="h-11 w-auto object-contain" priority />
-          </Link>
-          <p className="text-sm text-slate-500">
-            New here?{" "}
-            <Link href="/signup" className="text-[#1B3A8A] font-semibold hover:underline">
-              Create an account
-            </Link>
-          </p>
-        </div>
 
         {/* Form area */}
         <div className="flex-1 flex flex-col justify-center px-8 sm:px-12 lg:px-16 xl:px-24 py-14">
