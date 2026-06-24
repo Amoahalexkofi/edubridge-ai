@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { Users, AlertTriangle } from "lucide-react";
 import RoleChanger from "./_components/RoleChanger";
+import VerifyButton from "./_components/VerifyButton";
 
 const roleColors: Record<string, string> = {
   student: "bg-blue-50 text-blue-700",
@@ -154,11 +155,7 @@ export default async function AdminUsersPage({
                   </div>
                   <div className="min-w-0">
                     <p className="text-sm font-semibold text-slate-900 truncate">{u.full_name ?? "—"}</p>
-                    {!u.verified && (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-600">
-                        <AlertTriangle className="h-2.5 w-2.5" /> Email not verified
-                      </span>
-                    )}
+                    {!u.verified && <VerifyButton userId={u.id} />}
                   </div>
                 </div>
 
