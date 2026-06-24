@@ -388,7 +388,7 @@ export default function SignupPage() {
                   {selectedRole === "student" && (
                     <div className="space-y-2">
                       <label className="block text-sm font-semibold text-slate-700">
-                        Which exam are you preparing for?
+                        Which exam are you preparing for? <span className="text-red-500">*</span>
                       </label>
                       <div className="grid grid-cols-2 gap-3">
                         {examOptions.map((opt) => {
@@ -422,7 +422,7 @@ export default function SignupPage() {
                   {selectedRole === "teacher" && (
                     <div className="space-y-2">
                       <label className="block text-sm font-semibold text-slate-700">
-                        Which level do you teach?
+                        Which level do you teach? <span className="text-red-500">*</span>
                       </label>
                       <div className="grid grid-cols-2 gap-3">
                         {[
