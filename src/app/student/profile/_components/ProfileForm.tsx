@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Loader2, Save, Link2, RotateCcw, GraduationCap, AlertTriangle, User, Users } from "lucide-react";
 import { toast } from "sonner";
 import { saveStudentProfile } from "../actions";
+import { sanitizeNameInput, nameError, sanitizePhoneInput, phoneError } from "@/lib/validation";
 
 interface Props {
   userId: string;
@@ -61,6 +62,16 @@ export default function ProfileForm({ email, initial, parentLinked }: Props) {
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
+    const nameErr = nameError(form.full_name);
+    if (nameErr) { toast.error(nameErr); return; }
+    if (form.phone.trim()) {
+      const e1 = phoneError(form.phone, "phone number");
+      if (e1) { toast.error(e1); return; }
+    }
+    if (form.parent_phone.trim()) {
+      const e2 = phoneError(form.parent_phone, "parent phone number");
+      if (e2) { toast.error(e2); return; }
+    }
     setSaving(true);
     const result = await saveStudentProfile(form);
     setSaving(false);
@@ -84,11 +95,11 @@ export default function ProfileForm({ email, initial, parentLinked }: Props) {
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
               <label className={labelCls}>Full name</label>
-              <input type="text" value={form.full_name} onChange={(e) => set("full_name", e.target.value)} placeholder="Kofi Mensah" className={inputCls} />
+              <input type="text" value={form.full_name} onChange={(e) => set("full_name", sanitizeNameInput(e.target.value))} autoCapitalize="words" placeholder="Kofi Mensah" className={inputCls} />
             </div>
             <div>
               <label className={labelCls}>Phone number <span className="font-normal text-[#94a3b8]">· optional</span></label>
-              <input type="tel" value={form.phone} onChange={(e) => set("phone", e.target.value)} placeholder="0244 123 456" className={inputCls} />
+              <input type="tel" value={form.phone} onChange={(e) => set("phone", sanitizePhoneInput(e.target.value))} inputMode="tel" placeholder="0244 123 456" className={inputCls} />
             </div>
           </div>
           <div>
@@ -177,7 +188,7 @@ export default function ProfileForm({ email, initial, parentLinked }: Props) {
           <label className={labelCls}>
             Parent&apos;s mobile number <span className="font-normal text-[#94a3b8]">· optional</span>
           </label>
-          <input type="tel" value={form.parent_phone} onChange={(e) => set("parent_phone", e.target.value)} placeholder="0244 123 456" className={inputCls} />
+          <input type="tel" value={form.parent_phone} onChange={(e) => set("parent_phone", sanitizePhoneInput(e.target.value))} inputMode="tel" placeholder="0244 123 456" className={inputCls} />
           <p className="text-xs text-[#94a3b8] mt-1.5">
             {parentLinked
               ? "Your parent is already linked. Update this if their number changes."

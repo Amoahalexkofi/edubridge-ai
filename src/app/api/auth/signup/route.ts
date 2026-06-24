@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
 import { normalizePhone, matchParentStudent } from "@/lib/phone";
+import { isValidName, isValidGhanaPhone } from "@/lib/validation";
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY!;
 const FROM = "EduBridge AI <noreply@edubridgegh.com>";
@@ -119,13 +120,26 @@ export async function POST(request: Request) {
   if (!email || !password || !fullName || !role) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
   }
-  // Students must provide exam target, class, and a parent/guardian phone.
+  if (typeof password !== "string" || password.length < 8) {
+    return NextResponse.json({ error: "Password must be at least 8 characters." }, { status: 400 });
+  }
+  if (!isValidName(String(fullName))) {
+    return NextResponse.json({ error: "Please enter a valid full name (letters only, first and last name)." }, { status: 400 });
+  }
+  // Students must provide exam target, class, and a valid parent/guardian phone.
   if (role === "student") {
     if (!examTarget) return NextResponse.json({ error: "Please select BECE or WASSCE." }, { status: 400 });
     if (!gradeLevel) return NextResponse.json({ error: "Please select your class." }, { status: 400 });
     if (!parentPhone || !String(parentPhone).trim()) {
       return NextResponse.json({ error: "Parent / guardian phone number is required." }, { status: 400 });
     }
+    if (!isValidGhanaPhone(String(parentPhone))) {
+      return NextResponse.json({ error: "Please enter a valid Ghana phone number (e.g. 0244 123 456)." }, { status: 400 });
+    }
+  }
+  // Parents: if they supply a number, it must be valid.
+  if (role === "parent" && phone && String(phone).trim() && !isValidGhanaPhone(String(phone))) {
+    return NextResponse.json({ error: "Please enter a valid Ghana phone number (e.g. 0244 123 456)." }, { status: 400 });
   }
 
   const origin = new URL(request.url).origin;

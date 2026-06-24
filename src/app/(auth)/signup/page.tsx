@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import BrandPanel from "../_components/BrandPanel";
+import { sanitizeNameInput, nameError, sanitizePhoneInput, phoneError } from "@/lib/validation";
 
 type Role = "student" | "teacher" | "parent";
 type ExamTarget = "bece" | "wassce";
@@ -71,12 +72,21 @@ export default function SignupPage() {
 
   async function handleSignup(e: React.FormEvent) {
     e.preventDefault();
+    const nameErr = nameError(fullName);
+    if (nameErr) { toast.error(nameErr); return; }
     if (password !== confirmPassword) { toast.error("Passwords do not match."); return; }
     if (password.length < 8) { toast.error("Password must be at least 8 characters."); return; }
     if (selectedRole === "student" && !examTarget) { toast.error("Please select BECE or WASSCE."); return; }
     if (selectedRole === "teacher" && !examTarget) { toast.error("Please select the level you teach (JHS or SHS)."); return; }
     if (selectedRole === "student" && !gradeLevel) { toast.error("Please select your class."); return; }
-    if (selectedRole === "student" && !parentPhone.trim()) { toast.error("Please enter your parent / guardian's phone number."); return; }
+    if (selectedRole === "student") {
+      const perr = phoneError(parentPhone, "parent / guardian phone");
+      if (perr) { toast.error(perr); return; }
+    }
+    if (selectedRole === "parent" && phone.trim()) {
+      const perr = phoneError(phone, "mobile number");
+      if (perr) { toast.error(perr); return; }
+    }
 
     setLoading(true);
     const res = await fetch("/api/auth/signup", {
@@ -314,7 +324,8 @@ export default function SignupPage() {
                       type="text"
                       placeholder="Kofi Mensah"
                       value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
+                      onChange={(e) => setFullName(sanitizeNameInput(e.target.value))}
+                      autoCapitalize="words"
                       required
                       className="w-full h-12 px-4 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
                     />
@@ -503,9 +514,10 @@ export default function SignupPage() {
                       <input
                         id="parentPhone"
                         type="tel"
+                        inputMode="tel"
                         placeholder="0244 123 456"
                         value={parentPhone}
-                        onChange={(e) => setParentPhone(e.target.value)}
+                        onChange={(e) => setParentPhone(sanitizePhoneInput(e.target.value))}
                         required
                         className="w-full h-12 px-4 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
                       />
@@ -522,9 +534,10 @@ export default function SignupPage() {
                       <input
                         id="phone"
                         type="tel"
+                        inputMode="tel"
                         placeholder="0244 123 456"
                         value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
+                        onChange={(e) => setPhone(sanitizePhoneInput(e.target.value))}
                         className="w-full h-12 px-4 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
                       />
                       <p className="text-xs text-slate-400">If your child has already registered and entered this number, you&apos;ll be auto-linked.</p>
