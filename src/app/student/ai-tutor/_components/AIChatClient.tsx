@@ -23,13 +23,15 @@ interface ChatSession {
 }
 
 interface Props {
+  userId: string;
   firstName: string;
   examTarget: "BECE" | "WASSCE";
   examContext?: ExamContext;
 }
 
-const SESSIONS_KEY = (et: string) => `edubridge-sessions-${et}`;
-const ACTIVE_KEY   = (et: string) => `edubridge-active-${et}`;
+// Keys are scoped by user id so chats never leak between accounts on a shared browser.
+const SESSIONS_KEY = (scope: string) => `edubridge-sessions-${scope}`;
+const ACTIVE_KEY   = (scope: string) => `edubridge-active-${scope}`;
 const MAX_SESSIONS = 20;
 
 const STARTERS: Record<"BECE" | "WASSCE", string[]> = {
@@ -73,14 +75,14 @@ function createSession(
   return { id: genId(), title, type, examContext, messages: [welcomeMessage(firstName, examTarget)], createdAt: new Date().toISOString() };
 }
 
-function loadState(examTarget: string, firstName: string, incomingCtx?: ExamContext) {
+function loadState(scope: string, examTarget: string, firstName: string, incomingCtx?: ExamContext) {
   if (typeof window === "undefined") {
     const s = createSession("General", "general", firstName, examTarget);
     return { sessions: [s], activeId: s.id };
   }
   let sessions: ChatSession[] = [];
   try {
-    const raw = localStorage.getItem(SESSIONS_KEY(examTarget));
+    const raw = localStorage.getItem(SESSIONS_KEY(scope));
     if (raw) sessions = JSON.parse(raw) as ChatSession[];
   } catch {}
   if (!Array.isArray(sessions) || sessions.length === 0) {
@@ -94,13 +96,13 @@ function loadState(examTarget: string, firstName: string, incomingCtx?: ExamCont
     sessions = [es, ...sessions].slice(0, MAX_SESSIONS);
     return { sessions, activeId: es.id };
   }
-  const saved = localStorage.getItem(ACTIVE_KEY(examTarget));
+  const saved = localStorage.getItem(ACTIVE_KEY(scope));
   const activeId = saved && sessions.find(s => s.id === saved) ? saved : sessions[0].id;
   return { sessions, activeId };
 }
 
-function saveSessions(examTarget: string, sessions: ChatSession[]) {
-  try { localStorage.setItem(SESSIONS_KEY(examTarget), JSON.stringify(sessions)); } catch {}
+function saveSessions(scope: string, sessions: ChatSession[]) {
+  try { localStorage.setItem(SESSIONS_KEY(scope), JSON.stringify(sessions)); } catch {}
 }
 
 function timeAgo(iso: string) {
@@ -126,13 +128,13 @@ function CopyButton({ text }: { text: string }) {
   );
 }
 
-export default function AIChatClient({ firstName, examTarget, examContext }: Props) {
+export default function AIChatClient({ userId, firstName, examTarget, examContext }: Props) {
   const bottomRef    = useRef<HTMLDivElement>(null);
   const hasAutoSent  = useRef(false);
   const activeIdRef  = useRef("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const [{ sessions, activeId }, setSessionState] = useState(() => loadState(examTarget, firstName, examContext));
+  const [{ sessions, activeId }, setSessionState] = useState(() => loadState(userId, examTarget, firstName, examContext));
   activeIdRef.current = activeId;
 
   const activeSession = sessions.find(s => s.id === activeId) ?? sessions[0];
@@ -149,7 +151,7 @@ export default function AIChatClient({ firstName, examTarget, examContext }: Pro
     const cid = activeIdRef.current;
     setSessionState(prev => {
       const updated = prev.sessions.map(s => s.id === cid ? { ...s, messages } : s);
-      saveSessions(examTarget, updated);
+      saveSessions(userId, updated);
       return { ...prev, sessions: updated };
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -177,7 +179,7 @@ export default function AIChatClient({ firstName, examTarget, examContext }: Pro
     activeIdRef.current = id;
     setSessionState(prev => ({ ...prev, activeId: id }));
     setMessages(target.messages);
-    try { localStorage.setItem(ACTIVE_KEY(examTarget), id); } catch {}
+    try { localStorage.setItem(ACTIVE_KEY(userId), id); } catch {}
     setSidebarOpen(false);
   }
 
@@ -189,12 +191,12 @@ export default function AIChatClient({ firstName, examTarget, examContext }: Pro
     activeIdRef.current = s.id;
     setSessionState(prev => {
       const updated = [s, ...prev.sessions].slice(0, MAX_SESSIONS);
-      saveSessions(examTarget, updated);
+      saveSessions(userId, updated);
       return { sessions: updated, activeId: s.id };
     });
     setMessages(s.messages);
     hasAutoSent.current = false;
-    try { localStorage.setItem(ACTIVE_KEY(examTarget), s.id); } catch {}
+    try { localStorage.setItem(ACTIVE_KEY(userId), s.id); } catch {}
     setSidebarOpen(false);
   }
 
@@ -207,11 +209,11 @@ export default function AIChatClient({ firstName, examTarget, examContext }: Pro
         updated = [fb];
       }
       const newActive = id === prev.activeId ? updated[0].id : prev.activeId;
-      saveSessions(examTarget, updated);
+      saveSessions(userId, updated);
       if (id === prev.activeId) {
         activeIdRef.current = newActive;
         setMessages(updated.find(s => s.id === newActive)?.messages ?? []);
-        try { localStorage.setItem(ACTIVE_KEY(examTarget), newActive); } catch {}
+        try { localStorage.setItem(ACTIVE_KEY(userId), newActive); } catch {}
       }
       return { sessions: updated, activeId: newActive };
     });

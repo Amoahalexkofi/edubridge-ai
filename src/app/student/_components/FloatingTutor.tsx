@@ -14,12 +14,14 @@ import Link from "next/link";
 import type { Message } from "ai";
 
 interface Props {
+  userId: string;
   firstName: string;
   examTarget: string;
 }
 
-const STORAGE_KEY = (examTarget: string) => `edubridge-chat-${examTarget}`;
-const SEEN_KEY = (examTarget: string) => `edubridge-chat-seen-${examTarget}`;
+// Scoped by user id so chats never leak between accounts on a shared browser.
+const STORAGE_KEY = (scope: string) => `edubridge-chat-${scope}`;
+const SEEN_KEY = (scope: string) => `edubridge-chat-seen-${scope}`;
 
 function welcomeMsg(firstName: string, examTarget: string): Message {
   return {
@@ -29,10 +31,10 @@ function welcomeMsg(firstName: string, examTarget: string): Message {
   };
 }
 
-function loadMessages(examTarget: string, firstName: string): Message[] {
+function loadMessages(scope: string, examTarget: string, firstName: string): Message[] {
   if (typeof window === "undefined") return [welcomeMsg(firstName, examTarget)];
   try {
-    const saved = localStorage.getItem(STORAGE_KEY(examTarget));
+    const saved = localStorage.getItem(STORAGE_KEY(scope));
     if (saved) {
       const parsed = JSON.parse(saved) as Message[];
       if (Array.isArray(parsed) && parsed.length > 0) return parsed;
@@ -53,7 +55,7 @@ function CopyBtn({ text }: { text: string }) {
   );
 }
 
-export default function FloatingTutor({ firstName, examTarget }: Props) {
+export default function FloatingTutor({ userId, firstName, examTarget }: Props) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [minimised, setMinimised] = useState(false);
@@ -62,7 +64,7 @@ export default function FloatingTutor({ firstName, examTarget }: Props) {
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  const [savedMessages] = useState<Message[]>(() => loadMessages(examTarget, firstName));
+  const [savedMessages] = useState<Message[]>(() => loadMessages(userId, examTarget, firstName));
 
   const { messages, input, setInput, handleSubmit, isLoading, stop } = useChat({
     api: "/api/student/ai-tutor",
@@ -73,7 +75,7 @@ export default function FloatingTutor({ firstName, examTarget }: Props) {
   // Sync to localStorage
   useEffect(() => {
     if (messages.length > 0) {
-      try { localStorage.setItem(STORAGE_KEY(examTarget), JSON.stringify(messages)); } catch {}
+      try { localStorage.setItem(STORAGE_KEY(userId), JSON.stringify(messages)); } catch {}
     }
   }, [messages, examTarget]);
 
@@ -94,7 +96,7 @@ export default function FloatingTutor({ firstName, examTarget }: Props) {
   // Initialise "seen" to the current count on first mount (existing history
   // isn't treated as unread), reading any previously stored value.
   useEffect(() => {
-    const stored = (() => { try { return localStorage.getItem(SEEN_KEY(examTarget)); } catch { return null; } })();
+    const stored = (() => { try { return localStorage.getItem(SEEN_KEY(userId)); } catch { return null; } })();
     setLastSeen(stored != null ? parseInt(stored, 10) : assistantCount);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [examTarget]);
@@ -103,7 +105,7 @@ export default function FloatingTutor({ firstName, examTarget }: Props) {
   useEffect(() => {
     if (open && !minimised) {
       setLastSeen(assistantCount);
-      try { localStorage.setItem(SEEN_KEY(examTarget), String(assistantCount)); } catch {}
+      try { localStorage.setItem(SEEN_KEY(userId), String(assistantCount)); } catch {}
     }
   }, [open, minimised, assistantCount, examTarget]);
 

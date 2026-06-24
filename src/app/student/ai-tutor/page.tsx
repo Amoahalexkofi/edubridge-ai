@@ -39,5 +39,5 @@ export default async function AITutorPage({
       }
     : undefined;
 
-  return <AIChatClient firstName={firstName} examTarget={examTarget} examContext={examContext} />;
+  return <AIChatClient userId={user.id} firstName={firstName} examTarget={examTarget} examContext={examContext} />;
 }

@@ -33,6 +33,13 @@ export default function StudentNav({ userName, examTarget, avatarUrl, previewOff
   async function handleSignOut() {
     const supabase = createClient();
     await supabase.auth.signOut();
+    // Clear any cached AI-tutor chats from this browser so nothing is left
+    // behind on a shared/school computer.
+    try {
+      Object.keys(localStorage)
+        .filter((k) => k.startsWith("edubridge-"))
+        .forEach((k) => localStorage.removeItem(k));
+    } catch {}
     router.push("/login");
   }
 

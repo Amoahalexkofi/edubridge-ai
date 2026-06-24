@@ -55,6 +55,7 @@ export default async function StudentLayout({ children }: { children: React.Reac
       </main>
 
       <FloatingTutor
+        userId={user.id}
         firstName={profile?.full_name?.split(" ")[0] ?? "there"}
         examTarget={(profile?.exam_target ?? "bece").toUpperCase()}
       />
