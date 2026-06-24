@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import BrandPanel from "../_components/BrandPanel";
-import { sanitizeNameInput, nameError, sanitizePhoneInput, phoneError } from "@/lib/validation";
+import { sanitizeNameInput, nameError, sanitizePhoneInput, phoneError, isValidGhanaPhone, isValidName } from "@/lib/validation";
 
 type Role = "student" | "teacher" | "parent";
 type ExamTarget = "bece" | "wassce";
@@ -546,9 +546,17 @@ export default function SignupPage() {
                         value={parentPhone}
                         onChange={(e) => setParentPhone(sanitizePhoneInput(e.target.value))}
                         required
-                        className="w-full h-12 px-4 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
+                        className={`w-full h-12 px-4 rounded-xl border bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:ring-4 transition-all ${
+                          parentPhone.trim() && !isValidGhanaPhone(parentPhone)
+                            ? "border-red-400 focus:border-red-400 focus:ring-red-400/8"
+                            : "border-slate-200 focus:border-[#1B3A8A] focus:ring-[#1B3A8A]/8"
+                        }`}
                       />
-                      <p className="text-xs text-slate-400">When your parent signs up with this number, they&apos;ll be auto-linked to your account.</p>
+                      {parentPhone.trim() && !isValidGhanaPhone(parentPhone) ? (
+                        <p className="text-xs text-red-500 font-medium">Enter a valid Ghana number, e.g. 0244 123 456.</p>
+                      ) : (
+                        <p className="text-xs text-slate-400">When your parent signs up with this number, they&apos;ll be auto-linked to your account.</p>
+                      )}
                     </div>
                   )}
 
@@ -575,8 +583,10 @@ export default function SignupPage() {
                     type="submit"
                     disabled={
                       loading ||
+                      !isValidName(fullName) ||
                       ((selectedRole === "student" || selectedRole === "teacher") && !examTarget) ||
-                      (selectedRole === "student" && (!gradeLevel || !parentPhone.trim()))
+                      (selectedRole === "student" && (!gradeLevel || !isValidGhanaPhone(parentPhone))) ||
+                      (selectedRole === "parent" && phone.trim() !== "" && !isValidGhanaPhone(phone))
                     }
                     className="w-full h-12 flex items-center justify-center gap-2 bg-[#E8722A] hover:bg-[#d4641e] active:scale-[0.98] text-white font-bold rounded-xl transition-all disabled:opacity-60 disabled:cursor-not-allowed shadow-[0_4px_14px_rgba(232,114,42,0.35)] hover:shadow-[0_6px_20px_rgba(232,114,42,0.4)] text-sm mt-2"
                   >
