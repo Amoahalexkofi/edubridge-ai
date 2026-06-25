@@ -154,11 +154,16 @@ export async function POST(request: Request) {
   // user_metadata.app_verified flag (false now; set true when they click the
   // verification link). This decouples "can log in" from "is verified".
   // full_name + role go into metadata so the handle_new_user trigger captures them.
+  // Our own verification token (stored in app_metadata, which users can't edit).
+  // The verification link hits /api/verify-email and flips app_verified — no
+  // dependency on Supabase magic-link redirect behaviour.
+  const verifyToken = crypto.randomUUID();
   const { data: created, error: createErr } = await admin.auth.admin.createUser({
     email,
     password,
     email_confirm: true,
     user_metadata: { full_name: fullName, role, app_verified: false },
+    app_metadata: { verify_token: verifyToken },
   });
 
   if (createErr || !created.user) {
@@ -170,16 +175,7 @@ export async function POST(request: Request) {
   }
 
   const userId = created.user.id;
-
-  // A magic link the user clicks to verify their email (sets app_verified=true
-  // in the callback). Branded and sent via Resend below.
-  const verifyRedirect = `${origin}/auth/callback?verify=1&role=${encodeURIComponent(role)}`;
-  const { data: linkData } = await admin.auth.admin.generateLink({
-    type: "magiclink",
-    email,
-    options: { redirectTo: verifyRedirect },
-  });
-  const confirmLink = linkData?.properties?.action_link ?? `${origin}/login`;
+  const confirmLink = `${origin}/api/verify-email?uid=${userId}&token=${verifyToken}`;
 
   // Normalize phones
   const normPhone = phone ? normalizePhone(phone) : null;

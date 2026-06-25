@@ -31,16 +31,17 @@ export async function POST(request: Request) {
 
   const origin = new URL(request.url).origin;
   const admin = createServiceClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
-  const role = (user.user_metadata?.role as string) ?? "student";
 
-  const { data: linkData, error } = await admin.auth.admin.generateLink({
-    type: "magiclink",
-    email: user.email,
-    options: { redirectTo: `${origin}/auth/callback?verify=1&role=${encodeURIComponent(role)}` },
-  });
-  if (error || !linkData?.properties?.action_link) {
-    return NextResponse.json({ error: error?.message ?? "Could not generate verification link" }, { status: 500 });
+  // Reuse the existing verify token, or mint a fresh one if missing.
+  const { data: got } = await admin.auth.admin.getUserById(user.id);
+  let token = (got?.user?.app_metadata as { verify_token?: string })?.verify_token;
+  if (!token) {
+    token = crypto.randomUUID();
+    await admin.auth.admin.updateUserById(user.id, {
+      app_metadata: { ...(got?.user?.app_metadata ?? {}), verify_token: token },
+    });
   }
+  const link = `${origin}/api/verify-email?uid=${user.id}&token=${token}`;
 
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -49,7 +50,7 @@ export async function POST(request: Request) {
       from: FROM,
       to: [user.email],
       subject: "Verify your EduBridge AI email",
-      html: buildEmail(linkData.properties.action_link),
+      html: buildEmail(link),
     }),
   });
   if (!res.ok) return NextResponse.json({ error: await res.text() }, { status: 500 });
