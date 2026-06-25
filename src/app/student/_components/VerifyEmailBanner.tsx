@@ -13,19 +13,24 @@ export default function VerifyEmailBanner({ email }: { email: string }) {
 
   async function resend() {
     setSending(true);
-    const supabase = createClient();
-    const { error } = await supabase.auth.resend({ type: "signup", email });
+    const res = await fetch("/api/auth/resend-verification", { method: "POST" });
     setSending(false);
-    if (error) toast.error(error.message);
-    else toast.success("Verification link sent — check your inbox (and spam).");
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      toast.error(body.error ?? "Could not send the email. Please try again.");
+      return;
+    }
+    toast.success("Verification link sent — check your inbox (and spam).");
   }
 
   async function recheck() {
     setChecking(true);
     const supabase = createClient();
+    // Force a fresh fetch of the latest user metadata
+    await supabase.auth.refreshSession();
     const { data: { user } } = await supabase.auth.getUser();
     setChecking(false);
-    if (user?.email_confirmed_at) {
+    if (user?.user_metadata?.app_verified === true) {
       toast.success("Email verified — unlocking everything!");
       router.refresh();
     } else {

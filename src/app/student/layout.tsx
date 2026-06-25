@@ -25,9 +25,10 @@ export default async function StudentLayout({ children }: { children: React.Reac
     redirect("/onboarding");
   }
 
-  // Unverified students get limited access (dashboard + profile only). Feature
-  // pages enforce this server-side; here we surface the banner + nav locks.
-  const locked = isRealStudent && !user.email_confirmed_at;
+  // Unverified students get limited access (dashboard + profile only). Locked only
+  // when app_verified is explicitly false (new email signups); existing users
+  // without the flag are treated as verified. Feature pages enforce server-side.
+  const locked = isRealStudent && user.user_metadata?.app_verified === false;
 
   return (
     <div className="min-h-screen bg-[#F1F5F9]">

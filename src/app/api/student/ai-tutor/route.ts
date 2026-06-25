@@ -82,7 +82,7 @@ export async function POST(request: Request) {
 
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return new Response("Unauthorized", { status: 401 });
-  if (!user.email_confirmed_at) return new Response("Verify your email to use the AI Tutor.", { status: 403 });
+  if (user.user_metadata?.app_verified === false) return new Response("Verify your email to use the AI Tutor.", { status: 403 });
 
   const { messages, examTarget = "BECE", firstName = "there" } = await request.json();
 

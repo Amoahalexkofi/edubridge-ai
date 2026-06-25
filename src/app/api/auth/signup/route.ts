@@ -149,27 +149,37 @@ export async function POST(request: Request) {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
-  // Create user + generate confirmation link in one call (no default Supabase email).
-  // Pass full_name + role as user_metadata so the handle_new_user DB trigger sets
-  // them atomically at user creation — this is the authoritative capture and does
-  // not depend on the follow-up profile upsert succeeding.
-  const redirectTo = `${origin}/auth/callback?role=${encodeURIComponent(role)}`;
-  const { data: linkData, error: linkError } = await admin.auth.admin.generateLink({
-    type: "signup",
+  // Create the user ALREADY CONFIRMED so they can sign in immediately ("Continue"
+  // → dashboard). Real email verification is tracked separately via the
+  // user_metadata.app_verified flag (false now; set true when they click the
+  // verification link). This decouples "can log in" from "is verified".
+  // full_name + role go into metadata so the handle_new_user trigger captures them.
+  const { data: created, error: createErr } = await admin.auth.admin.createUser({
     email,
     password,
-    options: {
-      data: { full_name: fullName, role },
-      redirectTo,
-    },
+    email_confirm: true,
+    user_metadata: { full_name: fullName, role, app_verified: false },
   });
 
-  if (linkError || !linkData.properties?.action_link) {
-    return NextResponse.json({ error: linkError?.message ?? "Could not generate confirmation link" }, { status: 400 });
+  if (createErr || !created.user) {
+    const msg = createErr?.message ?? "Could not create account";
+    const friendly = /already.*registered|already exists|duplicate/i.test(msg)
+      ? "An account with this email already exists. Please sign in instead."
+      : msg;
+    return NextResponse.json({ error: friendly }, { status: 400 });
   }
 
-  const confirmLink = linkData.properties.action_link;
-  const userId = linkData.user.id;
+  const userId = created.user.id;
+
+  // A magic link the user clicks to verify their email (sets app_verified=true
+  // in the callback). Branded and sent via Resend below.
+  const verifyRedirect = `${origin}/auth/callback?verify=1&role=${encodeURIComponent(role)}`;
+  const { data: linkData } = await admin.auth.admin.generateLink({
+    type: "magiclink",
+    email,
+    options: { redirectTo: verifyRedirect },
+  });
+  const confirmLink = linkData?.properties?.action_link ?? `${origin}/login`;
 
   // Normalize phones
   const normPhone = phone ? normalizePhone(phone) : null;

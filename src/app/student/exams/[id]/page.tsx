@@ -25,7 +25,7 @@ export default async function ExamResultPage({
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
-  if (!user.email_confirmed_at) redirect("/student?verify=1"); // unverified students are limited to dashboard + profile
+  if (user.user_metadata?.app_verified === false) redirect("/student?verify=1"); // unverified students are limited to dashboard + profile
 
   const { id } = await params;
 

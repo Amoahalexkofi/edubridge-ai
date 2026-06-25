@@ -15,6 +15,7 @@ export async function GET(request: Request) {
   const code = searchParams.get("code");
   const role = searchParams.get("role") ?? "student";
   const returnUrl = searchParams.get("returnUrl");
+  const verify = searchParams.get("verify") === "1";
   const error = searchParams.get("error");
 
   if (error) {
@@ -42,6 +43,17 @@ export async function GET(request: Request) {
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
+
+  // Mark the email verified when arriving via the verification link, or when the
+  // user signed in with Google (Google pre-verifies the address).
+  const isOAuth = (user.app_metadata?.provider ?? "email") !== "email";
+  if (verify || isOAuth) {
+    if (user.user_metadata?.app_verified !== true) {
+      await admin.auth.admin.updateUserById(user.id, {
+        user_metadata: { ...user.user_metadata, app_verified: true },
+      });
+    }
+  }
 
   let finalRole = role;
   try {
