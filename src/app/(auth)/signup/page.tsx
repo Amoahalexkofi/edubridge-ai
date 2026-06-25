@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
@@ -70,7 +69,6 @@ export default function SignupPage() {
   const [school, setSchool] = useState("");
   const [gradeLevel, setGradeLevel] = useState("");
   const [continuing, setContinuing] = useState(false);
-  const router = useRouter();
 
   const currentStep = step === "role" ? 1 : step === "details" ? 2 : 3;
 
@@ -84,12 +82,14 @@ export default function SignupPage() {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
       setContinuing(false);
-      // Falls here if Supabase still requires email confirmation to sign in.
-      toast.error("Account created. Please sign in to continue.");
-      router.push("/login");
+      toast.error(error.message || "Could not sign you in. Please sign in manually.");
+      window.location.href = "/login";
       return;
     }
-    router.push(ROLE_HOME[selectedRole ?? "student"] ?? "/student");
+    // Full-page navigation so the server picks up the new session cookie
+    // immediately (a client router.push can render the dashboard before the
+    // auth cookie is committed, bouncing the user back to /login).
+    window.location.href = ROLE_HOME[selectedRole ?? "student"] ?? "/student";
   }
 
   async function handleSignup(e: React.FormEvent) {
