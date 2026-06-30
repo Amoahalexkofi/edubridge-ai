@@ -122,10 +122,11 @@ A confident, education-blue core with a single warm orange for action, grounded 
 
 ## 3. Typography
 
-**Display Font:** Montserrat (with system-ui, sans-serif)
+**Display Font (app/product):** Montserrat (with system-ui, sans-serif)
+**Display Font (brand/marketing surfaces):** Bricolage Grotesque — a confident, contemporary grotesque with character; used on the landing page and marketing surfaces for distinctiveness.
 **Body Font:** Inter (with system-ui, sans-serif)
 
-**Character:** A geometric, confident display (Montserrat) over a highly legible humanist workhorse (Inter). The contrast axis is weight and role, not two near-identical sans fonts — headings feel deliberate and branded; body stays quiet and readable on small screens.
+**Character:** Inside the product, a geometric confident display (Montserrat) over a legible humanist workhorse (Inter). On brand surfaces, Bricolage Grotesque carries the marketing voice with more personality. The contrast axis is weight and role, not two near-identical sans fonts — headings feel deliberate and branded; body stays quiet and readable on small screens.
 
 ### Hierarchy
 - **Display** (700, clamp(1.75rem, 4vw, 2.5rem), 1.1, -0.02em): Page heroes and major page titles (Montserrat).
@@ -135,7 +136,7 @@ A confident, education-blue core with a single warm orange for action, grounded 
 - **Label** (700, 0.6875rem, +0.08em, often uppercase): Stat captions, chips, eyebrow tags — used deliberately, not above every section.
 
 ### Named Rules
-**The Two-Family Rule.** Montserrat for display, Inter for everything else. Never introduce a third family; never set body in Montserrat.
+**The Register-Family Rule.** Body is always Inter. Display is Montserrat inside the product app and Bricolage Grotesque on brand/marketing surfaces — never more than one display face per surface, and never set body copy in a display face.
 
 ## 4. Elevation
 

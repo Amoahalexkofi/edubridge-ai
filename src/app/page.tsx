@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Lora } from "next/font/google";
+import { Bricolage_Grotesque } from "next/font/google";
 import {
   Brain, Clock, BookOpen, BarChart2, Zap, Shield,
   GraduationCap, BookMarked, Users, ShieldCheck,
@@ -12,7 +12,9 @@ import {
   ChevronRight, FileText, BadgeCheck,
 } from "lucide-react";
 
-const lora = Lora({ subsets: ["latin"], variable: "--font-lora" });
+// Distinctive, confident display face for the brand surface (replaces the
+// reflex-default serif). Body stays Inter.
+const lora = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-lora", weight: ["400", "600", "700", "800"] });
 
 const navLinks = [
   { label: "Features",     href: "#features" },
@@ -178,22 +180,22 @@ export default function LandingPage() {
 
             {/* Left */}
             <div className="pb-14 lg:pb-20">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#1B3A8A]/20 bg-white text-sm text-[#1B3A8A] font-semibold mb-8 shadow-sm">
+              <div className="eb-rise inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#1B3A8A]/20 bg-white text-sm text-[#1B3A8A] font-semibold mb-8 shadow-sm">
                 <span>🇬🇭</span> Built for Ghana&apos;s BECE &amp; WASSCE candidates
               </div>
 
-              <h1 className="font-[family-name:var(--font-lora)] leading-[1.08] mb-6">
-                <span className="block text-[2.75rem] lg:text-[3.5rem] text-slate-900 font-bold">Smart learning.</span>
-                <span className="block text-[2.75rem] lg:text-[3.5rem] text-[#1B3A8A] font-bold italic">Smarter assessment.</span>
-                <span className="block text-[2.75rem] lg:text-[3.5rem] text-[#E8722A] font-bold">Better outcomes.</span>
+              <h1 className="eb-rise-2 font-[family-name:var(--font-lora)] font-extrabold tracking-[-0.035em] leading-[0.98] mb-6 text-[clamp(2.75rem,6vw,4.25rem)] text-balance">
+                <span className="block text-slate-900">Smart learning.</span>
+                <span className="block text-[#1B3A8A]">Smarter assessment.</span>
+                <span className="block text-[#E8722A]">Better outcomes.</span>
               </h1>
 
-              <p className="text-slate-600 text-[17px] leading-relaxed mb-9 max-w-[460px]">
+              <p className="eb-rise-3 text-slate-600 text-[17px] leading-relaxed mb-9 max-w-[460px]">
                 EduBridge AI prepares students for WAEC examinations with curriculum-aligned lessons,
                 adaptive mock exams, an always-on AI tutor and real-time analytics for teachers and parents.
               </p>
 
-              <div className="flex flex-wrap gap-3 mb-9">
+              <div className="eb-rise-3 flex flex-wrap gap-3 mb-9">
                 <Link href="/signup" className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#E8722A] hover:bg-[#d4641e] text-white font-bold rounded-xl transition-all shadow-[0_4px_16px_rgba(232,114,42,0.4)] hover:shadow-[0_8px_28px_rgba(232,114,42,0.5)] hover:-translate-y-0.5 text-sm">
                   Start learning free <ArrowRight className="h-4 w-4" />
                 </Link>

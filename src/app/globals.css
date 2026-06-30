@@ -68,3 +68,16 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display), 'Poppins', sans-serif;
 }
+
+/* Brand entrance: a single, calm rise-in. Reveal enhances already-visible
+   content (no class-gated visibility), with a reduced-motion fallback. */
+@keyframes eb-rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+.eb-rise   { animation: eb-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.eb-rise-2 { animation: eb-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both; }
+.eb-rise-3 { animation: eb-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.24s both; }
+@media (prefers-reduced-motion: reduce) {
+  .eb-rise, .eb-rise-2, .eb-rise-3 { animation: none; }
+}
