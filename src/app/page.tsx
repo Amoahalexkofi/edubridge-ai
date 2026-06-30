@@ -188,7 +188,7 @@ export default function LandingPage() {
                 <span className="block text-[2.75rem] lg:text-[3.5rem] text-[#E8722A] font-bold">Better outcomes.</span>
               </h1>
 
-              <p className="text-slate-500 text-[17px] leading-relaxed mb-9 max-w-[460px]">
+              <p className="text-slate-600 text-[17px] leading-relaxed mb-9 max-w-[460px]">
                 EduBridge AI prepares students for WAEC examinations with curriculum-aligned lessons,
                 adaptive mock exams, an always-on AI tutor and real-time analytics for teachers and parents.
               </p>
@@ -286,12 +286,12 @@ export default function LandingPage() {
               <h2 className="font-[family-name:var(--font-lora)] text-3xl lg:text-[2.6rem] text-white leading-[1.15] mb-5">
                 The numbers<br />tell the story.
               </h2>
-              <p className="text-white/45 text-[15px] leading-relaxed max-w-[260px]">
+              <p className="text-white/75 text-[15px] leading-relaxed max-w-[260px]">
                 Built for depth, scale and accessibility — from JHS to SHS, every subject, every student in Ghana.
               </p>
               <div className="mt-10 flex items-center gap-3">
                 <div className="h-px w-16 bg-gradient-to-r from-[#E8722A]/60 to-transparent" />
-                <span className="text-[11px] font-semibold text-white/25 uppercase tracking-[0.15em]">Ghana · Since 2024</span>
+                <span className="text-[11px] font-semibold text-white/55 uppercase tracking-[0.15em]">Ghana · Since 2024</span>
               </div>
             </div>
 
@@ -307,7 +307,7 @@ export default function LandingPage() {
                     <p className="text-[2.6rem] lg:text-[3.2rem] font-black text-[#E8722A] tracking-tight leading-none tabular-nums">
                       <StatNumber end={s.end} suffix={s.suffix} started={statsStarted} />
                     </p>
-                    <p className="text-[13px] text-white/55 font-medium leading-snug mt-3">{s.label}</p>
+                    <p className="text-[13px] text-white/70 font-medium leading-snug mt-3">{s.label}</p>
                   </div>
                 );
               })}
@@ -389,7 +389,7 @@ export default function LandingPage() {
                     <Icon className="h-5.5 w-5.5 text-white" />
                   </div>
                   <h3 className={`font-bold text-lg mb-2.5 ${f.featured ? "text-white" : "text-slate-900"}`}>{f.title}</h3>
-                  <p className={`text-sm leading-relaxed ${f.featured ? "text-white/60" : "text-slate-500"}`}>{f.desc}</p>
+                  <p className={`text-sm leading-relaxed ${f.featured ? "text-white/75" : "text-slate-600"}`}>{f.desc}</p>
 
                   {/* AI Tutor gets a subtle extra element */}
                   {f.highlight && (
@@ -433,7 +433,7 @@ export default function LandingPage() {
               <h2 className="font-[family-name:var(--font-lora)] text-4xl lg:text-5xl text-slate-900 mb-5 leading-tight">
                 Studying that feels like leveling up your favourite game.
               </h2>
-              <p className="text-slate-500 text-[17px] mb-8 leading-relaxed max-w-md">
+              <p className="text-slate-600 text-[17px] mb-8 leading-relaxed max-w-md">
                 Earn XP for every lesson and quiz, keep your daily streak alive, unlock badges and climb the school leaderboard.
               </p>
               <Link href="/signup" className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#1B3A8A] hover:bg-[#162f74] text-white font-bold rounded-xl transition-all text-sm shadow-[0_4px_16px_rgba(27,58,138,0.3)] hover:-translate-y-0.5">
@@ -448,15 +448,15 @@ export default function LandingPage() {
                 <div className="relative">
                   <div className="flex items-center gap-2 mb-4">
                     <Flame className="h-4 w-4 text-[#E8722A]" />
-                    <span className="text-xs font-semibold text-white/60 uppercase tracking-widest">Daily streak</span>
+                    <span className="text-xs font-semibold text-white/70 uppercase tracking-widest">Daily streak</span>
                   </div>
                   <div className="flex items-end justify-between mb-4">
                     <div className="flex items-baseline gap-1.5">
                       <span className="font-[family-name:var(--font-lora)] text-6xl font-black leading-none">12</span>
-                      <span className="text-lg text-white/40 mb-1">days</span>
+                      <span className="text-lg text-white/60 mb-1">days</span>
                     </div>
                     <div className="text-right">
-                      <p className="text-[10px] text-white/40 uppercase tracking-wider mb-0.5">Level 8 · Scholar</p>
+                      <p className="text-[10px] text-white/60 uppercase tracking-wider mb-0.5">Level 8 · Scholar</p>
                       <p className="text-sm font-bold text-[#E8722A]">4,385 / 5,000 XP</p>
                     </div>
                   </div>
@@ -549,7 +549,7 @@ export default function LandingPage() {
             <div className="lg:sticky lg:top-32">
               <p className="text-xs font-bold tracking-widest uppercase text-[#E8722A] mb-4">Curriculum</p>
               <h2 className="font-[family-name:var(--font-lora)] text-4xl lg:text-5xl text-slate-900 mb-5 leading-tight">BECE and WASSCE subjects, every one of them.</h2>
-              <p className="text-slate-500 text-[17px] leading-relaxed mb-8">Tap any subject to jump straight into its topics, notes, videos and practice questions.</p>
+              <p className="text-slate-600 text-[17px] leading-relaxed mb-8">Tap any subject to jump straight into its topics, lessons and practice questions.</p>
               <Link href="/signup" className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#1B3A8A] hover:bg-[#162f74] text-white font-bold rounded-xl transition-all text-sm shadow-[0_4px_16px_rgba(27,58,138,0.25)] hover:-translate-y-0.5">
                 Browse all subjects <ChevronRight className="h-4 w-4" />
               </Link>
@@ -584,7 +584,7 @@ export default function LandingPage() {
           <p className="font-[family-name:var(--font-lora)] text-3xl lg:text-5xl text-white font-bold max-w-3xl leading-tight mb-4">
             &ldquo;Every Ghanaian student deserves a world-class education.&rdquo;
           </p>
-          <p className="text-white/60 text-sm font-medium">— EduBridge AI Mission</p>
+          <p className="text-white/75 text-sm font-medium">— EduBridge AI Mission</p>
         </div>
       </section>
 
@@ -597,7 +597,7 @@ export default function LandingPage() {
             <div className="grid lg:grid-cols-2 gap-0 items-stretch">
               <div className="px-8 py-16 sm:px-14 lg:px-16 relative z-10">
                 <h2 className="font-[family-name:var(--font-lora)] text-4xl lg:text-5xl text-white mb-4 leading-tight">Your best result is one practice away.</h2>
-                <p className="text-white/60 text-lg mb-8">Join EduBridge AI today. Free for students, always.</p>
+                <p className="text-white/80 text-lg mb-8">Join EduBridge AI today. Free for students, always.</p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Link href="/signup" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#E8722A] hover:bg-[#d4641e] text-white font-bold rounded-xl transition-all shadow-[0_4px_20px_rgba(232,114,42,0.5)] hover:-translate-y-0.5 text-sm">
                     Create my free account <ArrowRight className="h-4 w-4" />
