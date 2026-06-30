@@ -274,7 +274,7 @@ export default function LandingPage() {
 
       {/* ─── STATS ─────────────────────────────────────────────────────── */}
       <section ref={statsRef} className="bg-[#1B3A8A] relative overflow-hidden">
-        <div className="absolute inset-0" style={{ backgroundImage: "radial-gradient(ellipse at 0% 100%, rgba(13,148,136,0.22) 0%, transparent 50%), radial-gradient(ellipse at 100% 0%, rgba(232,114,42,0.10) 0%, transparent 50%)" }} />
+        <div className="absolute inset-0" style={{ background: "radial-gradient(125% 125% at 88% 6%, rgba(37,99,235,0.55) 0%, rgba(37,99,235,0) 52%), radial-gradient(120% 120% at 6% 100%, rgba(13,148,136,0.38) 0%, rgba(13,148,136,0) 55%), linear-gradient(157deg, #14306d 0%, #1b3a8a 52%, #15336f 100%)" }} />
         <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)", backgroundSize: "22px 22px" }} />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
