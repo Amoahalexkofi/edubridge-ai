@@ -173,7 +173,7 @@ export default function LandingPage() {
 
       {/* ─── HERO ──────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-[#F0F4FF]">
-        <div className="absolute inset-0 opacity-50" style={{ backgroundImage: "radial-gradient(circle at 25% 60%, rgba(13,148,136,0.07) 0%, transparent 45%), radial-gradient(circle at 75% 20%, rgba(27,58,138,0.07) 0%, transparent 45%)" }} />
+        <div className="absolute inset-0" style={{ background: "radial-gradient(90% 75% at 80% 8%, rgba(29,78,216,0.12) 0%, rgba(29,78,216,0) 55%), radial-gradient(75% 70% at 8% 30%, rgba(13,148,136,0.09) 0%, rgba(13,148,136,0) 55%), linear-gradient(180deg, #E9EFFF 0%, #F2F6FF 42%, #FFFFFF 100%)" }} />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-0 lg:pt-20">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-end">
