@@ -457,9 +457,9 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
                 </div>
                 <div className="bg-white border border-[#E8ECF0] rounded-2xl rounded-bl-md px-5 py-3.5 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
                   <div className="flex items-center gap-1.5">
-                    <span className="h-2 w-2 rounded-full bg-[#1B3A8A]/30 animate-bounce" style={{ animationDelay: "0ms" }} />
-                    <span className="h-2 w-2 rounded-full bg-[#1B3A8A]/30 animate-bounce" style={{ animationDelay: "150ms" }} />
-                    <span className="h-2 w-2 rounded-full bg-[#1B3A8A]/30 animate-bounce" style={{ animationDelay: "300ms" }} />
+                    <span className="h-2 w-2 rounded-full bg-[#1B3A8A]/30 animate-pulse" style={{ animationDelay: "0ms" }} />
+                    <span className="h-2 w-2 rounded-full bg-[#1B3A8A]/30 animate-pulse" style={{ animationDelay: "150ms" }} />
+                    <span className="h-2 w-2 rounded-full bg-[#1B3A8A]/30 animate-pulse" style={{ animationDelay: "300ms" }} />
                   </div>
                 </div>
               </div>

@@ -40,7 +40,7 @@ export default function LessonContent({ content }: { content: string }) {
             <em className="italic text-[#475569]">{children}</em>
           ),
           blockquote: ({ children }) => (
-            <blockquote className="border-l-4 border-[#1D4ED8] pl-4 py-1 bg-[#EFF6FF] rounded-r-lg my-4 text-sm text-[#334155] italic">
+            <blockquote className="px-4 py-3 bg-[#EFF6FF] rounded-xl my-4 text-sm text-[#334155] italic">
               {children}
             </blockquote>
           ),

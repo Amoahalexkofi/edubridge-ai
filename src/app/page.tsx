@@ -238,9 +238,9 @@ export default function LandingPage() {
                   <div className="bg-slate-50 rounded-xl p-2.5 border border-slate-100">
                     <p className="text-[10px] text-slate-500 italic leading-relaxed">&ldquo;Explain quadratic equations in simple terms&rdquo;</p>
                     <div className="flex gap-1 mt-2">
-                      <span className="h-1.5 w-1.5 rounded-full bg-[#0D9488] animate-bounce" style={{ animationDelay: "0ms" }} />
-                      <span className="h-1.5 w-1.5 rounded-full bg-[#0D9488] animate-bounce" style={{ animationDelay: "150ms" }} />
-                      <span className="h-1.5 w-1.5 rounded-full bg-[#0D9488] animate-bounce" style={{ animationDelay: "300ms" }} />
+                      <span className="h-1.5 w-1.5 rounded-full bg-[#0D9488] animate-pulse" style={{ animationDelay: "0ms" }} />
+                      <span className="h-1.5 w-1.5 rounded-full bg-[#0D9488] animate-pulse" style={{ animationDelay: "150ms" }} />
+                      <span className="h-1.5 w-1.5 rounded-full bg-[#0D9488] animate-pulse" style={{ animationDelay: "300ms" }} />
                     </div>
                   </div>
                 </div>

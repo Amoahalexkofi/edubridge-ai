@@ -201,9 +201,9 @@ export default function FloatingTutor({ userId, firstName, examTarget }: Props) 
                 </div>
                 <div className="bg-white border border-[#E2E8F0] rounded-xl rounded-bl-sm px-3 py-2.5">
                   <div className="flex items-center gap-1">
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#1B3A8A]/30 animate-bounce" style={{ animationDelay: "0ms" }} />
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#1B3A8A]/30 animate-bounce" style={{ animationDelay: "150ms" }} />
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#1B3A8A]/30 animate-bounce" style={{ animationDelay: "300ms" }} />
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#1B3A8A]/30 animate-pulse" style={{ animationDelay: "0ms" }} />
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#1B3A8A]/30 animate-pulse" style={{ animationDelay: "150ms" }} />
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#1B3A8A]/30 animate-pulse" style={{ animationDelay: "300ms" }} />
                   </div>
                 </div>
               </div>
