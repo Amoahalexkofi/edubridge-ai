@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Bricolage_Grotesque } from "next/font/google";
 import {
   Brain, Clock, BookOpen, BarChart2, Zap, Shield,
   GraduationCap, BookMarked, Users, ShieldCheck,
@@ -11,10 +10,6 @@ import {
   Award, Star, PlayCircle, ClipboardCheck, TrendingUp,
   ChevronRight, FileText, BadgeCheck,
 } from "lucide-react";
-
-// Distinctive, confident display face for the brand surface (replaces the
-// reflex-default serif). Body stays Inter.
-const lora = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-lora", weight: ["400", "600", "700", "800"] });
 
 const navLinks = [
   { label: "Features",     href: "#features" },
@@ -125,7 +120,7 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className={`${lora.variable} bg-white min-h-screen antialiased`}>
+    <div className="bg-white min-h-screen antialiased">
 
       {/* ─── NAV ───────────────────────────────────────────────────────── */}
       <header className={`sticky top-0 z-50 transition-all duration-300 ease-in-out ${
@@ -184,7 +179,7 @@ export default function LandingPage() {
                 <span>🇬🇭</span> Built for Ghana&apos;s BECE &amp; WASSCE candidates
               </div>
 
-              <h1 className="eb-rise-2 font-[family-name:var(--font-lora)] font-extrabold tracking-[-0.035em] leading-[0.98] mb-6 text-[clamp(2.75rem,6vw,4.25rem)] text-balance">
+              <h1 className="eb-rise-2 font-[family-name:var(--font-brand)] font-extrabold tracking-[-0.035em] leading-[0.98] mb-6 text-[clamp(2.75rem,6vw,4.25rem)] text-balance">
                 <span className="block text-slate-900">Smart learning.</span>
                 <span className="block text-[#1B3A8A]">Smarter assessment.</span>
                 <span className="block text-[#E8722A]">Better outcomes.</span>
@@ -285,7 +280,7 @@ export default function LandingPage() {
                 <span className="h-1.5 w-1.5 rounded-full bg-[#E8722A]" />
                 <span className="text-[11px] font-bold text-[#E8722A]/80 uppercase tracking-[0.16em]">Trusted platform</span>
               </div>
-              <h2 className="font-[family-name:var(--font-lora)] text-3xl lg:text-[2.6rem] text-white leading-[1.15] mb-5">
+              <h2 className="font-[family-name:var(--font-brand)] text-3xl lg:text-[2.6rem] text-white leading-[1.15] mb-5">
                 The numbers<br />tell the story.
               </h2>
               <p className="text-white/75 text-[15px] leading-relaxed max-w-[260px]">
@@ -323,7 +318,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
             <p className="text-xs font-bold tracking-widest uppercase text-[#E8722A] mb-4">Simple to start</p>
-            <h2 className="font-[family-name:var(--font-lora)] text-4xl lg:text-5xl text-slate-900 leading-tight max-w-xl mx-auto">
+            <h2 className="font-[family-name:var(--font-brand)] text-4xl lg:text-5xl text-slate-900 leading-tight max-w-xl mx-auto">
               From sign-up to exam-ready in three steps.
             </h2>
           </div>
@@ -342,7 +337,7 @@ export default function LandingPage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
                     {/* Step number — large background text */}
                     <div className="absolute top-3 right-4">
-                      <span className="text-[5rem] font-[family-name:var(--font-lora)] font-black text-white/10 leading-none select-none">{step.number}</span>
+                      <span className="text-[5rem] font-[family-name:var(--font-brand)] font-black text-white/10 leading-none select-none">{step.number}</span>
                     </div>
                     {/* Icon badge at bottom */}
                     <div className="absolute bottom-4 left-4">
@@ -369,7 +364,7 @@ export default function LandingPage() {
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10">
             <div>
               <p className="text-xs font-bold tracking-widest uppercase text-[#E8722A] mb-4">Why EduBridge AI</p>
-              <h2 className="font-[family-name:var(--font-lora)] text-4xl lg:text-5xl text-slate-900 leading-tight max-w-xl">
+              <h2 className="font-[family-name:var(--font-brand)] text-4xl lg:text-5xl text-slate-900 leading-tight max-w-xl">
                 Everything a candidate needs in one beautiful place.
               </h2>
             </div>
@@ -432,7 +427,7 @@ export default function LandingPage() {
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div>
               <p className="text-xs font-bold tracking-widest uppercase text-[#E8722A] mb-4">Learn. Earn. Level up.</p>
-              <h2 className="font-[family-name:var(--font-lora)] text-4xl lg:text-5xl text-slate-900 mb-5 leading-tight">
+              <h2 className="font-[family-name:var(--font-brand)] text-4xl lg:text-5xl text-slate-900 mb-5 leading-tight">
                 Studying that feels like leveling up your favourite game.
               </h2>
               <p className="text-slate-600 text-[17px] mb-8 leading-relaxed max-w-md">
@@ -454,7 +449,7 @@ export default function LandingPage() {
                   </div>
                   <div className="flex items-end justify-between mb-4">
                     <div className="flex items-baseline gap-1.5">
-                      <span className="font-[family-name:var(--font-lora)] text-6xl font-black leading-none">12</span>
+                      <span className="font-[family-name:var(--font-brand)] text-6xl font-black leading-none">12</span>
                       <span className="text-lg text-white/60 mb-1">days</span>
                     </div>
                     <div className="text-right">
@@ -527,7 +522,7 @@ export default function LandingPage() {
             </div>
             <div>
               <p className="text-xs font-bold tracking-widest uppercase text-[#E8722A] mb-4">Built for everyone</p>
-              <h2 className="font-[family-name:var(--font-lora)] text-4xl lg:text-5xl text-slate-900 mb-10 leading-tight">
+              <h2 className="font-[family-name:var(--font-brand)] text-4xl lg:text-5xl text-slate-900 mb-10 leading-tight">
                 One platform, four tailored experiences.
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -550,7 +545,7 @@ export default function LandingPage() {
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
             <div className="lg:sticky lg:top-32">
               <p className="text-xs font-bold tracking-widest uppercase text-[#E8722A] mb-4">Curriculum</p>
-              <h2 className="font-[family-name:var(--font-lora)] text-4xl lg:text-5xl text-slate-900 mb-5 leading-tight">BECE and WASSCE subjects, every one of them.</h2>
+              <h2 className="font-[family-name:var(--font-brand)] text-4xl lg:text-5xl text-slate-900 mb-5 leading-tight">BECE and WASSCE subjects, every one of them.</h2>
               <p className="text-slate-600 text-[17px] leading-relaxed mb-8">Tap any subject to jump straight into its topics, lessons and practice questions.</p>
               <Link href="/signup" className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#1B3A8A] hover:bg-[#162f74] text-white font-bold rounded-xl transition-all text-sm shadow-[0_4px_16px_rgba(27,58,138,0.25)] hover:-translate-y-0.5">
                 Browse all subjects <ChevronRight className="h-4 w-4" />
@@ -583,7 +578,7 @@ export default function LandingPage() {
         <Image src="/images/students-classroom-gh.jpg" alt="Ghanaian students in the classroom" fill className="object-cover object-center" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#1B3A8A]/88 via-[#1B3A8A]/72 to-[#0D9488]/50" />
         <div className="relative h-full flex flex-col items-center justify-center text-center px-4">
-          <p className="font-[family-name:var(--font-lora)] text-3xl lg:text-5xl text-white font-bold max-w-3xl leading-tight mb-4">
+          <p className="font-[family-name:var(--font-brand)] text-3xl lg:text-5xl text-white font-bold max-w-3xl leading-tight mb-4">
             &ldquo;Every Ghanaian student deserves a world-class education.&rdquo;
           </p>
           <p className="text-white/75 text-sm font-medium">— EduBridge AI Mission</p>
@@ -598,7 +593,7 @@ export default function LandingPage() {
             <div className="absolute bottom-0 right-1/3 h-32 w-32 rounded-full bg-[#0D9488]/15 translate-y-1/2 blur-xl" />
             <div className="grid lg:grid-cols-2 gap-0 items-stretch">
               <div className="px-8 py-16 sm:px-14 lg:px-16 relative z-10">
-                <h2 className="font-[family-name:var(--font-lora)] text-4xl lg:text-5xl text-white mb-4 leading-tight">Your best result is one practice away.</h2>
+                <h2 className="font-[family-name:var(--font-brand)] text-4xl lg:text-5xl text-white mb-4 leading-tight">Your best result is one practice away.</h2>
                 <p className="text-white/80 text-lg mb-8">Join EduBridge AI today. Free for students, always.</p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Link href="/signup" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#E8722A] hover:bg-[#d4641e] text-white font-bold rounded-xl transition-all shadow-[0_4px_20px_rgba(232,114,42,0.5)] hover:-translate-y-0.5 text-sm">

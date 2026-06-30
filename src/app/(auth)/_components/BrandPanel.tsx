@@ -50,7 +50,7 @@ export default function BrandPanel() {
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-white/75 text-xs font-semibold tracking-wide mb-7">
               <span>🇬🇭</span> Ghana&apos;s #1 Exam Prep Platform
             </div>
-            <h2 className="text-white text-[2.1rem] xl:text-[2.5rem] font-bold leading-[1.15] tracking-tight">
+            <h2 className="font-[family-name:var(--font-brand)] text-white text-[2.1rem] xl:text-[2.5rem] font-extrabold leading-[1.15] tracking-tight">
               Ghana&apos;s BECE &amp;<br />
               WASSCE prep,<br />
               <span className="text-[#E8722A]">reimagined.</span>

@@ -99,7 +99,7 @@ function LoginForm() {
               <p className="text-xs font-bold tracking-[0.15em] uppercase text-[#E8722A] mb-3">
                 Welcome back
               </p>
-              <h1 className="text-[2rem] font-bold text-slate-900 leading-tight tracking-tight">
+              <h1 className="font-[family-name:var(--font-brand)] text-[2rem] font-extrabold text-slate-900 leading-tight tracking-tight">
                 Sign in to your account
               </h1>
               <p className="text-slate-500 text-sm mt-2.5 leading-relaxed">

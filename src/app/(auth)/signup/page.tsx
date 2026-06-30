@@ -201,7 +201,7 @@ export default function SignupPage() {
                     <CheckCircle2 className="h-10 w-10 text-green-500" />
                   </div>
                 </div>
-                <h2 className="text-2xl font-bold text-slate-900 mb-2">Account created!</h2>
+                <h2 className="font-[family-name:var(--font-brand)] text-2xl font-extrabold text-slate-900 mb-2">Account created!</h2>
                 <p className="text-slate-500 text-sm mb-8 leading-relaxed max-w-sm mx-auto">
                   We sent a verification link to{" "}
                   <span className="font-semibold text-slate-800">{email}</span>.
@@ -225,7 +225,7 @@ export default function SignupPage() {
                   <p className="text-xs font-bold tracking-[0.15em] uppercase text-[#E8722A] mb-3">
                     Get started — it&apos;s free
                   </p>
-                  <h1 className="text-[2rem] font-bold text-slate-900 leading-tight tracking-tight">
+                  <h1 className="font-[family-name:var(--font-brand)] text-[2rem] font-extrabold text-slate-900 leading-tight tracking-tight">
                     Who are you?
                   </h1>
                   <p className="text-slate-500 text-sm mt-2.5">
@@ -332,7 +332,7 @@ export default function SignupPage() {
                   <p className="text-xs font-bold tracking-[0.15em] uppercase text-[#E8722A] mb-3">
                     Signing up as a {selectedRole}
                   </p>
-                  <h1 className="text-[2rem] font-bold text-slate-900 leading-tight tracking-tight">
+                  <h1 className="font-[family-name:var(--font-brand)] text-[2rem] font-extrabold text-slate-900 leading-tight tracking-tight">
                     Create your account
                   </h1>
                   <p className="text-slate-500 text-sm mt-2.5">Fill in your details below to get started.</p>
