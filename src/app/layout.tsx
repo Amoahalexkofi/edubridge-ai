@@ -1,25 +1,20 @@
 import type { Metadata } from "next";
-import { Inter, Montserrat, Bricolage_Grotesque } from "next/font/google";
+import { Hanken_Grotesk, Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 
-const inter = Inter({
+// Body/UI text — a warm, highly legible humanist grotesque (mobile-first).
+const hanken = Hanken_Grotesk({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-hanken",
+  display: "swap",
 });
 
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-poppins",
-});
-
-// Brand display face — used for headings on entry/marketing surfaces
-// (landing, login, signup). Product dashboards keep Montserrat.
+// Display/headings — a confident, distinctive grotesque used product-wide.
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
-  weight: ["400", "600", "700", "800"],
   variable: "--font-brand",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -34,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${montserrat.variable} ${bricolage.variable} h-full`}>
+    <html lang="en" className={`${hanken.variable} ${bricolage.variable} h-full`}>
       <body className="min-h-full antialiased">
         {children}
         <Toaster richColors position="top-right" />

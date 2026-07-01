@@ -17,23 +17,23 @@ colors:
   background: "#FFFFFF"
 typography:
   display:
-    fontFamily: "Montserrat, system-ui, sans-serif"
+    fontFamily: "Bricolage Grotesque, system-ui, sans-serif"
     fontSize: "clamp(1.75rem, 4vw, 2.5rem)"
     fontWeight: 700
     lineHeight: 1.1
     letterSpacing: "-0.02em"
   headline:
-    fontFamily: "Montserrat, system-ui, sans-serif"
+    fontFamily: "Bricolage Grotesque, system-ui, sans-serif"
     fontSize: "1.25rem"
     fontWeight: 700
     lineHeight: 1.2
   body:
-    fontFamily: "Inter, system-ui, sans-serif"
+    fontFamily: "Hanken Grotesk, system-ui, sans-serif"
     fontSize: "0.875rem"
     fontWeight: 400
     lineHeight: 1.6
   label:
-    fontFamily: "Inter, system-ui, sans-serif"
+    fontFamily: "Hanken Grotesk, system-ui, sans-serif"
     fontSize: "0.6875rem"
     fontWeight: 700
     letterSpacing: "0.08em"
@@ -122,21 +122,20 @@ A confident, education-blue core with a single warm orange for action, grounded 
 
 ## 3. Typography
 
-**Display Font (app/product):** Montserrat (with system-ui, sans-serif)
-**Display Font (brand/marketing surfaces):** Bricolage Grotesque — a confident, contemporary grotesque with character; used on the landing page and marketing surfaces for distinctiveness.
-**Body Font:** Inter (with system-ui, sans-serif)
+**Display Font:** Bricolage Grotesque (with system-ui, sans-serif) — a confident, contemporary grotesque with character; used product-wide for all headings, from the landing hero to dashboard section titles.
+**Body Font:** Hanken Grotesk (with system-ui, sans-serif) — a warm, highly legible humanist grotesque tuned for small sizes and mobile screens.
 
-**Character:** Inside the product, a geometric confident display (Montserrat) over a legible humanist workhorse (Inter). On brand surfaces, Bricolage Grotesque carries the marketing voice with more personality. The contrast axis is weight and role, not two near-identical sans fonts — headings feel deliberate and branded; body stays quiet and readable on small screens.
+**Character:** One distinctive display face (Bricolage Grotesque) over one legible humanist workhorse (Hanken Grotesk) — a two-family system used everywhere for a coherent brand across marketing and product. The contrast axis is weight and role, not two near-identical sans fonts: headings feel deliberate and branded; body stays quiet and readable on small screens.
 
 ### Hierarchy
-- **Display** (700, clamp(1.75rem, 4vw, 2.5rem), 1.1, -0.02em): Page heroes and major page titles (Montserrat).
-- **Headline** (700, ~1.25rem, 1.2): Section and card titles (Montserrat).
+- **Display** (700, clamp(1.75rem, 4vw, 2.5rem), 1.1, -0.02em): Page heroes and major page titles (Bricolage Grotesque).
+- **Headline** (700, ~1.25rem, 1.2): Section and card titles (Bricolage Grotesque).
 - **Title** (600–700, ~1rem): Sub-section labels, list headers.
-- **Body** (400, 0.875rem, 1.6): Default reading text (Inter). Cap prose at 65–75ch.
+- **Body** (400, 0.875rem, 1.6): Default reading text (Hanken Grotesk). Cap prose at 65–75ch.
 - **Label** (700, 0.6875rem, +0.08em, often uppercase): Stat captions, chips, eyebrow tags — used deliberately, not above every section.
 
 ### Named Rules
-**The Register-Family Rule.** Body is always Inter. Display is Montserrat inside the product app and Bricolage Grotesque on brand/marketing surfaces — never more than one display face per surface, and never set body copy in a display face.
+**The Register-Family Rule.** Body is always Hanken Grotesk; display is always Bricolage Grotesque. Never introduce a third family, and never set body copy in the display face.
 
 ## 4. Elevation
 
@@ -198,4 +197,4 @@ A navy→blue gradient pill (desktop) / round button (mobile), fixed bottom-righ
 - **Don't** go childish/cartoonish in a way that undercuts exam credibility.
 - **Don't** use a colored `border-left`/`border-right` stripe as an accent on cards or alerts — use full borders or background tints.
 - **Don't** use light-gray body text "for elegance"; it fails contrast and trust.
-- **Don't** introduce a third font family or set body copy in Montserrat.
+- **Don't** introduce a third font family or set body copy in Bricolage Grotesque.
