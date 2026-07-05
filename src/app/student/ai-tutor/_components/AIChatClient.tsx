@@ -534,12 +534,21 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
             )}
 
             {error && (
-              <div className="flex justify-center">
-                <div className="bg-red-50 border border-red-100 rounded-xl px-4 py-3 text-sm text-red-600 flex items-center gap-2">
-                  Something went wrong.
-                  <button onClick={() => setMessages([...messages])} className="font-semibold underline">Try again</button>
+              error.message?.startsWith("Daily limit reached") ? (
+                <div className="flex justify-center">
+                  <div className="bg-[#FFFBEB] border border-[#FDE68A] rounded-xl px-4 py-3 text-sm text-[#92400E] flex items-start gap-2 max-w-md">
+                    <AlertTriangle className="h-4 w-4 flex-shrink-0 mt-0.5 text-[#D97706]" />
+                    <span>{error.message}</span>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="flex justify-center">
+                  <div className="bg-red-50 border border-red-100 rounded-xl px-4 py-3 text-sm text-red-600 flex items-center gap-2">
+                    Something went wrong.
+                    <button onClick={() => setMessages([...messages])} className="font-semibold underline">Try again</button>
+                  </div>
+                </div>
+              )
             )}
 
             {showStarters && (

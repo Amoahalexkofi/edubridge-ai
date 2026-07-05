@@ -1,8 +1,16 @@
 import { anthropic } from "@ai-sdk/anthropic";
 import { streamText } from "ai";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export const maxDuration = 60;
+
+// Cost controls (see budget doc): the AI Tutor is the only per-student cost
+// with no revenue attached yet, so it must be bounded before public launch.
+const DAILY_MESSAGE_LIMIT = Number(process.env.AI_TUTOR_DAILY_MESSAGE_LIMIT ?? 30);
+// Only the most recent turns are sent to the model — the full history lives in
+// the DB/UI, but re-sending a 50-message chat on every turn multiplies input cost.
+const MAX_HISTORY_MESSAGES = 12;
 
 const SYSTEM_PROMPT = (examTarget: string, firstName: string) => `
 You are EduBridge AI Tutor — a friendly, expert academic tutor helping Ghanaian students prepare for the ${examTarget} examination.
@@ -93,10 +101,37 @@ export async function POST(request: Request) {
 
   const { messages, examTarget = "BECE", firstName = "there" } = await request.json();
 
+  // Daily limit — counted server-side with the service-role client so it
+  // can't be reset from the browser. Ghana is UTC, so current_date == local day.
+  const admin = createAdminClient();
+  const today = new Date().toISOString().slice(0, 10);
+  const { data: usage } = await admin
+    .from("ai_tutor_usage")
+    .select("count")
+    .eq("user_id", user.id)
+    .eq("day", today)
+    .maybeSingle();
+  const used = usage?.count ?? 0;
+
+  if (used >= DAILY_MESSAGE_LIMIT) {
+    return new Response(
+      `Daily limit reached — you've used all ${DAILY_MESSAGE_LIMIT} AI Tutor messages for today. Your limit resets at midnight. In the meantime, try your practice questions or lessons!`,
+      { status: 429 },
+    );
+  }
+
+  if (usage) {
+    await admin.from("ai_tutor_usage").update({ count: used + 1 }).eq("user_id", user.id).eq("day", today);
+  } else {
+    await admin.from("ai_tutor_usage").insert({ user_id: user.id, day: today, count: 1 });
+  }
+
+  const recentMessages = Array.isArray(messages) ? messages.slice(-MAX_HISTORY_MESSAGES) : messages;
+
   const result = await streamText({
     model: anthropic("claude-sonnet-4-6"),
     system: SYSTEM_PROMPT(examTarget.toUpperCase(), firstName),
-    messages,
+    messages: recentMessages,
     maxTokens: 1024,
     temperature: 0.7,
   });
