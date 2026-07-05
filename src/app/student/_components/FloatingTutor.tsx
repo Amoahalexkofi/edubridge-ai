@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkMath from "remark-math";
+import remarkGfm from "remark-gfm";
 import rehypeKatex from "rehype-katex";
 import "katex/dist/katex.min.css";
 import Link from "next/link";
@@ -183,7 +184,25 @@ export default function FloatingTutor({ userId, firstName, examTarget }: Props) 
                         prose-ul:my-1 prose-ol:my-1 prose-li:my-0.5 prose-li:text-[13px]
                         prose-code:bg-[#EEF2FF] prose-code:text-[#1B3A8A] prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-[11px] prose-code:before:content-none prose-code:after:content-none
                         prose-hr:my-2 prose-hr:border-[#E2E8F0]">
-                        <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm, remarkMath]}
+                          rehypePlugins={[rehypeKatex]}
+                          components={{
+                            table: ({ children }) => (
+                              <div className="not-prose my-2 overflow-x-auto rounded-lg border border-[#E2E8F0]">
+                                <table className="w-full text-[12px] border-collapse">{children}</table>
+                              </div>
+                            ),
+                            thead: ({ children }) => <thead className="bg-[#EEF2FF]">{children}</thead>,
+                            th: ({ children }) => (
+                              <th className="text-left px-2.5 py-1.5 font-bold text-[#1B3A8A] text-[10px] uppercase tracking-wide border-b border-[#C7D2FE] whitespace-nowrap">{children}</th>
+                            ),
+                            td: ({ children }) => (
+                              <td className="px-2.5 py-1.5 text-[#334155] border-b border-[#F1F5F9] align-top">{children}</td>
+                            ),
+                            tr: ({ children }) => <tr className="even:bg-[#FAFBFF]">{children}</tr>,
+                          }}
+                        >
                           {msg.content}
                         </ReactMarkdown>
                       </div>

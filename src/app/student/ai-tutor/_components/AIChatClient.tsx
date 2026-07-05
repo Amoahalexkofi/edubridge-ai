@@ -8,12 +8,14 @@ import {
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkMath from "remark-math";
+import remarkGfm from "remark-gfm";
 import rehypeKatex from "rehype-katex";
 import "katex/dist/katex.min.css";
 import type { Message } from "ai";
 import type { ExamContext } from "../page";
+import { createClient } from "@/lib/supabase/client";
 
-interface ChatSession {
+export interface ChatSession {
   id: string;
   title: string;
   type: "exam" | "general";
@@ -27,6 +29,8 @@ interface Props {
   firstName: string;
   examTarget: "BECE" | "WASSCE";
   examContext?: ExamContext;
+  /** Chat history loaded from the database (source of truth across devices/logins). */
+  initialSessions?: ChatSession[];
 }
 
 // Keys are scoped by user id so chats never leak between accounts on a shared browser.
@@ -75,16 +79,21 @@ function createSession(
   return { id: genId(), title, type, examContext, messages: [welcomeMessage(firstName, examTarget)], createdAt: new Date().toISOString() };
 }
 
-function loadState(scope: string, examTarget: string, firstName: string, incomingCtx?: ExamContext) {
+function loadState(scope: string, examTarget: string, firstName: string, incomingCtx?: ExamContext, dbSessions?: ChatSession[]) {
   if (typeof window === "undefined") {
-    const s = createSession("General", "general", firstName, examTarget);
-    return { sessions: [s], activeId: s.id };
+    const s = dbSessions?.[0] ?? createSession("General", "general", firstName, examTarget);
+    return { sessions: dbSessions?.length ? dbSessions : [s], activeId: s.id };
   }
-  let sessions: ChatSession[] = [];
-  try {
-    const raw = localStorage.getItem(SESSIONS_KEY(scope));
-    if (raw) sessions = JSON.parse(raw) as ChatSession[];
-  } catch {}
+  // Database is the source of truth (survives sign-out and follows the account
+  // across devices); localStorage is only a fallback for chats from before
+  // server-side history existed.
+  let sessions: ChatSession[] = dbSessions?.length ? dbSessions : [];
+  if (sessions.length === 0) {
+    try {
+      const raw = localStorage.getItem(SESSIONS_KEY(scope));
+      if (raw) sessions = JSON.parse(raw) as ChatSession[];
+    } catch {}
+  }
   if (!Array.isArray(sessions) || sessions.length === 0) {
     const s = createSession("General", "general", firstName, examTarget);
     sessions = [s];
@@ -128,14 +137,39 @@ function CopyButton({ text }: { text: string }) {
   );
 }
 
-export default function AIChatClient({ userId, firstName, examTarget, examContext }: Props) {
+export default function AIChatClient({ userId, firstName, examTarget, examContext, initialSessions }: Props) {
   const bottomRef    = useRef<HTMLDivElement>(null);
   const hasAutoSent  = useRef(false);
   const activeIdRef  = useRef("");
+  const saveTimer    = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const supabaseRef  = useRef<ReturnType<typeof createClient> | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const [{ sessions, activeId }, setSessionState] = useState(() => loadState(userId, examTarget, firstName, examContext));
+  const [{ sessions, activeId }, setSessionState] = useState(() => loadState(userId, examTarget, firstName, examContext, initialSessions));
   activeIdRef.current = activeId;
+
+  function db() {
+    if (!supabaseRef.current) supabaseRef.current = createClient();
+    return supabaseRef.current;
+  }
+
+  function upsertSessionToDb(session: ChatSession) {
+    db()
+      .from("ai_chat_sessions")
+      .upsert({
+        id: session.id,
+        user_id: userId,
+        title: session.title,
+        type: session.type,
+        exam_context: session.examContext ?? null,
+        messages: session.messages,
+        created_at: session.createdAt,
+        updated_at: new Date().toISOString(),
+      })
+      .then(({ error }) => {
+        if (error) console.warn("[ai-tutor] failed to save chat:", error.message);
+      });
+  }
 
   const activeSession = sessions.find(s => s.id === activeId) ?? sessions[0];
 
@@ -145,7 +179,8 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
     initialMessages: activeSession?.messages ?? [],
   });
 
-  // Persist messages into the active session
+  // Persist messages into the active session (localStorage immediately,
+  // database debounced so we don't write on every streamed token)
   useEffect(() => {
     if (messages.length === 0) return;
     const cid = activeIdRef.current;
@@ -154,6 +189,11 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
       saveSessions(userId, updated);
       return { ...prev, sessions: updated };
     });
+    if (saveTimer.current) clearTimeout(saveTimer.current);
+    saveTimer.current = setTimeout(() => {
+      const meta = sessions.find(s => s.id === cid);
+      if (meta) upsertSessionToDb({ ...meta, messages });
+    }, 1200);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages]);
 
@@ -189,6 +229,7 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
     const title = count === 0 ? "General" : `New Chat ${count + 1}`;
     const s = createSession(title, "general", firstName, examTarget);
     activeIdRef.current = s.id;
+    upsertSessionToDb(s);
     setSessionState(prev => {
       const updated = [s, ...prev.sessions].slice(0, MAX_SESSIONS);
       saveSessions(userId, updated);
@@ -202,6 +243,13 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
 
   function deleteSession(id: string, e: React.MouseEvent) {
     e.stopPropagation();
+    db()
+      .from("ai_chat_sessions")
+      .delete()
+      .eq("id", id)
+      .then(({ error }) => {
+        if (error) console.warn("[ai-tutor] failed to delete chat:", error.message);
+      });
     setSessionState(prev => {
       let updated = prev.sessions.filter(s => s.id !== id);
       if (updated.length === 0) {
@@ -410,9 +458,29 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
                         prose-code:bg-[#EEF2FF] prose-code:text-[#4338CA] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:text-[11px] prose-code:font-mono prose-code:font-semibold prose-code:before:content-none prose-code:after:content-none
                         prose-blockquote:border-l-[3px] prose-blockquote:border-[#0D9488] prose-blockquote:bg-[#F0FDFA] prose-blockquote:rounded-r-xl prose-blockquote:px-4 prose-blockquote:py-2 prose-blockquote:not-italic">
                         <ReactMarkdown
-                          remarkPlugins={[remarkMath]}
+                          remarkPlugins={[remarkGfm, remarkMath]}
                           rehypePlugins={[rehypeKatex]}
                           components={{
+                            // Comparison tables (soil types, cell parts, etc.)
+                            table({ children }) {
+                              return (
+                                <div className="not-prose my-3 overflow-x-auto rounded-xl border border-[#E2E8F0] shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+                                  <table className="w-full text-[13px] border-collapse">{children}</table>
+                                </div>
+                              );
+                            },
+                            thead({ children }) {
+                              return <thead className="bg-[#EEF2FF]">{children}</thead>;
+                            },
+                            th({ children }) {
+                              return <th className="text-left px-3.5 py-2.5 font-bold text-[#1B3A8A] text-[12px] uppercase tracking-wide border-b border-[#C7D2FE] whitespace-nowrap">{children}</th>;
+                            },
+                            td({ children }) {
+                              return <td className="px-3.5 py-2.5 text-[#334155] border-b border-[#F1F5F9] align-top leading-relaxed">{children}</td>;
+                            },
+                            tr({ children }) {
+                              return <tr className="even:bg-[#FAFBFF]">{children}</tr>;
+                            },
                             // Render ```svg blocks as actual SVG diagrams
                             code({ className, children }) {
                               const lang = /language-(\w+)/.exec(className || "")?.[1];

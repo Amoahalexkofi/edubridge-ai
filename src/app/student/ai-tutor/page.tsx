@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import AIChatClient from "./_components/AIChatClient";
+import AIChatClient, { type ChatSession } from "./_components/AIChatClient";
 
 export interface ExamContext {
   subject: string;
@@ -29,6 +29,24 @@ export default async function AITutorPage({
   const firstName = profile?.full_name?.split(" ")[0] ?? "there";
   const examTarget = (profile?.exam_target ?? "bece").toUpperCase() as "BECE" | "WASSCE";
 
+  // Chat history is stored per-account so it survives sign-out and follows
+  // the student across devices (localStorage is wiped at sign-out by design).
+  const { data: chatRows } = await supabase
+    .from("ai_chat_sessions")
+    .select("id, title, type, exam_context, messages, created_at")
+    .eq("user_id", user.id)
+    .order("updated_at", { ascending: false })
+    .limit(20);
+
+  const initialSessions: ChatSession[] = (chatRows ?? []).map(r => ({
+    id: r.id,
+    title: r.title,
+    type: r.type as "exam" | "general",
+    examContext: r.exam_context ?? undefined,
+    messages: Array.isArray(r.messages) ? r.messages : [],
+    createdAt: r.created_at,
+  }));
+
   const sp = await searchParams;
   const examContext: ExamContext | undefined = sp.from === "exam" && sp.subject
     ? {
@@ -40,5 +58,5 @@ export default async function AITutorPage({
       }
     : undefined;
 
-  return <AIChatClient userId={user.id} firstName={firstName} examTarget={examTarget} examContext={examContext} />;
+  return <AIChatClient userId={user.id} firstName={firstName} examTarget={examTarget} examContext={examContext} initialSessions={initialSessions} />;
 }
