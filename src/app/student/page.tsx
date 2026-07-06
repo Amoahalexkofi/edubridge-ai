@@ -3,9 +3,10 @@ import Link from "next/link";
 import {
   BookOpen, PenLine, FileText, TrendingUp,
   ArrowRight, ChevronRight, Trophy, Flame,
-  Brain, Zap, Star,
+  Brain, Zap, Star, Target, Sparkles,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { getRecommendations, type Recommendation } from "@/lib/recommendations";
 
 const LESSON_XP = 10;
 const EXAM_XP = 20;
@@ -65,6 +66,7 @@ export default async function StudentDashboard() {
     { data: recentProgress },
     { data: streakData },
     { data: studentRoles },
+    recommendations,
   ] = await Promise.all([
     supabase.from("subjects").select("id, name, slug, icon, color, description, topics(id)").eq("exam_type", examTarget.toLowerCase()).order("name"),
     supabase.from("lesson_progress").select("*", { count: "exact", head: true }).eq("user_id", user.id).eq("completed", true),
@@ -73,6 +75,7 @@ export default async function StudentDashboard() {
     supabase.from("lesson_progress").select("lesson_id, last_viewed_at, completed, lessons(title, topic_id, topics(title, subject_id, subjects(name, slug)))").eq("user_id", user.id).order("last_viewed_at", { ascending: false }).limit(1).single(),
     supabase.from("lesson_progress").select("last_viewed_at").eq("user_id", user.id).eq("completed", true).order("last_viewed_at", { ascending: false }).limit(365),
     supabase.from("user_roles").select("user_id").eq("role", "student"),
+    getRecommendations(supabase, user.id, profile?.exam_target ?? "bece"),
   ]);
 
   const avgScore = examScores && examScores.length > 0
@@ -206,6 +209,49 @@ export default async function StudentDashboard() {
             className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#E8722A] hover:bg-[#d4641e] text-white font-bold rounded-xl text-sm transition-colors shadow-sm">
             Browse subjects <ArrowRight className="h-4 w-4" />
           </Link>
+        </div>
+      )}
+
+      {/* ── Recommended for you (adaptive) ── */}
+      {recommendations.length > 0 && (
+        <div className="mb-6">
+          <div className="flex items-center gap-2 mb-3">
+            <Sparkles className="h-4 w-4 text-[#E8722A]" />
+            <h2 className="font-bold text-slate-900">Recommended for you</h2>
+            <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mt-0.5">Based on your results</span>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {recommendations.map((rec: Recommendation) => {
+              const style = {
+                weak_topic:  { icon: Target,   chip: "bg-amber-50 text-amber-600 border-amber-100",   label: rec.pct != null ? `${rec.pct}% — needs work` : "Needs work" },
+                new_subject: { icon: BookOpen, chip: "bg-blue-50 text-blue-600 border-blue-100",      label: "New for you" },
+                first_exam:  { icon: FileText, chip: "bg-purple-50 text-purple-600 border-purple-100", label: "First step" },
+                retry_exam:  { icon: Trophy,   chip: "bg-green-50 text-green-600 border-green-100",   label: "Beat your score" },
+              }[rec.kind];
+              const Icon = style.icon;
+              return (
+                <Link
+                  key={rec.title}
+                  href={rec.href}
+                  className="group bg-white rounded-2xl border border-slate-200 p-4 hover:border-[#1B3A8A]/30 hover:shadow-sm transition-all flex flex-col gap-2.5"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className={`inline-flex items-center gap-1.5 text-[10px] font-bold px-2 py-1 rounded-full border ${style.chip}`}>
+                      <Icon className="h-3 w-3" /> {style.label}
+                    </span>
+                    {rec.subjectName && (
+                      <span className="text-[10px] font-semibold text-slate-400 truncate max-w-[40%]">{rec.subjectName}</span>
+                    )}
+                  </div>
+                  <p className="font-bold text-sm text-slate-900 leading-snug">{rec.title}</p>
+                  <p className="text-xs text-slate-500 leading-relaxed flex-1">{rec.detail}</p>
+                  <span className="inline-flex items-center gap-1 text-xs font-bold text-[#1B3A8A] group-hover:gap-2 transition-all">
+                    Start now <ArrowRight className="h-3.5 w-3.5" />
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
         </div>
       )}
 
