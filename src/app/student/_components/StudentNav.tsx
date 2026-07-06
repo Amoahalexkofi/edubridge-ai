@@ -6,18 +6,23 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard, BookOpen, PenLine,
   FileText, User, LogOut, GraduationCap, Flame, Brain, Trophy, Lock,
+  CalendarCheck,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 // `locks: true` means the item requires a verified email.
+// desktopOnly: the mobile bottom bar is full at 7 items (52px minimum each);
+// an 8th overflows small phones. Mobile reaches the planner from the Home
+// quick actions instead.
 const navItems = [
-  { href: "/student",             label: "Home",      icon: LayoutDashboard, locks: false },
-  { href: "/student/subjects",    label: "Subjects",  icon: BookOpen,        locks: true  },
-  { href: "/student/practice",    label: "Practice",  icon: PenLine,         locks: true  },
-  { href: "/student/exams",       label: "Exams",     icon: FileText,        locks: true  },
-  { href: "/student/ai-tutor",    label: "AI Tutor",  icon: Brain,           locks: true  },
-  { href: "/student/leaderboard", label: "Rankings",  icon: Trophy,          locks: true  },
-  { href: "/student/profile",     label: "Profile",   icon: User,            locks: false },
+  { href: "/student",             label: "Home",       icon: LayoutDashboard, locks: false, desktopOnly: false },
+  { href: "/student/subjects",    label: "Subjects",   icon: BookOpen,        locks: true,  desktopOnly: false },
+  { href: "/student/practice",    label: "Practice",   icon: PenLine,         locks: true,  desktopOnly: false },
+  { href: "/student/exams",       label: "Exams",      icon: FileText,        locks: true,  desktopOnly: false },
+  { href: "/student/planner",     label: "Study Plan", icon: CalendarCheck,   locks: true,  desktopOnly: true  },
+  { href: "/student/ai-tutor",    label: "AI Tutor",   icon: Brain,           locks: true,  desktopOnly: false },
+  { href: "/student/leaderboard", label: "Rankings",   icon: Trophy,          locks: true,  desktopOnly: false },
+  { href: "/student/profile",     label: "Profile",    icon: User,            locks: false, desktopOnly: false },
 ];
 
 interface Props {
@@ -77,7 +82,7 @@ export default function StudentNav({ userName, examTarget, avatarUrl, previewOff
 
       {/* ── Mobile bottom tab bar ── */}
       <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-slate-100 flex items-center justify-around px-2 pb-safe shadow-[0_-1px_3px_rgba(0,0,0,0.06)]" style={{ height: "64px" }}>
-        {navItems.map(({ href, label, icon: Icon, locks }) => {
+        {navItems.filter(i => !i.desktopOnly).map(({ href, label, icon: Icon, locks }) => {
           const active = isActive(href);
           const isLocked = locked && locks;
           if (isLocked) {

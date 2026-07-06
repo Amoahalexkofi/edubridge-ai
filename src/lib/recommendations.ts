@@ -22,6 +22,76 @@ export interface Recommendation {
 const WEAK_THRESHOLD = 60; // % — same bar as the exam results page
 const MIN_QUESTIONS = 2;   // don't judge a topic on a single question
 
+export interface TopicStat {
+  topicId: string;
+  title: string;
+  subjectId: string | null;
+  subjectName: string;
+  correct: number;
+  total: number;
+  pct: number;
+}
+
+/**
+ * Per-topic accuracy across the student's recent submitted exams,
+ * re-scored from exam_attempts.answers (same method as the results page).
+ * Sorted weakest first. Shared by dashboard recommendations and the study planner.
+ */
+export async function getTopicStats(
+  supabase: SupabaseClient,
+  userId: string,
+  attemptLimit = 5,
+): Promise<{ stats: TopicStat[]; attempts: AttemptRow[] }> {
+  const { data: attempts } = await supabase
+    .from("exam_attempts")
+    .select("id, subject_id, score, total_marks, answers, submitted_at, subjects(id, name, slug)")
+    .eq("user_id", userId)
+    .eq("status", "submitted")
+    .order("submitted_at", { ascending: false })
+    .limit(attemptLimit);
+
+  const recentAttempts = (attempts ?? []) as unknown as AttemptRow[];
+  const questionIds = new Set<string>();
+  for (const a of recentAttempts) {
+    for (const qid of Object.keys(a.answers ?? {})) questionIds.add(qid);
+  }
+  if (questionIds.size === 0) return { stats: [], attempts: recentAttempts };
+
+  const { data: questions } = await supabase
+    .from("questions")
+    .select("id, correct_answer, topic_id, topics(id, title, subject_id)")
+    .in("id", Array.from(questionIds));
+
+  const byId = new Map(((questions ?? []) as unknown as QuestionRow[]).map(q => [q.id, q]));
+  const raw: Record<string, Omit<TopicStat, "pct" | "topicId"> & { topicId: string }> = {};
+
+  for (const a of recentAttempts) {
+    for (const [qid, chosen] of Object.entries(a.answers ?? {})) {
+      const q = byId.get(qid);
+      if (!q?.topic_id) continue;
+      raw[q.topic_id] ??= {
+        topicId: q.topic_id,
+        title: q.topics?.title ?? "Topic",
+        subjectId: q.topics?.subject_id ?? a.subject_id,
+        subjectName: a.subjects?.name ?? "",
+        correct: 0,
+        total: 0,
+      };
+      raw[q.topic_id].total++;
+      if (chosen === q.correct_answer) raw[q.topic_id].correct++;
+    }
+  }
+
+  const stats = Object.values(raw)
+    .map(s => ({ ...s, pct: Math.round((s.correct / s.total) * 100) }))
+    .sort((a, b) => a.pct - b.pct);
+  return { stats, attempts: recentAttempts };
+}
+
+export function weakTopics(stats: TopicStat[]): TopicStat[] {
+  return stats.filter(s => s.total >= MIN_QUESTIONS && s.pct < WEAK_THRESHOLD);
+}
+
 type AttemptRow = {
   id: string;
   subject_id: string | null;
@@ -46,65 +116,17 @@ export async function getRecommendations(
 ): Promise<Recommendation[]> {
   const recs: Recommendation[] = [];
 
-  const { data: attempts } = await supabase
-    .from("exam_attempts")
-    .select("id, subject_id, score, total_marks, answers, submitted_at, subjects(id, name, slug)")
-    .eq("user_id", userId)
-    .eq("status", "submitted")
-    .order("submitted_at", { ascending: false })
-    .limit(5);
-
-  const recentAttempts = (attempts ?? []) as unknown as AttemptRow[];
-
   // ── 1. Weak topics from recent exams ────────────────────────────────────
-  if (recentAttempts.length > 0) {
-    const questionIds = new Set<string>();
-    for (const a of recentAttempts) {
-      for (const qid of Object.keys(a.answers ?? {})) questionIds.add(qid);
-    }
-
-    if (questionIds.size > 0) {
-      const { data: questions } = await supabase
-        .from("questions")
-        .select("id, correct_answer, topic_id, topics(id, title, subject_id)")
-        .in("id", Array.from(questionIds));
-
-      const byId = new Map(((questions ?? []) as unknown as QuestionRow[]).map(q => [q.id, q]));
-      const stats: Record<string, { title: string; subjectId: string | null; subjectName: string; correct: number; total: number }> = {};
-
-      for (const a of recentAttempts) {
-        for (const [qid, chosen] of Object.entries(a.answers ?? {})) {
-          const q = byId.get(qid);
-          if (!q?.topic_id) continue;
-          stats[q.topic_id] ??= {
-            title: q.topics?.title ?? "Topic",
-            subjectId: q.topics?.subject_id ?? a.subject_id,
-            subjectName: a.subjects?.name ?? "",
-            correct: 0,
-            total: 0,
-          };
-          stats[q.topic_id].total++;
-          if (chosen === q.correct_answer) stats[q.topic_id].correct++;
-        }
-      }
-
-      const weak = Object.values(stats)
-        .filter(s => s.total >= MIN_QUESTIONS && (s.correct / s.total) * 100 < WEAK_THRESHOLD)
-        .sort((a, b) => a.correct / a.total - b.correct / b.total)
-        .slice(0, 3);
-
-      for (const w of weak) {
-        const pct = Math.round((w.correct / w.total) * 100);
-        recs.push({
-          kind: "weak_topic",
-          title: `Strengthen: ${w.title}`,
-          detail: `You scored ${pct}% on this topic in recent exams — a little practice here moves your grade the most.`,
-          href: w.subjectId ? `/student/practice?subject=${w.subjectId}` : "/student/practice",
-          pct,
-          subjectName: w.subjectName,
-        });
-      }
-    }
+  const { stats, attempts: recentAttempts } = await getTopicStats(supabase, userId);
+  for (const w of weakTopics(stats).slice(0, 3)) {
+    recs.push({
+      kind: "weak_topic",
+      title: `Strengthen: ${w.title}`,
+      detail: `You scored ${w.pct}% on this topic in recent exams — a little practice here moves your grade the most.`,
+      href: w.subjectId ? `/student/practice?subject=${w.subjectId}` : "/student/practice",
+      pct: w.pct,
+      subjectName: w.subjectName,
+    });
   }
 
   // ── 2. A subject they haven't touched yet ───────────────────────────────

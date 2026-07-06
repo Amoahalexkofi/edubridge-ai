@@ -3,7 +3,7 @@ import Link from "next/link";
 import {
   BookOpen, PenLine, FileText, TrendingUp,
   ArrowRight, ChevronRight, Trophy, Flame,
-  Brain, Zap, Star, Target, Sparkles,
+  Brain, Zap, Star, Target, Sparkles, CalendarCheck,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getRecommendations, type Recommendation } from "@/lib/recommendations";
@@ -121,10 +121,11 @@ export default async function StudentDashboard() {
   ];
 
   const quickActions = [
-    { href: "/student/subjects", label: "Browse subjects", desc: "Explore all topics",       icon: BookOpen, bg: "bg-[#1B3A8A]"   },
-    { href: "/student/practice", label: "Quick practice",  desc: "Sharpen your skills",      icon: PenLine,  bg: "bg-[#E8722A]"   },
-    { href: "/student/exams",    label: "Start mock exam", desc: "WAEC-style timed paper",   icon: FileText, bg: "bg-purple-600"  },
-    { href: "/student/ai-tutor", label: "Ask AI Tutor",   desc: "Get instant help",          icon: Brain,    bg: "bg-teal-600"    },
+    { href: "/student/subjects", label: "Browse subjects", desc: "Explore all topics",           icon: BookOpen,      bg: "bg-[#1B3A8A]"   },
+    { href: "/student/practice", label: "Quick practice",  desc: "Sharpen your skills",          icon: PenLine,       bg: "bg-[#E8722A]"   },
+    { href: "/student/exams",    label: "Start mock exam", desc: "WAEC-style timed paper",       icon: FileText,      bg: "bg-purple-600"  },
+    { href: "/student/planner",  label: "Study plan",      desc: "Your week-by-week roadmap",    icon: CalendarCheck, bg: "bg-[#1D4ED8]"   },
+    { href: "/student/ai-tutor", label: "Ask AI Tutor",   desc: "Get instant help",              icon: Brain,         bg: "bg-teal-600"    },
   ];
 
   const medals = ["🥇", "🥈", "🥉"];
