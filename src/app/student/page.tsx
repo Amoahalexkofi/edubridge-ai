@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getRecommendations, type Recommendation } from "@/lib/recommendations";
+import { checkAndAwardBadges, BADGES } from "@/lib/badges";
 
 const LESSON_XP = 10;
 const EXAM_XP = 20;
@@ -67,6 +68,7 @@ export default async function StudentDashboard() {
     { data: streakData },
     { data: studentRoles },
     recommendations,
+    badgeState,
   ] = await Promise.all([
     supabase.from("subjects").select("id, name, slug, icon, color, description, topics(id)").eq("exam_type", examTarget.toLowerCase()).order("name"),
     supabase.from("lesson_progress").select("*", { count: "exact", head: true }).eq("user_id", user.id).eq("completed", true),
@@ -76,7 +78,11 @@ export default async function StudentDashboard() {
     supabase.from("lesson_progress").select("last_viewed_at").eq("user_id", user.id).eq("completed", true).order("last_viewed_at", { ascending: false }).limit(365),
     supabase.from("user_roles").select("user_id").eq("role", "student"),
     getRecommendations(supabase, user.id, profile?.exam_target ?? "bece"),
+    checkAndAwardBadges(supabase, user.id),
   ]);
+
+  const earnedCount = Object.keys(badgeState.earned).length;
+  const newBadges = BADGES.filter(b => badgeState.newlyEarned.includes(b.id));
 
   const avgScore = examScores && examScores.length > 0
     ? Math.round(examScores.reduce((sum, e) => sum + (e.score / e.total_marks) * 100, 0) / examScores.length)
@@ -155,6 +161,24 @@ export default async function StudentDashboard() {
           </span>
         </div>
       </div>
+
+      {/* ── New badge celebration (shows once, on the load that awards it) ── */}
+      {newBadges.length > 0 && (
+        <div className="flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-2xl px-4 py-3.5 mb-6">
+          <span className="text-2xl" aria-hidden>🏅</span>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-bold text-amber-800">
+              {newBadges.length === 1 ? "New badge unlocked!" : `${newBadges.length} new badges unlocked!`}
+            </p>
+            <p className="text-xs text-amber-700 truncate">
+              {newBadges.map(b => `${b.title} — ${b.desc.toLowerCase()}`).join(" · ")}
+            </p>
+          </div>
+          <Link href="/student/profile#badges" className="text-xs font-bold text-amber-800 underline underline-offset-2 flex-shrink-0">
+            View
+          </Link>
+        </div>
+      )}
 
       {/* ── Stats row ── */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
@@ -351,6 +375,34 @@ export default async function StudentDashboard() {
                 ? `${(nextLevel.min - totalXP).toLocaleString()} XP to Level ${nextLevel.level} · ${nextLevel.label}`
                 : "Max level reached — Champion!"}
             </p>
+          </div>
+
+          {/* Badges */}
+          <div className="bg-white rounded-2xl border border-slate-200 p-4">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="font-bold text-slate-900 text-sm">Badges</h3>
+              <span className="text-xs font-bold text-slate-400 tabular-nums">{earnedCount}/{BADGES.length}</span>
+            </div>
+            <div className="flex flex-wrap gap-2 mb-3">
+              {BADGES.slice(0, 8).map(b => {
+                const isEarned = !!badgeState.earned[b.id];
+                const Icon = b.icon;
+                return (
+                  <span
+                    key={b.id}
+                    title={`${b.title} — ${b.desc}`}
+                    className={`h-9 w-9 rounded-xl border flex items-center justify-center ${
+                      isEarned ? b.tint : "bg-slate-50 text-slate-300 border-slate-100"
+                    }`}
+                  >
+                    <Icon className="h-4 w-4" />
+                  </span>
+                );
+              })}
+            </div>
+            <Link href="/student/profile#badges" className="text-xs font-bold text-[#1B3A8A] hover:underline underline-offset-2">
+              View all badges →
+            </Link>
           </div>
 
           {/* Leaderboard teaser */}

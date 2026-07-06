@@ -1,9 +1,10 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { GraduationCap, School, BadgeCheck, Mail } from "lucide-react";
+import { GraduationCap, School, BadgeCheck, Mail, Lock } from "lucide-react";
 import ProfileForm from "./_components/ProfileForm";
 import AvatarUpload from "./_components/AvatarUpload";
 import ParentInvite from "./_components/ParentInvite";
+import { checkAndAwardBadges, BADGES } from "@/lib/badges";
 
 const GRADE_LABELS: Record<string, string> = {
   JHS1: "JHS 1", JHS2: "JHS 2", JHS3: "JHS 3",
@@ -32,6 +33,9 @@ export default async function ProfilePage() {
   const examLabel = (profile?.exam_target ?? "bece").toUpperCase();
   const gradeLabel = profile?.grade_level ? (GRADE_LABELS[profile.grade_level] ?? profile.grade_level) : null;
   const parentLinked = !!parentLink;
+
+  const badgeState = await checkAndAwardBadges(supabase, user.id);
+  const earnedCount = Object.keys(badgeState.earned).length;
 
   return (
     <div className="max-w-2xl mx-auto px-4 sm:px-6 py-6 lg:py-8">
@@ -79,6 +83,50 @@ export default async function ProfilePage() {
               <BadgeCheck className="h-3.5 w-3.5" /> {parentLinked ? "Parent linked" : "No parent linked"}
             </span>
           </div>
+        </div>
+      </div>
+
+      {/* ── Badge case ── */}
+      <div id="badges" className="mt-6 bg-white rounded-2xl border border-[#E8ECF0] p-5 sm:p-6 scroll-mt-20">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="font-bold text-slate-900">Badges</h2>
+            <p className="text-xs text-slate-500 mt-0.5">Earned by learning — keep going to unlock them all.</p>
+          </div>
+          <span className="text-sm font-black text-[#1B3A8A] tabular-nums flex-shrink-0">{earnedCount}/{BADGES.length}</span>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+          {BADGES.map(b => {
+            const earnedAt = badgeState.earned[b.id];
+            const Icon = b.icon;
+            return (
+              <div
+                key={b.id}
+                className={`rounded-xl border p-3 flex flex-col gap-2 ${
+                  earnedAt ? "bg-white border-slate-200" : "bg-slate-50 border-slate-100"
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className={`h-9 w-9 rounded-xl border flex items-center justify-center ${
+                    earnedAt ? b.tint : "bg-white text-slate-300 border-slate-200"
+                  }`}>
+                    <Icon className="h-4 w-4" />
+                  </span>
+                  {!earnedAt && <Lock className="h-3 w-3 text-slate-300" />}
+                </div>
+                <div>
+                  <p className={`text-[13px] font-bold leading-tight ${earnedAt ? "text-slate-900" : "text-slate-400"}`}>
+                    {b.title}
+                  </p>
+                  <p className={`text-[11px] leading-snug mt-0.5 ${earnedAt ? "text-slate-500" : "text-slate-400"}`}>
+                    {earnedAt
+                      ? new Date(earnedAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })
+                      : b.hint(badgeState.stats)}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
