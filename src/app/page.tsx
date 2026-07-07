@@ -301,12 +301,12 @@ export default function LandingPage() {
               {stats.map((s) => {
                 const Icon = s.icon;
                 return (
-                  <div key={s.label} className="relative bg-[#1a3985] hover:bg-[#1d3f95] transition-colors duration-300 p-8 lg:p-10 group">
+                  <div key={s.label} className="relative bg-[#1a3985] hover:bg-[#1d3f95] transition-colors duration-300 p-5 sm:p-8 lg:p-10 group">
                     <div className="absolute bottom-0 left-0 h-20 w-20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none blur-2xl" style={{ background: s.glow }} />
-                    <div className={`h-9 w-9 rounded-xl bg-gradient-to-br ${s.iconBg} flex items-center justify-center mb-6 shadow-[0_4px_14px_rgba(0,0,0,0.3)]`}>
+                    <div className={`h-9 w-9 rounded-xl bg-gradient-to-br ${s.iconBg} flex items-center justify-center mb-4 sm:mb-6 shadow-[0_4px_14px_rgba(0,0,0,0.3)]`}>
                       <Icon className="h-4 w-4 text-white" />
                     </div>
-                    <p className="text-[2.6rem] lg:text-[3.2rem] font-black text-[#E8722A] tracking-tight leading-none tabular-nums">
+                    <p className="text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-black text-[#E8722A] tracking-tight leading-none tabular-nums">
                       <StatNumber end={s.end} suffix={s.suffix} started={statsStarted} />
                     </p>
                     <p className="text-[13px] text-white/70 font-medium leading-snug mt-3">{s.label}</p>

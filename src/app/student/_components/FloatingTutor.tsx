@@ -120,7 +120,7 @@ export default function FloatingTutor({ userId, firstName, examTarget }: Props) 
       {/* ── Chat panel ──────────────────────────────────────────── */}
       {open && (
         <div className={`fixed z-50 bottom-20 right-4 lg:bottom-6 lg:right-6 w-[calc(100vw-2rem)] sm:w-[380px] bg-white rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.18)] border border-[#E2E8F0] flex flex-col transition-all duration-200 ${
-          minimised ? "h-[56px] overflow-hidden" : "h-[520px] sm:h-[560px]"
+          minimised ? "h-[56px] overflow-hidden" : "h-[520px] sm:h-[560px] max-h-[calc(100dvh-6rem)]"
         }`}>
 
           {/* Panel header */}

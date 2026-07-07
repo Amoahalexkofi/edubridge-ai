@@ -223,12 +223,13 @@ export default async function TeacherAnalyticsPage() {
                 <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0 w-14 text-center ${type === "bece" ? "bg-[#EFF6FF] text-[#1D4ED8]" : "bg-[#F0FDF4] text-[#15803D]"}`}>
                   {type.toUpperCase()}
                 </span>
-                <span className="flex-1 text-sm text-[#334155] truncate">{name}</span>
-                <div className="w-32 h-2 bg-[#F1F5F9] rounded-full overflow-hidden">
+                <span className="flex-1 min-w-0 text-sm text-[#334155] truncate">{name}</span>
+                {/* Narrower bar on phones + count hidden below sm so the name never clips */}
+                <div className="w-14 sm:w-32 h-2 bg-[#F1F5F9] rounded-full overflow-hidden flex-shrink-0">
                   <div className={`h-full rounded-full ${scoreBarColor(avg)}`} style={{ width: `${avg}%` }} />
                 </div>
-                <span className={`text-sm font-black tabular-nums w-10 text-right ${scoreColor(avg)}`}>{avg}%</span>
-                <span className="text-xs text-[#CBD5E1] w-14 text-right">{count} attempts</span>
+                <span className={`text-sm font-black tabular-nums w-10 text-right flex-shrink-0 ${scoreColor(avg)}`}>{avg}%</span>
+                <span className="hidden sm:block text-xs text-[#CBD5E1] w-14 text-right flex-shrink-0">{count} attempts</span>
               </div>
             ))}
           </div>

@@ -81,3 +81,15 @@ h1, h2, h3, h4, h5, h6 {
 @media (prefers-reduced-motion: reduce) {
   .eb-rise, .eb-rise-2, .eb-rise-3 { animation: none; }
 }
+
+/* Prevent iOS Safari from zooming the page when a text field is focused.
+   iOS zooms any input whose font-size is < 16px; the app styles fields at
+   14px (text-sm) for density, so force ≥16px on phones only. Desktop keeps
+   the tighter size. */
+@media (max-width: 640px) {
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}

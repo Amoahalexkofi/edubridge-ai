@@ -125,15 +125,16 @@ export default function ExamTaker({ attemptId, subject, questions, durationMinut
       {/* Question area */}
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 space-y-4">
 
-        {/* Progress dots */}
+        {/* Progress dots — ≥44px tap targets (timed exam, thumb navigation) */}
         <div className="flex flex-wrap gap-1.5">
           {questions.map((q, i) => (
             <button
               key={q.id}
               onClick={() => setCurrentIdx(i)}
-              className={`h-6 w-6 rounded-lg text-xs font-bold transition-all ${
+              aria-label={`Go to question ${i + 1}${answers[q.id] ? " (answered)" : ""}`}
+              className={`h-11 w-11 sm:h-9 sm:w-9 rounded-lg text-sm font-bold transition-all ${
                 i === currentIdx
-                  ? "bg-[#1D4ED8] text-white scale-110"
+                  ? "bg-[#1D4ED8] text-white scale-105"
                   : answers[q.id]
                   ? "bg-green-100 text-green-700 border border-green-200"
                   : "bg-white text-[#94a3b8] border border-[#E2E8F0]"
@@ -188,21 +189,21 @@ export default function ExamTaker({ attemptId, subject, questions, durationMinut
           <button
             onClick={() => setCurrentIdx((i) => Math.max(0, i - 1))}
             disabled={currentIdx === 0}
-            className="flex items-center gap-1.5 px-4 h-10 rounded-xl bg-white border border-[#E2E8F0] text-sm font-semibold text-[#475569] hover:bg-[#F8FAFC] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex items-center gap-1.5 px-4 h-11 rounded-xl bg-white border border-[#E2E8F0] text-sm font-semibold text-[#475569] hover:bg-[#F8FAFC] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <ChevronLeft className="h-4 w-4" /> Previous
           </button>
           {currentIdx < questions.length - 1 ? (
             <button
               onClick={() => setCurrentIdx((i) => Math.min(questions.length - 1, i + 1))}
-              className="flex items-center gap-1.5 px-4 h-10 rounded-xl bg-white border border-[#E2E8F0] text-sm font-semibold text-[#475569] hover:bg-[#F8FAFC] transition-colors"
+              className="flex items-center gap-1.5 px-4 h-11 rounded-xl bg-white border border-[#E2E8F0] text-sm font-semibold text-[#475569] hover:bg-[#F8FAFC] transition-colors"
             >
               Next <ChevronRight className="h-4 w-4" />
             </button>
           ) : (
             <button
               onClick={() => setShowConfirm(true)}
-              className="flex items-center gap-1.5 px-4 h-10 rounded-xl bg-[#1D4ED8] hover:bg-[#1e40af] text-white text-sm font-bold transition-colors"
+              className="flex items-center gap-1.5 px-4 h-11 rounded-xl bg-[#1D4ED8] hover:bg-[#1e40af] text-white text-sm font-bold transition-colors"
             >
               Finish <ChevronRight className="h-4 w-4" />
             </button>

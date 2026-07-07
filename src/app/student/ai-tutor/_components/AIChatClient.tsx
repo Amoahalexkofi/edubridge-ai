@@ -325,11 +325,14 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
               <p className={`flex-1 text-[13px] truncate ${isActive ? "font-semibold text-[#1B3A8A]" : "font-normal text-[#334155]"}`}>
                 {s.title}
               </p>
+              {/* Always visible on touch (no hover); hover-reveal on desktop.
+                  Larger hit area so chats are actually deletable on a phone. */}
               <button
                 onClick={e => deleteSession(s.id, e)}
-                className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity text-[#94a3b8] hover:text-[#DC2626]"
+                aria-label={`Delete chat: ${s.title}`}
+                className="flex-shrink-0 -mr-1 p-2 rounded-lg opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity text-[#94a3b8] hover:text-[#DC2626] hover:bg-white/60"
               >
-                <X className="h-3.5 w-3.5" />
+                <X className="h-4 w-4" />
               </button>
             </button>
           );
@@ -339,7 +342,9 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
   );
 
   return (
-    <div className="flex h-[calc(100vh-7.5rem)] lg:h-screen">
+    // Mobile: layout wrapper adds pt-14 (56px) + pb-20 (80px) = 8.5rem; use dvh
+    // so the composer never hides behind the browser toolbar or bottom tab bar.
+    <div className="flex h-[calc(100dvh-8.5rem)] lg:h-screen">
 
       {/* Desktop sidebar */}
       <aside className="hidden lg:flex flex-col w-60 xl:w-64 flex-shrink-0 bg-[#F8FAFC] border-r border-[#E2E8F0]">

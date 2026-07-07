@@ -422,10 +422,10 @@ export default async function StudentDashboard() {
                       }`}>
                         {medals[i]}
                       </div>
-                      <span className={`flex-1 text-sm truncate ${isMe ? "font-bold text-[#1B3A8A]" : "font-medium text-slate-700"}`}>
+                      <span className={`flex-1 min-w-0 text-sm truncate ${isMe ? "font-bold text-[#1B3A8A]" : "font-medium text-slate-700"}`}>
                         {s.full_name?.split(" ")[0] ?? "Student"}{isMe ? " (you)" : ""}
                       </span>
-                      <span className="text-xs font-bold text-[#E8722A] tabular-nums">{s.lessons} lessons</span>
+                      <span className="text-xs font-bold text-[#E8722A] tabular-nums flex-shrink-0">{s.lessons} lessons</span>
                     </div>
                   );
                 })}
