@@ -106,7 +106,7 @@ export default async function ParentDashboard() {
             const initials = (student.full_name ?? "?").split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase();
 
             return (
-              <div key={student.id} className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5">
+              <div key={student.id} className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5">
                 <div className="flex items-center gap-3 mb-5">
                   <div className="h-12 w-12 rounded-full bg-[#1B3A8A] flex items-center justify-center text-white text-lg font-bold flex-shrink-0">
                     {initials}
@@ -175,7 +175,7 @@ export default async function ParentDashboard() {
 
       {/* Phone update — show at bottom when already linked */}
       {hasStudents && (
-        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5">
           <div className="flex items-center gap-3 mb-4">
             <Phone className="h-4 w-4 text-slate-400" />
             <p className="text-sm font-semibold text-slate-700">Your mobile number</p>

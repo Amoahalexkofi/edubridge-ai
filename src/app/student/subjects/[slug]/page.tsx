@@ -65,7 +65,7 @@ export default async function SubjectPage({
       </Link>
 
       {/* Subject header */}
-      <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 sm:p-6">
+      <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5 sm:p-6">
         <div className="flex items-start gap-4">
           <div className="h-14 w-14 sm:h-16 sm:w-16 rounded-2xl bg-[#EFF6FF] border border-[#BFDBFE] flex items-center justify-center text-3xl flex-shrink-0">
             {subject.icon ?? "📚"}
@@ -217,7 +217,7 @@ export default async function SubjectPage({
 
       {/* Bottom CTA when topics exist */}
       {topics && topics.length > 0 && totalLessons > 0 && (
-        <div className="flex items-center justify-between bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-4">
+        <div className="flex items-center justify-between bg-white rounded-2xl border border-[#E6E4DE] eb-card p-4">
           <div>
             <p className="text-sm font-semibold text-[#0f172a]">Ready to practice?</p>
             <p className="text-xs text-[#64748B]">Test what you've learned in {subject.name}</p>

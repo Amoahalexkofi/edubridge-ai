@@ -187,7 +187,7 @@ export default async function StudentDashboard() {
           <Link
             key={label}
             href={href}
-            className="bg-white rounded-2xl p-4 sm:p-5 border border-[#E6E4DE] flex flex-col gap-3 hover:border-[#1B3A8A]/30 hover:shadow-sm transition-all group"
+            className="bg-white rounded-2xl p-4 sm:p-5 border border-[#E6E4DE] eb-card eb-lift flex flex-col gap-3 hover:border-[#1B3A8A]/40 group"
           >
             <div className={`h-9 w-9 rounded-xl flex items-center justify-center ${color}`}>
               <Icon className="h-4 w-4" />
@@ -204,7 +204,7 @@ export default async function StudentDashboard() {
       {recent?.lessons ? (
         <Link
           href={`/student/lessons/${recent.lesson_id}`}
-          className="flex items-center gap-4 bg-gradient-to-r from-[#1B3A8A] to-[#2d4fa0] text-white rounded-2xl p-5 hover:from-[#162f74] hover:to-[#1B3A8A] transition-all group mb-6 shadow-md"
+          className="flex items-center gap-4 bg-gradient-to-r from-[#1B3A8A] to-[#2d4fa0] text-white rounded-2xl p-5 hover:from-[#162f74] hover:to-[#1B3A8A] transition-all group mb-6 eb-card-navy eb-lift"
         >
           <div className="h-12 w-12 rounded-xl bg-white/15 flex items-center justify-center flex-shrink-0">
             <BookOpen className="h-6 w-6 text-white" />
@@ -221,7 +221,7 @@ export default async function StudentDashboard() {
           </div>
         </Link>
       ) : (
-        <div className="bg-gradient-to-r from-[#1B3A8A] to-[#2d4fa0] rounded-2xl p-6 mb-6 shadow-md">
+        <div className="bg-gradient-to-r from-[#1B3A8A] to-[#2d4fa0] rounded-2xl p-6 mb-6 eb-card-navy">
           <div className="flex items-center gap-3 mb-4">
             <div className="h-10 w-10 rounded-xl bg-white/15 flex items-center justify-center">
               <Zap className="h-5 w-5 text-[#E8722A]" />
@@ -259,7 +259,7 @@ export default async function StudentDashboard() {
                 <Link
                   key={rec.title}
                   href={rec.href}
-                  className="group bg-white rounded-2xl border border-[#E6E4DE] p-4 hover:border-[#1B3A8A]/30 hover:shadow-sm transition-all flex flex-col gap-2.5"
+                  className="group bg-white rounded-2xl border border-[#E6E4DE] eb-card eb-lift p-4 hover:border-[#1B3A8A]/40 flex flex-col gap-2.5"
                 >
                   <div className="flex items-center justify-between">
                     <span className={`inline-flex items-center gap-1.5 text-[10px] font-bold px-2 py-1 rounded-full border ${style.chip}`}>
@@ -300,7 +300,7 @@ export default async function StudentDashboard() {
                   <Link
                     key={subject.id}
                     href={`/student/subjects/${subject.slug}`}
-                    className="group bg-white rounded-2xl border border-[#E6E4DE] p-4 hover:border-[#1D4ED8]/30 hover:shadow-md transition-all flex flex-col gap-3"
+                    className="group bg-white rounded-2xl border border-[#E6E4DE] eb-card eb-lift p-4 hover:border-[#1D4ED8]/40 flex flex-col gap-3"
                   >
                     <div className="h-10 w-10 rounded-xl bg-[#F8F7F4] border border-[#E6E4DE] flex items-center justify-center text-lg">
                       {subject.icon ?? "📚"}
@@ -335,7 +335,7 @@ export default async function StudentDashboard() {
         <div className="space-y-4">
 
           {/* Quick actions */}
-          <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-4">
+          <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-4">
             <h3 className="font-bold text-slate-900 text-sm mb-3">Quick actions</h3>
             <div className="space-y-2">
               {quickActions.map(({ href, label, desc, icon: Icon, bg }) => (
@@ -358,7 +358,7 @@ export default async function StudentDashboard() {
           </div>
 
           {/* XP / Level widget */}
-          <div className="bg-[#1B3A8A] rounded-2xl p-4 text-white">
+          <div className="bg-[#1B3A8A] rounded-2xl p-4 text-white eb-card-navy">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Star className="h-4 w-4 text-[#E8722A]" />
@@ -379,7 +379,7 @@ export default async function StudentDashboard() {
           </div>
 
           {/* Badges */}
-          <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-4">
+          <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-4">
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-bold text-slate-900 text-sm">Badges</h3>
               <span className="text-xs font-bold text-slate-400 tabular-nums">{earnedCount}/{BADGES.length}</span>
@@ -407,7 +407,7 @@ export default async function StudentDashboard() {
           </div>
 
           {/* Leaderboard teaser */}
-          <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-4">
+          <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-4">
             <div className="flex items-center gap-2 mb-3">
               <Trophy className="h-4 w-4 text-amber-500" />
               <h3 className="font-bold text-slate-900 text-sm">Leaderboard</h3>

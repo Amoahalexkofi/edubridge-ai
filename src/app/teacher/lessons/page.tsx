@@ -85,7 +85,7 @@ export default async function TeacherLessonsPage({
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const topic = lesson.topics as any;
             return (
-              <div key={lesson.id} className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-4 flex items-center gap-3">
+              <div key={lesson.id} className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-4 flex items-center gap-3">
                 <div className="h-9 w-9 rounded-xl bg-[#EFF6FF] border border-[#BFDBFE] flex items-center justify-center flex-shrink-0">
                   <FileText className="h-4 w-4 text-[#1D4ED8]" />
                 </div>

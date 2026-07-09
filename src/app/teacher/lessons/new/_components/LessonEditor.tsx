@@ -81,7 +81,7 @@ export default function LessonEditor({
 
   return (
     <form onSubmit={handleSave} className="space-y-4">
-      <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 space-y-4">
+      <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5 space-y-4">
 
         {/* Topic selector */}
         <div>
@@ -116,7 +116,7 @@ export default function LessonEditor({
       </div>
 
       {/* Content editor */}
-      <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5">
+      <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5">
         <div className="flex items-center justify-between mb-3">
           <label className="block text-sm font-semibold text-[#334155]">Lesson content</label>
           <button

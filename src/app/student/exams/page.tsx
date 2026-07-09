@@ -111,7 +111,7 @@ export default async function ExamsPage({
 
         {/* Stat strip */}
         <div className="grid grid-cols-3 gap-2 sm:gap-3">
-          <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+          <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
             <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-xl bg-violet-50 flex items-center justify-center flex-shrink-0">
               <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 text-violet-600" />
             </div>
@@ -120,7 +120,7 @@ export default async function ExamsPage({
               <p className="text-[10px] sm:text-xs text-[#94a3b8]">Exams taken</p>
             </div>
           </div>
-          <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+          <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
             <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0">
               <BarChart2 className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
             </div>
@@ -129,7 +129,7 @@ export default async function ExamsPage({
               <p className="text-[10px] sm:text-xs text-[#94a3b8]">Avg score</p>
             </div>
           </div>
-          <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+          <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
             <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
               <FileText className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
             </div>
@@ -156,7 +156,7 @@ export default async function ExamsPage({
                 return (
                   <div
                     key={s.id}
-                    className="bg-[#FAFAFA] rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 flex flex-col gap-4 opacity-60 cursor-not-allowed"
+                    className="bg-[#FAFAFA] rounded-2xl border border-[#E6E4DE] eb-card p-5 flex flex-col gap-4 opacity-60 cursor-not-allowed"
                   >
                     <div className="flex items-center justify-between">
                       <div className="h-11 w-11 rounded-xl bg-[#F2F1EE] border border-[#E6E4DE] flex items-center justify-center text-2xl grayscale">

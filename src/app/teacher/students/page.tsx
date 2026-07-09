@@ -62,7 +62,7 @@ export default async function TeacherStudentsPage() {
       </div>
 
       {profiles && profiles.length > 0 ? (
-        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] overflow-hidden">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card overflow-hidden">
           <div className="grid grid-cols-[1fr_auto_auto_auto] text-xs font-semibold text-[#94a3b8] uppercase tracking-wider px-4 py-3 border-b border-[#F1F5F9] bg-[#F8F7F4]">
             <span>Student</span>
             <span className="w-20 text-center">Exam</span>

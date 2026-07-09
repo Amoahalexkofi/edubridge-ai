@@ -135,7 +135,7 @@ export default async function TeacherAnalyticsPage() {
           { label: "Engagement rate",   value: `${engagementRate}%`,          icon: BarChart2,    color: "bg-orange-50 text-[#E8722A]"},
           { label: "Exams submitted",   value: allAttempts?.length ?? 0,      icon: Trophy,       color: "bg-purple-50 text-purple-600"},
         ].map(({ label, value, icon: Icon, color }) => (
-          <div key={label} className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5">
+          <div key={label} className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5">
             <div className={`h-9 w-9 rounded-xl flex items-center justify-center mb-3 ${color}`}>
               <Icon className="h-4.5 w-4.5" />
             </div>
@@ -149,7 +149,7 @@ export default async function TeacherAnalyticsPage() {
       <div className="grid sm:grid-cols-2 gap-4">
 
         {/* Top 5 */}
-        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 space-y-4">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5 space-y-4">
           <div className="flex items-center gap-2">
             <Trophy className="h-4 w-4 text-[#94a3b8]" />
             <h2 className="font-bold text-[#0f172a] text-sm">Top performers</h2>
@@ -180,7 +180,7 @@ export default async function TeacherAnalyticsPage() {
         </div>
 
         {/* Needs attention */}
-        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 space-y-4">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5 space-y-4">
           <div className="flex items-center gap-2">
             <AlertCircle className="h-4 w-4 text-amber-500" />
             <h2 className="font-bold text-[#0f172a] text-sm">Needs attention</h2>
@@ -211,7 +211,7 @@ export default async function TeacherAnalyticsPage() {
       </div>
 
       {/* Subject performance */}
-      <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 space-y-4">
+      <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5 space-y-4">
         <div className="flex items-center gap-2">
           <BookOpen className="h-4 w-4 text-[#94a3b8]" />
           <h2 className="font-bold text-[#0f172a] text-sm">Subject performance</h2>
@@ -241,7 +241,7 @@ export default async function TeacherAnalyticsPage() {
 
       {/* Grade / class breakdown */}
       {gradeEntries.length > 0 && (
-        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 space-y-4">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5 space-y-4">
           <div className="flex items-center gap-2">
             <Users className="h-4 w-4 text-[#94a3b8]" />
             <h2 className="font-bold text-[#0f172a] text-sm">Engagement by class</h2>

@@ -146,7 +146,7 @@ export default function ExamTaker({ attemptId, subject, questions, durationMinut
         </div>
 
         {/* Question card */}
-        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 sm:p-6">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5 sm:p-6">
           {current.topics?.title && (
             <p className="text-xs font-semibold text-[#94a3b8] uppercase tracking-wider mb-3">
               {current.topics.title}

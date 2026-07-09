@@ -128,7 +128,7 @@ export default async function AdminAnalyticsPage() {
           { label: "Active this week",value: activeThisWeek,          icon: Zap,          color: "bg-orange-50 text-[#E8722A]",suffix: "" },
           { label: "Avg exam score",  value: avgScore ?? "—",         icon: Trophy,       color: "bg-purple-50 text-purple-600",suffix: avgScore != null ? "%" : "" },
         ].map(({ label, value, icon: Icon, color, suffix }) => (
-          <div key={label} className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5">
+          <div key={label} className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5">
             <div className={`h-9 w-9 rounded-xl flex items-center justify-center mb-3 ${color}`}>
               <Icon className="h-4.5 w-4.5" />
             </div>
@@ -142,7 +142,7 @@ export default async function AdminAnalyticsPage() {
       <div className="grid sm:grid-cols-2 gap-4">
 
         {/* Role breakdown */}
-        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 space-y-4">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5 space-y-4">
           <div className="flex items-center gap-2">
             <Users className="h-4 w-4 text-[#94a3b8]" />
             <h2 className="font-bold text-[#0f172a] text-sm">User breakdown</h2>
@@ -165,7 +165,7 @@ export default async function AdminAnalyticsPage() {
         </div>
 
         {/* Content + exam summary */}
-        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 space-y-4">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5 space-y-4">
           <div className="flex items-center gap-2">
             <BarChart2 className="h-4 w-4 text-[#94a3b8]" />
             <h2 className="font-bold text-[#0f172a] text-sm">Platform activity</h2>
@@ -191,7 +191,7 @@ export default async function AdminAnalyticsPage() {
       <div className="grid sm:grid-cols-2 gap-4">
 
         {/* BECE / WASSCE */}
-        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 space-y-4">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5 space-y-4">
           <div className="flex items-center gap-2">
             <GraduationCap className="h-4 w-4 text-[#94a3b8]" />
             <h2 className="font-bold text-[#0f172a] text-sm">BECE vs WASSCE</h2>
@@ -217,7 +217,7 @@ export default async function AdminAnalyticsPage() {
         </div>
 
         {/* Grade level */}
-        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 space-y-4">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5 space-y-4">
           <div className="flex items-center gap-2">
             <BookOpen className="h-4 w-4 text-[#94a3b8]" />
             <h2 className="font-bold text-[#0f172a] text-sm">Students by class</h2>
@@ -240,7 +240,7 @@ export default async function AdminAnalyticsPage() {
 
       {/* Exam performance + Pass rate */}
       {(avgScore != null || passRate != null) && (
-        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 space-y-4">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5 space-y-4">
           <div className="flex items-center gap-2">
             <Trophy className="h-4 w-4 text-[#94a3b8]" />
             <h2 className="font-bold text-[#0f172a] text-sm">Exam performance</h2>
@@ -282,7 +282,7 @@ export default async function AdminAnalyticsPage() {
       )}
 
       {/* Top students */}
-      <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 space-y-4">
+      <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5 space-y-4">
         <div className="flex items-center gap-2">
           <TrendingUp className="h-4 w-4 text-[#94a3b8]" />
           <h2 className="font-bold text-[#0f172a] text-sm">Top students by lessons completed</h2>

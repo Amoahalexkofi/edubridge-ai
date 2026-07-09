@@ -221,7 +221,7 @@ export default async function ExamResultPage({
 
       {/* ── Topic breakdown ── */}
       {sortedTopics.length > 0 && (
-        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5">
           <div className="flex items-center gap-2 mb-4">
             <Target className="h-4 w-4 text-[#64748B]" />
             <h2 className="font-bold text-[#0f172a]">Performance by topic</h2>

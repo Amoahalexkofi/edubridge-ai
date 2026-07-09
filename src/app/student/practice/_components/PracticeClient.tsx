@@ -243,7 +243,7 @@ export default function PracticeClient({ subjects, activeSubjectId, questions, e
     <div className="max-w-2xl mx-auto px-4 sm:px-6 py-6 space-y-5">
 
       {/* Header */}
-      <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-4 flex items-center justify-between">
+      <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="h-10 w-10 rounded-xl bg-[#F8F7F4] border border-[#E6E4DE] flex items-center justify-center text-xl">
             {activeSubject?.icon ?? "📚"}
@@ -278,7 +278,7 @@ export default function PracticeClient({ subjects, activeSubjectId, questions, e
       </div>
 
       {/* Question card */}
-      <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 sm:p-6 space-y-5">
+      <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5 sm:p-6 space-y-5">
         {current.topics?.title && (
           <span className="inline-block text-[10px] font-bold text-[#1D4ED8] bg-[#EFF6FF] px-2.5 py-1 rounded-full uppercase tracking-wider">
             {current.topics.title}

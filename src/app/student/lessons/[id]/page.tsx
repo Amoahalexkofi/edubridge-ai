@@ -84,7 +84,7 @@ export default async function LessonPage({
       </nav>
 
       {/* Lesson card */}
-      <article className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] overflow-hidden mb-6">
+      <article className="bg-white rounded-2xl border border-[#E6E4DE] eb-card overflow-hidden mb-6">
 
         {/* Header */}
         <div className="px-6 py-5 border-b border-[#F1F5F9]">

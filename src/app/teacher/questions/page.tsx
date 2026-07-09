@@ -65,7 +65,7 @@ export default async function TeacherQuestionsPage({
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const topic = q.topics as any;
             return (
-              <div key={q.id} className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-4 flex items-start gap-3">
+              <div key={q.id} className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-4 flex items-start gap-3">
                 <span className="h-6 w-6 rounded-lg bg-[#F2F1EE] text-xs font-bold text-[#94a3b8] flex items-center justify-center flex-shrink-0 mt-0.5">{i + 1}</span>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-[#0f172a] font-medium leading-snug">{q.prompt}</p>

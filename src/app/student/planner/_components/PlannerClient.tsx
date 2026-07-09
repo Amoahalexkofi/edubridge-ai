@@ -116,7 +116,7 @@ export default function PlannerClient({ firstName, examTarget, subjects, initial
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 sm:p-6 mb-4">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5 sm:p-6 mb-4">
           <label htmlFor="exam-date" className="block text-sm font-bold text-slate-900 mb-2">
             When is your {examTarget} exam?
           </label>
@@ -135,7 +135,7 @@ export default function PlannerClient({ firstName, examTarget, subjects, initial
           )}
         </div>
 
-        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 sm:p-6 mb-5">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5 sm:p-6 mb-5">
           <p className="text-sm font-bold text-slate-900 mb-1">Focus subjects</p>
           <p className="text-xs text-slate-500 mb-4">Leave all unticked to plan across every subject.</p>
           <div className="grid grid-cols-2 gap-2">
@@ -211,7 +211,7 @@ export default function PlannerClient({ firstName, examTarget, subjects, initial
       </div>
 
       {/* Progress */}
-      <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-4 mb-4">
+      <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-4 mb-4">
         <div className="flex items-center justify-between mb-2">
           <p className="text-xs font-bold text-slate-500 uppercase tracking-wide">Overall progress</p>
           <p className="text-sm font-black text-[#1B3A8A] tabular-nums">{progress.pct}%</p>

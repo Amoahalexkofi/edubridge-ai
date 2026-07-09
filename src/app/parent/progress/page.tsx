@@ -63,7 +63,7 @@ export default async function ParentProgressPage({
       </Link>
 
       {/* Student header */}
-      <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5">
+      <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5">
         <div className="flex items-center gap-3">
           <div className="h-12 w-12 rounded-full bg-[#1B3A8A] flex items-center justify-center text-white font-bold text-lg">
             {(student?.full_name ?? "?").split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase()}

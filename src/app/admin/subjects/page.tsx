@@ -36,7 +36,7 @@ export default async function AdminSubjectsPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-4">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-4">
           <p className="text-xs font-semibold text-[#94a3b8] uppercase tracking-wider">Subjects</p>
           <p className="text-3xl font-black text-[#0f172a] tabular-nums mt-1">{all.length}</p>
         </div>
@@ -48,7 +48,7 @@ export default async function AdminSubjectsPage() {
           <p className="text-xs font-semibold text-[#15803D] uppercase tracking-wider">WASSCE</p>
           <p className="text-3xl font-black text-[#15803D] tabular-nums mt-1">{wassce.length}</p>
         </div>
-        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-4">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-4">
           <p className="text-xs font-semibold text-[#94a3b8] uppercase tracking-wider">Topics</p>
           <p className="text-3xl font-black text-[#0f172a] tabular-nums mt-1">{totalTopics}</p>
         </div>

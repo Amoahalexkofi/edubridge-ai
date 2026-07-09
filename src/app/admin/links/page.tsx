@@ -55,7 +55,7 @@ export default async function AdminLinksPage() {
       </div>
 
       {/* Add link form */}
-      <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5">
+      <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5">
         <h2 className="font-bold text-[#0f172a] mb-4">Create new link</h2>
         <LinkParentForm
           parents={parentProfiles ?? []}

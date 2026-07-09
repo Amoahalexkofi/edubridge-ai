@@ -113,7 +113,7 @@ export default function QuestionEditor({
 
   return (
     <form onSubmit={handleSave} className="space-y-4">
-      <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 space-y-4">
+      <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5 space-y-4">
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>

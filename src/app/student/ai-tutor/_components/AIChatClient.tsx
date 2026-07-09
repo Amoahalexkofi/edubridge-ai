@@ -501,7 +501,7 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
                                     return `<svg${a} width="100%" overflow="visible">`;
                                   });
                                 return (
-                                  <div className="my-4 not-prose rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] bg-[#F8F7F4] p-4 pb-8">
+                                  <div className="my-4 not-prose rounded-2xl border border-[#E6E4DE] eb-card bg-[#F8F7F4] p-4 pb-8">
                                     <div dangerouslySetInnerHTML={{ __html: svgHtml }} />
                                   </div>
                                 );
@@ -594,7 +594,7 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
                   ? `Ask about ${activeSession.examContext?.subject ?? "your exam topics"}…`
                   : `Ask your ${examTarget} AI Tutor anything…`}
                 rows={1}
-                className="flex-1 resize-none rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] bg-[#F8F7F4] px-4 py-3 text-sm text-[#0f172a] placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1B3A8A]/50 focus:bg-white focus:ring-4 focus:ring-[#1B3A8A]/6 transition-all leading-relaxed max-h-36 overflow-y-auto"
+                className="flex-1 resize-none rounded-2xl border border-[#E6E4DE] eb-card bg-[#F8F7F4] px-4 py-3 text-sm text-[#0f172a] placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1B3A8A]/50 focus:bg-white focus:ring-4 focus:ring-[#1B3A8A]/6 transition-all leading-relaxed max-h-36 overflow-y-auto"
                 style={{ minHeight: "48px" }}
               />
               {isLoading ? (
