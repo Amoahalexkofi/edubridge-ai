@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/auth";
 import { GraduationCap, School, BadgeCheck, Mail, Lock } from "lucide-react";
 import ProfileForm from "./_components/ProfileForm";
 import AvatarUpload from "./_components/AvatarUpload";
@@ -13,7 +14,7 @@ const GRADE_LABELS: Record<string, string> = {
 
 export default async function ProfilePage() {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getAuthUser();
   if (!user) redirect("/login");
 
   const { data: profile } = await supabase

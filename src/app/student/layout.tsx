@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/auth";
 import StudentNav from "./_components/StudentNav";
 import FloatingTutor from "./_components/FloatingTutor";
 import VerifyEmailBanner from "./_components/VerifyEmailBanner";
@@ -8,7 +9,7 @@ import { Eye, ArrowLeft } from "lucide-react";
 
 export default async function StudentLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getAuthUser();
   if (!user) redirect("/login");
 
   const [{ data: profile }, { data: roleRow }] = await Promise.all([

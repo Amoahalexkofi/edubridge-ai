@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/auth";
 import AIChatClient, { type ChatSession } from "./_components/AIChatClient";
 
 export interface ExamContext {
@@ -16,7 +17,7 @@ export default async function AITutorPage({
   searchParams: Promise<{ from?: string; subject?: string; score?: string; correct?: string; total?: string; weak?: string }>;
 }) {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getAuthUser();
   if (!user) redirect("/login");
   if (user.user_metadata?.app_verified === false) redirect("/student?verify=1"); // unverified students are limited to dashboard + profile
 

@@ -6,6 +6,7 @@ import {
   Brain, Zap, Star, Target, Sparkles, CalendarCheck,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/auth";
 import { getRecommendations, type Recommendation } from "@/lib/recommendations";
 import { checkAndAwardBadges, BADGES } from "@/lib/badges";
 
@@ -44,7 +45,7 @@ function calculateStreak(dates: string[]): number {
 
 export default async function StudentDashboard() {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getAuthUser();
   if (!user) redirect("/login");
 
   const hour = new Date().getHours();
