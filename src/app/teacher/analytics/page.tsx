@@ -134,7 +134,7 @@ export default async function TeacherAnalyticsPage() {
           { label: "Engagement rate",   value: `${engagementRate}%`,          icon: BarChart2,    color: "bg-orange-50 text-[#E8722A]"},
           { label: "Exams submitted",   value: allAttempts?.length ?? 0,      icon: Trophy,       color: "bg-purple-50 text-purple-600"},
         ].map(({ label, value, icon: Icon, color }) => (
-          <div key={label} className="bg-white rounded-2xl border border-[#E2E8F0] p-5">
+          <div key={label} className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5">
             <div className={`h-9 w-9 rounded-xl flex items-center justify-center mb-3 ${color}`}>
               <Icon className="h-4.5 w-4.5" />
             </div>
@@ -148,7 +148,7 @@ export default async function TeacherAnalyticsPage() {
       <div className="grid sm:grid-cols-2 gap-4">
 
         {/* Top 5 */}
-        <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5 space-y-4">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 space-y-4">
           <div className="flex items-center gap-2">
             <Trophy className="h-4 w-4 text-[#94a3b8]" />
             <h2 className="font-bold text-[#0f172a] text-sm">Top performers</h2>
@@ -158,7 +158,7 @@ export default async function TeacherAnalyticsPage() {
               <div className={`h-7 w-7 rounded-full flex items-center justify-center text-[11px] font-black flex-shrink-0 ${
                 idx === 0 ? "bg-yellow-400 text-yellow-900" :
                 idx === 1 ? "bg-slate-200 text-slate-600" :
-                idx === 2 ? "bg-orange-300 text-orange-900" : "bg-[#F1F5F9] text-[#64748B]"
+                idx === 2 ? "bg-orange-300 text-orange-900" : "bg-[#F2F1EE] text-[#64748B]"
               }`}>
                 {idx < 3 ? ["🥇","🥈","🥉"][idx] : idx + 1}
               </div>
@@ -179,7 +179,7 @@ export default async function TeacherAnalyticsPage() {
         </div>
 
         {/* Needs attention */}
-        <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5 space-y-4">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 space-y-4">
           <div className="flex items-center gap-2">
             <AlertCircle className="h-4 w-4 text-amber-500" />
             <h2 className="font-bold text-[#0f172a] text-sm">Needs attention</h2>
@@ -210,7 +210,7 @@ export default async function TeacherAnalyticsPage() {
       </div>
 
       {/* Subject performance */}
-      <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5 space-y-4">
+      <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 space-y-4">
         <div className="flex items-center gap-2">
           <BookOpen className="h-4 w-4 text-[#94a3b8]" />
           <h2 className="font-bold text-[#0f172a] text-sm">Subject performance</h2>
@@ -225,7 +225,7 @@ export default async function TeacherAnalyticsPage() {
                 </span>
                 <span className="flex-1 min-w-0 text-sm text-[#334155] truncate">{name}</span>
                 {/* Narrower bar on phones + count hidden below sm so the name never clips */}
-                <div className="w-14 sm:w-32 h-2 bg-[#F1F5F9] rounded-full overflow-hidden flex-shrink-0">
+                <div className="w-14 sm:w-32 h-2 bg-[#F2F1EE] rounded-full overflow-hidden flex-shrink-0">
                   <div className={`h-full rounded-full ${scoreBarColor(avg)}`} style={{ width: `${avg}%` }} />
                 </div>
                 <span className={`text-sm font-black tabular-nums w-10 text-right flex-shrink-0 ${scoreColor(avg)}`}>{avg}%</span>
@@ -240,7 +240,7 @@ export default async function TeacherAnalyticsPage() {
 
       {/* Grade / class breakdown */}
       {gradeEntries.length > 0 && (
-        <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5 space-y-4">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 space-y-4">
           <div className="flex items-center gap-2">
             <Users className="h-4 w-4 text-[#94a3b8]" />
             <h2 className="font-bold text-[#0f172a] text-sm">Engagement by class</h2>

@@ -31,7 +31,7 @@ export default function LinkParentForm({ parents, students }: { parents: Profile
     router.refresh();
   }
 
-  const selectCls = "h-11 px-3 rounded-xl border border-[#E2E8F0] bg-white text-sm text-[#0f172a] focus:outline-none focus:border-[#1D4ED8] focus:ring-2 focus:ring-[#1D4ED8]/10 transition-all";
+  const selectCls = "h-11 px-3 rounded-xl border border-[#E6E4DE] bg-white text-sm text-[#0f172a] focus:outline-none focus:border-[#1D4ED8] focus:ring-2 focus:ring-[#1D4ED8]/10 transition-all";
 
   return (
     <form onSubmit={handleLink} className="flex items-end gap-3 flex-wrap">

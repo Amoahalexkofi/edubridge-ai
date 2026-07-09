@@ -46,11 +46,11 @@ export default async function TeacherQuestionsPage({
       {/* Topic filter */}
       {topics && topics.length > 0 && (
         <div className="flex gap-2 flex-wrap">
-          <Link href="/teacher/questions" className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${!topicId ? "bg-[#1D4ED8] text-white border-[#1D4ED8]" : "bg-white text-[#475569] border-[#E2E8F0] hover:border-[#1D4ED8]/40"}`}>
+          <Link href="/teacher/questions" className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${!topicId ? "bg-[#1D4ED8] text-white border-[#1D4ED8]" : "bg-white text-[#475569] border-[#E6E4DE] hover:border-[#1D4ED8]/40"}`}>
             All
           </Link>
           {topics.map((t) => (
-            <Link key={t.id} href={`/teacher/questions?topic=${t.id}`} className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${topicId === t.id ? "bg-[#1D4ED8] text-white border-[#1D4ED8]" : "bg-white text-[#475569] border-[#E2E8F0] hover:border-[#1D4ED8]/40"}`}>
+            <Link key={t.id} href={`/teacher/questions?topic=${t.id}`} className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${topicId === t.id ? "bg-[#1D4ED8] text-white border-[#1D4ED8]" : "bg-white text-[#475569] border-[#E6E4DE] hover:border-[#1D4ED8]/40"}`}>
               {(t as any).title}
             </Link>
           ))}
@@ -64,8 +64,8 @@ export default async function TeacherQuestionsPage({
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const topic = q.topics as any;
             return (
-              <div key={q.id} className="bg-white rounded-2xl border border-[#E2E8F0] p-4 flex items-start gap-3">
-                <span className="h-6 w-6 rounded-lg bg-[#F1F5F9] text-xs font-bold text-[#94a3b8] flex items-center justify-center flex-shrink-0 mt-0.5">{i + 1}</span>
+              <div key={q.id} className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-4 flex items-start gap-3">
+                <span className="h-6 w-6 rounded-lg bg-[#F2F1EE] text-xs font-bold text-[#94a3b8] flex items-center justify-center flex-shrink-0 mt-0.5">{i + 1}</span>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-[#0f172a] font-medium leading-snug">{q.prompt}</p>
                   <div className="flex items-center gap-2 mt-1.5">
@@ -77,7 +77,7 @@ export default async function TeacherQuestionsPage({
                     }`}>{q.difficulty}</span>
                   </div>
                 </div>
-                <Link href={`/teacher/questions/${q.id}/edit`} className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-semibold text-[#475569] bg-[#F8FAFC] border border-[#E2E8F0] hover:border-[#1D4ED8]/40 flex-shrink-0">
+                <Link href={`/teacher/questions/${q.id}/edit`} className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-semibold text-[#475569] bg-[#F8F7F4] border border-[#E6E4DE] hover:border-[#1D4ED8]/40 flex-shrink-0">
                   <Pencil className="h-3 w-3" /> Edit
                 </Link>
               </div>
@@ -85,7 +85,7 @@ export default async function TeacherQuestionsPage({
           })}
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-dashed border-[#E2E8F0] py-14 text-center">
+        <div className="bg-white rounded-2xl border border-dashed border-[#E6E4DE] py-14 text-center">
           <PenLine className="h-10 w-10 text-[#CBD5E1] mx-auto mb-3" />
           <p className="font-semibold text-[#334155]">No questions yet</p>
           <p className="text-sm text-[#94a3b8] mt-1 mb-4">Add questions to build the practice and exam bank.</p>

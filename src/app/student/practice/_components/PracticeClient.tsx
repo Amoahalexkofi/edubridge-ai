@@ -67,8 +67,8 @@ export default function PracticeClient({ subjects, activeSubjectId, questions, e
   if (subjects.length === 0) {
     return (
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
-        <div className="bg-white rounded-2xl border border-dashed border-[#E2E8F0] py-20 text-center space-y-3">
-          <div className="h-16 w-16 rounded-2xl bg-[#F1F5F9] flex items-center justify-center mx-auto">
+        <div className="bg-white rounded-2xl border border-dashed border-[#E6E4DE] py-20 text-center space-y-3">
+          <div className="h-16 w-16 rounded-2xl bg-[#F2F1EE] flex items-center justify-center mx-auto">
             <PenLine className="h-8 w-8 text-[#94a3b8]" />
           </div>
           <p className="font-semibold text-[#334155]">No practice questions yet</p>
@@ -83,7 +83,7 @@ export default function PracticeClient({ subjects, activeSubjectId, questions, e
     const activeSubject = subjects.find((s) => s.id === activeSubjectId);
     return (
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 space-y-6">
-        <div className="bg-white rounded-2xl border border-dashed border-[#E8ECF0] py-20 text-center space-y-4">
+        <div className="bg-white rounded-2xl border border-dashed border-[#E6E4DE] py-20 text-center space-y-4">
           <div className="h-16 w-16 rounded-2xl bg-[#FFF7ED] flex items-center justify-center mx-auto text-3xl">
             {activeSubject?.icon ?? "📚"}
           </div>
@@ -151,10 +151,10 @@ export default function PracticeClient({ subjects, activeSubjectId, questions, e
             <button
               key={s.id}
               onClick={() => router.push(`/student/practice?subject=${s.id}`)}
-              className="group bg-white rounded-2xl border border-[#E8ECF0] p-5 flex flex-col gap-4 hover:border-[#1D4ED8]/30 hover:shadow-md transition-all duration-200 text-left"
+              className="group bg-white rounded-2xl border border-[#E6E4DE] p-5 flex flex-col gap-4 hover:border-[#1D4ED8]/30 hover:shadow-md transition-all duration-200 text-left"
             >
               <div className="flex items-center justify-between">
-                <div className="h-11 w-11 rounded-xl bg-[#F8FAFC] border border-[#E8ECF0] flex items-center justify-center text-2xl">
+                <div className="h-11 w-11 rounded-xl bg-[#F8F7F4] border border-[#E6E4DE] flex items-center justify-center text-2xl">
                   {s.icon ?? "📚"}
                 </div>
                 <span className="flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full bg-orange-50 text-[#E8722A]">
@@ -197,7 +197,7 @@ export default function PracticeClient({ subjects, activeSubjectId, questions, e
 
     return (
       <div className="max-w-md mx-auto px-4 sm:px-6 py-10">
-        <div className="bg-white rounded-3xl border border-[#E8ECF0] p-8 text-center space-y-6">
+        <div className="bg-white rounded-3xl border border-[#E6E4DE] p-8 text-center space-y-6">
           <div className="h-20 w-20 rounded-full bg-[#EFF6FF] border-4 border-[#BFDBFE] flex items-center justify-center mx-auto">
             <Trophy className="h-9 w-9 text-[#1D4ED8]" />
           </div>
@@ -212,14 +212,14 @@ export default function PracticeClient({ subjects, activeSubjectId, questions, e
             <p className="text-sm text-[#64748B] mt-2">{score} of {questions.length} correct</p>
           </div>
 
-          <div className="h-2.5 bg-[#F1F5F9] rounded-full overflow-hidden">
+          <div className="h-2.5 bg-[#F2F1EE] rounded-full overflow-hidden">
             <div className={`h-full rounded-full transition-all ${barColor}`} style={{ width: `${pct}%` }} />
           </div>
 
           <div className="flex gap-3 pt-1">
             <button
               onClick={handleRestart}
-              className="flex-1 flex items-center justify-center gap-2 h-11 rounded-xl border border-[#E8ECF0] text-sm font-semibold text-[#475569] hover:bg-[#F8FAFC] transition-colors"
+              className="flex-1 flex items-center justify-center gap-2 h-11 rounded-xl border border-[#E6E4DE] text-sm font-semibold text-[#475569] hover:bg-[#F8F7F4] transition-colors"
             >
               <RotateCcw className="h-4 w-4" /> Try again
             </button>
@@ -243,9 +243,9 @@ export default function PracticeClient({ subjects, activeSubjectId, questions, e
     <div className="max-w-2xl mx-auto px-4 sm:px-6 py-6 space-y-5">
 
       {/* Header */}
-      <div className="bg-white rounded-2xl border border-[#E8ECF0] p-4 flex items-center justify-between">
+      <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-[#F8FAFC] border border-[#E8ECF0] flex items-center justify-center text-xl">
+          <div className="h-10 w-10 rounded-xl bg-[#F8F7F4] border border-[#E6E4DE] flex items-center justify-center text-xl">
             {activeSubject?.icon ?? "📚"}
           </div>
           <div>
@@ -278,7 +278,7 @@ export default function PracticeClient({ subjects, activeSubjectId, questions, e
       </div>
 
       {/* Question card */}
-      <div className="bg-white rounded-2xl border border-[#E8ECF0] p-5 sm:p-6 space-y-5">
+      <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 sm:p-6 space-y-5">
         {current.topics?.title && (
           <span className="inline-block text-[10px] font-bold text-[#1D4ED8] bg-[#EFF6FF] px-2.5 py-1 rounded-full uppercase tracking-wider">
             {current.topics.title}
@@ -293,11 +293,11 @@ export default function PracticeClient({ subjects, activeSubjectId, questions, e
             const isSelected = selectedOption === opt.id;
             const isCorrectOpt = opt.id === current.correct_answer;
 
-            let cls = "border-[#E8ECF0] bg-white text-[#334155] hover:border-[#1D4ED8]/40 hover:bg-[#F8FAFC]";
+            let cls = "border-[#E6E4DE] bg-white text-[#334155] hover:border-[#1D4ED8]/40 hover:bg-[#F8F7F4]";
             if (revealed) {
               if (isCorrectOpt) cls = "border-green-300 bg-green-50 text-green-800";
               else if (isSelected) cls = "border-red-300 bg-red-50 text-red-800";
-              else cls = "border-[#E8ECF0] bg-white text-[#94a3b8] opacity-50";
+              else cls = "border-[#E6E4DE] bg-white text-[#94a3b8] opacity-50";
             }
 
             return (

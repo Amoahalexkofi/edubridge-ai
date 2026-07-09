@@ -74,7 +74,7 @@ export default async function AdminSettingsPage() {
   const statusStyles: Record<string, string> = {
     active:   "bg-green-50 text-green-700 border-green-200",
     pending:  "bg-amber-50 text-amber-700 border-amber-200",
-    soon:     "bg-slate-100 text-slate-500 border-slate-200",
+    soon:     "bg-[#F1F0EC] text-slate-500 border-[#E6E4DE]",
     progress: "bg-blue-50 text-blue-700 border-blue-200",
   };
 
@@ -101,7 +101,7 @@ export default async function AdminSettingsPage() {
       </div>
 
       {/* Admin profile card */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center gap-4">
+      <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-sm p-5 flex items-center gap-4">
         <div className="h-12 w-12 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
           {(profile?.full_name ?? "A").split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase()}
         </div>
@@ -115,10 +115,10 @@ export default async function AdminSettingsPage() {
       {/* Settings sections */}
       <div className="space-y-4">
         {sections.map(({ icon: Icon, title, description, items }) => (
-          <div key={title} className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div key={title} className="bg-white rounded-2xl border border-[#E6E4DE] shadow-sm overflow-hidden">
             {/* Section header */}
-            <div className="flex items-center gap-3 px-5 py-4 border-b border-slate-100 bg-slate-50/60">
-              <div className="h-8 w-8 rounded-lg bg-slate-100 flex items-center justify-center flex-shrink-0">
+            <div className="flex items-center gap-3 px-5 py-4 border-b border-[#EEEDE8] bg-[#F8F7F4]/60">
+              <div className="h-8 w-8 rounded-lg bg-[#F1F0EC] flex items-center justify-center flex-shrink-0">
                 <Icon className="h-4 w-4 text-slate-600" />
               </div>
               <div>

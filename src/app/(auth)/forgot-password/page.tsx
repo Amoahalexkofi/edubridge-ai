@@ -34,7 +34,7 @@ export default function ForgotPasswordPage() {
       <BrandPanel />
 
       <div className="flex-1 flex flex-col min-h-screen bg-white">
-        <div className="flex items-center justify-between px-8 sm:px-12 py-5 border-b border-slate-100">
+        <div className="flex items-center justify-between px-8 sm:px-12 py-5 border-b border-[#EEEDE8]">
           <Link href="/login" className="hidden lg:inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-900 font-medium transition-colors">
             <ArrowLeft className="h-4 w-4" /> Back to sign in
           </Link>
@@ -92,7 +92,7 @@ export default function ForgotPasswordPage() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
-                        className="w-full h-12 pl-11 pr-4 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
+                        className="w-full h-12 pl-11 pr-4 rounded-xl border border-[#E6E4DE] bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
                       />
                     </div>
                   </div>
@@ -110,7 +110,7 @@ export default function ForgotPasswordPage() {
           </div>
         </div>
 
-        <div className="px-8 py-4 border-t border-slate-100">
+        <div className="px-8 py-4 border-t border-[#EEEDE8]">
           <p className="text-xs text-slate-400 text-center">© 2026 EduBridge Educational Solutions · Ghana 🇬🇭</p>
         </div>
       </div>

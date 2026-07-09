@@ -220,7 +220,7 @@ export default async function ExamResultPage({
 
       {/* ── Topic breakdown ── */}
       {sortedTopics.length > 0 && (
-        <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5">
           <div className="flex items-center gap-2 mb-4">
             <Target className="h-4 w-4 text-[#64748B]" />
             <h2 className="font-bold text-[#0f172a]">Performance by topic</h2>
@@ -244,7 +244,7 @@ export default async function ExamResultPage({
                       }`}>{topicPct}%</span>
                     </div>
                   </div>
-                  <div className="h-2 bg-[#F1F5F9] rounded-full overflow-hidden">
+                  <div className="h-2 bg-[#F2F1EE] rounded-full overflow-hidden">
                     <div
                       className={`h-full rounded-full ${
                         topicPct >= 60 ? "bg-green-500" : topicPct >= 40 ? "bg-amber-500" : "bg-red-500"
@@ -275,7 +275,7 @@ export default async function ExamResultPage({
               return (
                 <div
                   key={q.id}
-                  className={`bg-white rounded-2xl border p-5 ${isCorrect ? "border-[#E2E8F0]" : "border-red-100"}`}
+                  className={`bg-white rounded-2xl border p-5 ${isCorrect ? "border-[#E6E4DE]" : "border-red-100"}`}
                 >
                   {/* Question header */}
                   <div className="flex items-start gap-3 mb-4">
@@ -344,7 +344,7 @@ export default async function ExamResultPage({
                         </p>
                       </div>
                     ) : (
-                      <div className="rounded-xl border border-[#E2E8F0] bg-[#FAFAFA] p-4 space-y-3">
+                      <div className="rounded-xl border border-[#E6E4DE] bg-[#FAFAFA] p-4 space-y-3">
                         <div className="flex items-start gap-2.5">
                           <div className="h-5 w-5 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0 mt-0.5">
                             <XCircle className="h-3 w-3 text-red-500" />
@@ -362,7 +362,7 @@ export default async function ExamResultPage({
                           </div>
                         </div>
 
-                        <div className="border-t border-[#E2E8F0]" />
+                        <div className="border-t border-[#E6E4DE]" />
 
                         <div className="flex items-start gap-2.5">
                           <div className="h-5 w-5 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -393,7 +393,7 @@ export default async function ExamResultPage({
       <div className="flex flex-col sm:flex-row gap-3">
         <Link
           href={`/student/exams/take?subject=${attempt.subject_id}`}
-          className="flex-1 flex items-center justify-center gap-2 h-12 rounded-xl border border-[#E2E8F0] bg-white text-sm font-semibold text-[#475569] hover:bg-[#F8FAFC] transition-colors"
+          className="flex-1 flex items-center justify-center gap-2 h-12 rounded-xl border border-[#E6E4DE] bg-white text-sm font-semibold text-[#475569] hover:bg-[#F8F7F4] transition-colors"
         >
           <RotateCcw className="h-4 w-4" /> Try again
         </Link>

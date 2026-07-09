@@ -12,28 +12,29 @@ colors:
   ink: "#0F172A"
   body: "#334155"
   muted: "#64748B"
-  border: "#E2E8F0"
-  surface: "#F8FAFC"
+  border: "#E6E4DE"
+  surface: "#F8F7F4"
+  surface-warm: "#F2F1EE"
   background: "#FFFFFF"
 typography:
   display:
-    fontFamily: "Bricolage Grotesque, system-ui, sans-serif"
+    fontFamily: "Plus Jakarta Sans, system-ui, sans-serif"
     fontSize: "clamp(1.75rem, 4vw, 2.5rem)"
     fontWeight: 700
     lineHeight: 1.1
     letterSpacing: "-0.02em"
   headline:
-    fontFamily: "Bricolage Grotesque, system-ui, sans-serif"
+    fontFamily: "Plus Jakarta Sans, system-ui, sans-serif"
     fontSize: "1.25rem"
     fontWeight: 700
     lineHeight: 1.2
   body:
-    fontFamily: "Hanken Grotesk, system-ui, sans-serif"
+    fontFamily: "Plus Jakarta Sans, system-ui, sans-serif"
     fontSize: "0.875rem"
     fontWeight: 400
     lineHeight: 1.6
   label:
-    fontFamily: "Hanken Grotesk, system-ui, sans-serif"
+    fontFamily: "Plus Jakarta Sans, system-ui, sans-serif"
     fontSize: "0.6875rem"
     fontWeight: 700
     letterSpacing: "0.08em"
@@ -107,13 +108,17 @@ A confident, education-blue core with a single warm orange for action, grounded 
 - **Teal** (#0D9488): Secondary brand accent for variety on marketing/landing and occasional iconography.
 - **Success Green** (#1A6B3C / #22C55E): Completion, "Linked", verified, passing scores.
 
-### Neutral
+### Neutral — warm, not cool
+The neutral ramp is deliberately **warm** (a faint warm-gray bias), not the cool blue-slate of a clinical dashboard. This is what gives the product its calm, study-friendly atmosphere. Text stays neutral-dark for legibility; the warmth lives in the surfaces and borders.
 - **Ink** (#0F172A): Strongest headings and high-emphasis text.
 - **Body Slate** (#334155): Default body text — meets AA on white and on surface.
 - **Muted Slate** (#64748B): Secondary/supporting text, captions, placeholders (use the full muted, not lighter, to keep ≥4.5:1).
-- **Border** (#E2E8F0): Hairline borders and dividers.
-- **Surface** (#F8FAFC): Page background behind white cards; section separation.
-- **Background** (#FFFFFF): Cards and primary surfaces.
+- **Border** (#E6E4DE): Warm, soft hairline borders and dividers (was cool #E2E8F0).
+- **Surface** (#F8F7F4): Warm off-white page background behind white cards.
+- **Surface Warm** (#F2F1EE): Slightly deeper warm neutral for app shells / page backgrounds behind the content column.
+- **Background** (#FFFFFF): Cards and primary surfaces (stay white for contrast against the warm surface).
+
+**Not cream.** The warm neutrals are low-chroma warm grays, not the cream/sand (#F4F1EA) of the generic AI-template look. The warmth is subtle — it should read as "calm and soft," never as a beige theme.
 
 ### Named Rules
 **The One-Action Rule.** Action Orange (#E8722A) marks the single primary action on a screen — never two competing orange buttons. Everything secondary is navy, ghost, or text.
@@ -122,10 +127,9 @@ A confident, education-blue core with a single warm orange for action, grounded 
 
 ## 3. Typography
 
-**Display Font:** Bricolage Grotesque (with system-ui, sans-serif) — a confident, contemporary grotesque with character; used product-wide for all headings, from the landing hero to dashboard section titles.
-**Body Font:** Hanken Grotesk (with system-ui, sans-serif) — a warm, highly legible humanist grotesque tuned for small sizes and mobile screens.
+**One family, product-wide:** Plus Jakarta Sans (with system-ui, sans-serif) — a warm, humanist sans used for everything: hero, headings, body, labels, data. Its open, rounded letterforms read as serious and trustworthy (a real study platform) while feeling soft rather than hard.
 
-**Character:** One distinctive display face (Bricolage Grotesque) over one legible humanist workhorse (Hanken Grotesk) — a two-family system used everywhere for a coherent brand across marketing and product. The contrast axis is weight and role, not two near-identical sans fonts: headings feel deliberate and branded; body stays quiet and readable on small screens.
+**Character:** A single high-quality humanist family across marketing and product, differentiated by weight and size rather than a display/body pairing. This reads as calm, cohesive, and professional — deliberately not the quirk of a display grotesque. Headings use 700–800 weight; body 400–500. Never introduce a second family.
 
 ### Hierarchy
 - **Display** (700, clamp(1.75rem, 4vw, 2.5rem), 1.1, -0.02em): Page heroes and major page titles (Bricolage Grotesque).
@@ -135,19 +139,19 @@ A confident, education-blue core with a single warm orange for action, grounded 
 - **Label** (700, 0.6875rem, +0.08em, often uppercase): Stat captions, chips, eyebrow tags — used deliberately, not above every section.
 
 ### Named Rules
-**The Register-Family Rule.** Body is always Hanken Grotesk; display is always Bricolage Grotesque. Never introduce a third family, and never set body copy in the display face.
+**The One-Family Rule.** Everything is Plus Jakarta Sans — headings, body, labels, data. Differentiate by weight (700–800 headings, 400–500 body) and size, never by adding a second typeface.
 
 ## 4. Elevation
 
-Flat-by-default with soft, tonal separation. Depth comes from surface contrast (white cards on #F8FAFC) and hairline borders, not heavy shadows. Shadows are reserved, soft, and brand-tinted — used for floating/elevated affordances (the AI-tutor launcher, the sticky save bar, dropdowns), never as a default decoration on every card.
+**Soft depth on a warm ground.** The atmosphere is warm and calm, not clinical. White cards rest on a warm off-white surface (#F8F7F4) and carry a **soft, warm-tinted ambient shadow** for gentle depth — cards feel like they float slightly rather than being boxed in by hard borders. Borders are still present but softened (warm #E6E4DE) and secondary to the shadow. Shadows use a warm tint (rgba(31,26,15,…)) rather than pure black, so depth reads as soft, not harsh.
 
 ### Shadow Vocabulary
-- **Soft card hover** (`box-shadow: 0 1px 3px rgba(0,0,0,0.06)`): Subtle lift on interactive cards.
+- **Soft card (default)** (`box-shadow: 0 1px 2px rgba(31,26,15,0.04), 0 6px 20px -6px rgba(31,26,15,0.07)`): The gentle ambient depth on resting cards. Warm-tinted, barely-there, but enough to lift the card off the surface.
 - **Floating element** (`box-shadow: 0 8px 28px rgba(27,58,138,0.45)`): Navy-tinted glow under the floating AI-tutor button.
 - **Elevated bar** (`box-shadow: 0 8px 30px rgba(0,0,0,0.10)`): Sticky save bar / popovers.
 
 ### Named Rules
-**The Flat-By-Default Rule.** Cards rest flat on the surface, separated by background tone and a 1px border. A shadow appears only in response to state (hover, float, focus) or true elevation (modal, dropdown).
+**The Soft-Depth Rule.** Resting cards carry the soft ambient shadow plus a warm 1px border. Depth is gentle and warm — never a hard-edged flat box, never a heavy drop shadow. Interactive cards deepen slightly on hover.
 
 ## 5. Components
 
@@ -187,7 +191,7 @@ A navy→blue gradient pill (desktop) / round button (mobile), fixed bottom-righ
 - **Do** keep one Action-Orange (#E8722A) primary button per screen; make everything else navy/ghost/text.
 - **Do** use Body Slate (#334155) for body and Muted Slate (#64748B) for support — verify ≥4.5:1.
 - **Do** design the phone layout first; stack to one column, keep tap targets ≥44px, keep it light on slow data.
-- **Do** keep cards flat on #F8FAFC with a 1px #E2E8F0 border; add shadow only on hover/float/focus.
+- **Do** give resting cards the soft warm ambient shadow + a 1px #E6E4DE border on the warm #F8F7F4 surface; deepen slightly on hover.
 - **Do** show progress (completion, scores, weak topics, streaks) wherever a student is working.
 - **Do** give every animation a `prefers-reduced-motion` alternative.
 
@@ -197,4 +201,4 @@ A navy→blue gradient pill (desktop) / round button (mobile), fixed bottom-righ
 - **Don't** go childish/cartoonish in a way that undercuts exam credibility.
 - **Don't** use a colored `border-left`/`border-right` stripe as an accent on cards or alerts — use full borders or background tints.
 - **Don't** use light-gray body text "for elegance"; it fails contrast and trust.
-- **Don't** introduce a third font family or set body copy in Bricolage Grotesque.
+- **Don't** introduce a second font family — everything is Plus Jakarta Sans, differentiated by weight and size.

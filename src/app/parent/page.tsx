@@ -105,7 +105,7 @@ export default async function ParentDashboard() {
             const initials = (student.full_name ?? "?").split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase();
 
             return (
-              <div key={student.id} className="bg-white rounded-2xl border border-slate-200 p-5">
+              <div key={student.id} className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5">
                 <div className="flex items-center gap-3 mb-5">
                   <div className="h-12 w-12 rounded-full bg-[#1B3A8A] flex items-center justify-center text-white text-lg font-bold flex-shrink-0">
                     {initials}
@@ -122,21 +122,21 @@ export default async function ParentDashboard() {
                 </div>
 
                 <div className="grid grid-cols-3 gap-3">
-                  <div className="bg-[#F8FAFC] rounded-xl p-3 text-center">
+                  <div className="bg-[#F8F7F4] rounded-xl p-3 text-center">
                     <div className="h-8 w-8 rounded-lg bg-green-50 flex items-center justify-center mx-auto mb-2">
                       <BookOpen className="h-4 w-4 text-green-600" />
                     </div>
                     <p className="text-xl font-black text-slate-900 tabular-nums">{lessons}</p>
                     <p className="text-xs text-slate-500 font-medium">Lessons done</p>
                   </div>
-                  <div className="bg-[#F8FAFC] rounded-xl p-3 text-center">
+                  <div className="bg-[#F8F7F4] rounded-xl p-3 text-center">
                     <div className="h-8 w-8 rounded-lg bg-purple-50 flex items-center justify-center mx-auto mb-2">
                       <Trophy className="h-4 w-4 text-purple-600" />
                     </div>
                     <p className="text-xl font-black text-slate-900 tabular-nums">{examMap[student.id]?.count ?? 0}</p>
                     <p className="text-xs text-slate-500 font-medium">Exams taken</p>
                   </div>
-                  <div className="bg-[#F8FAFC] rounded-xl p-3 text-center">
+                  <div className="bg-[#F8F7F4] rounded-xl p-3 text-center">
                     <div className="h-8 w-8 rounded-lg bg-amber-50 flex items-center justify-center mx-auto mb-2">
                       <TrendingUp className="h-4 w-4 text-amber-600" />
                     </div>
@@ -152,7 +152,7 @@ export default async function ParentDashboard() {
 
                 <Link
                   href={`/parent/progress?student=${student.id}`}
-                  className="mt-4 flex items-center justify-center gap-2 h-10 rounded-xl border border-slate-200 text-sm font-semibold text-slate-600 hover:bg-slate-50 hover:border-[#1B3A8A]/30 transition-all"
+                  className="mt-4 flex items-center justify-center gap-2 h-10 rounded-xl border border-[#E6E4DE] text-sm font-semibold text-slate-600 hover:bg-[#F8F7F4] hover:border-[#1B3A8A]/30 transition-all"
                 >
                   View detailed progress <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -161,8 +161,8 @@ export default async function ParentDashboard() {
           })}
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-dashed border-slate-200 py-16 text-center">
-          <div className="h-16 w-16 rounded-full bg-slate-50 flex items-center justify-center mx-auto mb-4">
+        <div className="bg-white rounded-2xl border border-dashed border-[#E6E4DE] py-16 text-center">
+          <div className="h-16 w-16 rounded-full bg-[#F8F7F4] flex items-center justify-center mx-auto mb-4">
             <Users className="h-8 w-8 text-slate-300" />
           </div>
           <h3 className="font-bold text-slate-800 text-lg mb-2">No linked students yet</h3>
@@ -174,7 +174,7 @@ export default async function ParentDashboard() {
 
       {/* Phone update — show at bottom when already linked */}
       {hasStudents && (
-        <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5">
           <div className="flex items-center gap-3 mb-4">
             <Phone className="h-4 w-4 text-slate-400" />
             <p className="text-sm font-semibold text-slate-700">Your mobile number</p>

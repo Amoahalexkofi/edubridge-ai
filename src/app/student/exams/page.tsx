@@ -110,7 +110,7 @@ export default async function ExamsPage({
 
         {/* Stat strip */}
         <div className="grid grid-cols-3 gap-2 sm:gap-3">
-          <div className="bg-white rounded-2xl border border-[#E8ECF0] p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+          <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
             <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-xl bg-violet-50 flex items-center justify-center flex-shrink-0">
               <CheckCircle2 className="h-4 w-4 sm:h-5 sm:w-5 text-violet-600" />
             </div>
@@ -119,7 +119,7 @@ export default async function ExamsPage({
               <p className="text-[10px] sm:text-xs text-[#94a3b8]">Exams taken</p>
             </div>
           </div>
-          <div className="bg-white rounded-2xl border border-[#E8ECF0] p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+          <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
             <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0">
               <BarChart2 className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
             </div>
@@ -128,7 +128,7 @@ export default async function ExamsPage({
               <p className="text-[10px] sm:text-xs text-[#94a3b8]">Avg score</p>
             </div>
           </div>
-          <div className="bg-white rounded-2xl border border-[#E8ECF0] p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+          <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
             <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
               <FileText className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
             </div>
@@ -155,13 +155,13 @@ export default async function ExamsPage({
                 return (
                   <div
                     key={s.id}
-                    className="bg-[#FAFAFA] rounded-2xl border border-[#E8ECF0] p-5 flex flex-col gap-4 opacity-60 cursor-not-allowed"
+                    className="bg-[#FAFAFA] rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 flex flex-col gap-4 opacity-60 cursor-not-allowed"
                   >
                     <div className="flex items-center justify-between">
-                      <div className="h-11 w-11 rounded-xl bg-[#F1F5F9] border border-[#E8ECF0] flex items-center justify-center text-2xl grayscale">
+                      <div className="h-11 w-11 rounded-xl bg-[#F2F1EE] border border-[#E6E4DE] flex items-center justify-center text-2xl grayscale">
                         {s.icon ?? "📚"}
                       </div>
-                      <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-400 flex items-center gap-1">
+                      <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-[#F1F0EC] text-slate-400 flex items-center gap-1">
                         <Lock className="h-2.5 w-2.5" /> Coming soon
                       </span>
                     </div>
@@ -180,10 +180,10 @@ export default async function ExamsPage({
                 <Link
                   key={s.id}
                   href={`/student/exams/take?subject=${s.id}`}
-                  className="group bg-white rounded-2xl border border-[#E8ECF0] p-5 flex flex-col gap-4 hover:border-violet-300 hover:shadow-md transition-all duration-200"
+                  className="group bg-white rounded-2xl border border-[#E6E4DE] p-5 flex flex-col gap-4 hover:border-violet-300 hover:shadow-md transition-all duration-200"
                 >
                   <div className="flex items-center justify-between">
-                    <div className="h-11 w-11 rounded-xl bg-[#F8FAFC] border border-[#E8ECF0] flex items-center justify-center text-2xl">
+                    <div className="h-11 w-11 rounded-xl bg-[#F8F7F4] border border-[#E6E4DE] flex items-center justify-center text-2xl">
                       {s.icon ?? "📚"}
                     </div>
                     <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-violet-50 text-violet-700">
@@ -209,7 +209,7 @@ export default async function ExamsPage({
             })}
           </div>
         ) : (
-          <div className="bg-white rounded-2xl border border-dashed border-[#E2E8F0] py-12 text-center space-y-2">
+          <div className="bg-white rounded-2xl border border-dashed border-[#E6E4DE] py-12 text-center space-y-2">
             <FileText className="h-8 w-8 text-[#CBD5E1] mx-auto" />
             <p className="font-semibold text-[#334155] text-sm">No subjects available yet</p>
           </div>
@@ -232,9 +232,9 @@ export default async function ExamsPage({
               <Link
                 key={attempt.id}
                 href={`/student/exams/${attempt.id}`}
-                className="flex items-center gap-4 bg-white rounded-2xl border border-[#E8ECF0] p-4 hover:border-[#1D4ED8]/30 hover:shadow-sm transition-all"
+                className="flex items-center gap-4 bg-white rounded-2xl border border-[#E6E4DE] p-4 hover:border-[#1D4ED8]/30 hover:shadow-sm transition-all"
               >
-                <div className="h-11 w-11 rounded-xl bg-[#F8FAFC] border border-[#E8ECF0] flex items-center justify-center text-xl flex-shrink-0">
+                <div className="h-11 w-11 rounded-xl bg-[#F8F7F4] border border-[#E6E4DE] flex items-center justify-center text-xl flex-shrink-0">
                   {sub?.icon ?? "📚"}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -259,7 +259,7 @@ export default async function ExamsPage({
           })}
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-dashed border-[#E2E8F0] py-10 text-center space-y-2">
+        <div className="bg-white rounded-2xl border border-dashed border-[#E6E4DE] py-10 text-center space-y-2">
           <Trophy className="h-8 w-8 text-[#CBD5E1] mx-auto" />
           <p className="font-semibold text-[#334155] text-sm">No exams taken yet</p>
           <p className="text-xs text-[#94a3b8]">Start an exam above to see your results here.</p>

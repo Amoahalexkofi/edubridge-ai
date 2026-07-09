@@ -58,7 +58,7 @@ export default async function TeacherLessonsPage({
           <Link
             href="/teacher/lessons"
             className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
-              !topicId ? "bg-[#1D4ED8] text-white border-[#1D4ED8]" : "bg-white text-[#475569] border-[#E2E8F0] hover:border-[#1D4ED8]/40"
+              !topicId ? "bg-[#1D4ED8] text-white border-[#1D4ED8]" : "bg-white text-[#475569] border-[#E6E4DE] hover:border-[#1D4ED8]/40"
             }`}
           >
             All
@@ -68,7 +68,7 @@ export default async function TeacherLessonsPage({
               key={t.id}
               href={`/teacher/lessons?topic=${t.id}`}
               className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
-                topicId === t.id ? "bg-[#1D4ED8] text-white border-[#1D4ED8]" : "bg-white text-[#475569] border-[#E2E8F0] hover:border-[#1D4ED8]/40"
+                topicId === t.id ? "bg-[#1D4ED8] text-white border-[#1D4ED8]" : "bg-white text-[#475569] border-[#E6E4DE] hover:border-[#1D4ED8]/40"
               }`}
             >
               {(t as any).title}
@@ -84,7 +84,7 @@ export default async function TeacherLessonsPage({
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const topic = lesson.topics as any;
             return (
-              <div key={lesson.id} className="bg-white rounded-2xl border border-[#E2E8F0] p-4 flex items-center gap-3">
+              <div key={lesson.id} className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-4 flex items-center gap-3">
                 <div className="h-9 w-9 rounded-xl bg-[#EFF6FF] border border-[#BFDBFE] flex items-center justify-center flex-shrink-0">
                   <FileText className="h-4 w-4 text-[#1D4ED8]" />
                 </div>
@@ -96,7 +96,7 @@ export default async function TeacherLessonsPage({
                 </div>
                 <Link
                   href={`/teacher/lessons/${lesson.id}/edit`}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#475569] bg-[#F8FAFC] border border-[#E2E8F0] hover:border-[#1D4ED8]/40 transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#475569] bg-[#F8F7F4] border border-[#E6E4DE] hover:border-[#1D4ED8]/40 transition-colors"
                 >
                   <Pencil className="h-3 w-3" /> Edit
                 </Link>
@@ -105,7 +105,7 @@ export default async function TeacherLessonsPage({
           })}
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-dashed border-[#E2E8F0] py-14 text-center">
+        <div className="bg-white rounded-2xl border border-dashed border-[#E6E4DE] py-14 text-center">
           <FileText className="h-10 w-10 text-[#CBD5E1] mx-auto mb-3" />
           <p className="font-semibold text-[#334155]">No lessons yet</p>
           <p className="text-sm text-[#94a3b8] mt-1 mb-4">Create the first lesson to give students content to study.</p>

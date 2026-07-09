@@ -107,11 +107,11 @@ export default async function SubjectsPage() {
               <Link
                 key={subject.id}
                 href={`/student/subjects/${subject.slug}`}
-                className="group bg-white rounded-2xl border border-[#E8ECF0] p-5 flex flex-col gap-4 hover:border-[#1D4ED8]/30 hover:shadow-md transition-all duration-200"
+                className="group bg-white rounded-2xl border border-[#E6E4DE] p-5 flex flex-col gap-4 hover:border-[#1D4ED8]/30 hover:shadow-md transition-all duration-200"
               >
                 {/* Icon + status */}
                 <div className="flex items-center justify-between">
-                  <div className="h-11 w-11 rounded-xl bg-[#F8FAFC] border border-[#E8ECF0] flex items-center justify-center text-2xl">
+                  <div className="h-11 w-11 rounded-xl bg-[#F8F7F4] border border-[#E6E4DE] flex items-center justify-center text-2xl">
                     {subject.icon ?? "📚"}
                   </div>
                   {started ? (
@@ -123,7 +123,7 @@ export default async function SubjectsPage() {
                       Available
                     </span>
                   ) : (
-                    <span className="text-[10px] font-medium px-2.5 py-1 rounded-full bg-[#F8FAFC] text-[#94a3b8]">
+                    <span className="text-[10px] font-medium px-2.5 py-1 rounded-full bg-[#F8F7F4] text-[#94a3b8]">
                       Coming soon
                     </span>
                   )}
@@ -143,7 +143,7 @@ export default async function SubjectsPage() {
 
                 {/* Progress bar */}
                 {started && (
-                  <div className="h-1 bg-[#F1F5F9] rounded-full overflow-hidden">
+                  <div className="h-1 bg-[#F2F1EE] rounded-full overflow-hidden">
                     <div
                       className="h-full rounded-full bg-[#1D4ED8]"
                       style={{ width: `${pct}%` }}
@@ -172,8 +172,8 @@ export default async function SubjectsPage() {
           })}
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-dashed border-[#E2E8F0] py-20 text-center space-y-3">
-          <div className="h-16 w-16 rounded-2xl bg-[#F1F5F9] flex items-center justify-center mx-auto">
+        <div className="bg-white rounded-2xl border border-dashed border-[#E6E4DE] py-20 text-center space-y-3">
+          <div className="h-16 w-16 rounded-2xl bg-[#F2F1EE] flex items-center justify-center mx-auto">
             <BookOpen className="h-8 w-8 text-[#94a3b8]" />
           </div>
           <div>

@@ -158,7 +158,7 @@ export default async function LeaderboardPage() {
 
       {ranked.length === 0 ? (
         /* ── Empty state ────────────────────────────────────── */
-        <div className="bg-white rounded-3xl border border-dashed border-[#E2E8F0] py-20 text-center space-y-4">
+        <div className="bg-white rounded-3xl border border-dashed border-[#E6E4DE] py-20 text-center space-y-4">
           <div className="h-20 w-20 rounded-3xl bg-yellow-50 flex items-center justify-center mx-auto">
             <Trophy className="h-10 w-10 text-yellow-400" />
           </div>
@@ -236,7 +236,7 @@ export default async function LeaderboardPage() {
                     className={`flex items-center gap-4 p-4 rounded-2xl border transition-all ${
                       isMe
                         ? "bg-[#EFF6FF] border-[#1D4ED8]/40 shadow-sm"
-                        : "bg-white border-[#E2E8F0] hover:border-[#CBD5E1]"
+                        : "bg-white border-[#E6E4DE] hover:border-[#CBD5E1]"
                     }`}
                   >
                     {/* Rank badge */}
@@ -245,14 +245,14 @@ export default async function LeaderboardPage() {
                       rank === 2 ? "bg-slate-200 text-slate-600" :
                       rank === 3 ? "bg-orange-300 text-orange-900" :
                       isMe      ? "bg-[#1D4ED8] text-white" :
-                                  "bg-[#F1F5F9] text-[#64748B]"
+                                  "bg-[#F2F1EE] text-[#64748B]"
                     }`}>
                       {isTop3 ? medals[rank - 1] : `#${rank}`}
                     </div>
 
                     {/* Avatar */}
                     <div className={`h-10 w-10 rounded-full flex items-center justify-center text-sm font-black flex-shrink-0 ${
-                      isMe ? "bg-[#1B3A8A] text-white" : "bg-[#F1F5F9] text-[#64748B]"
+                      isMe ? "bg-[#1B3A8A] text-white" : "bg-[#F2F1EE] text-[#64748B]"
                     }`}>
                       {initials(student.full_name ?? "?")}
                     </div>
@@ -281,7 +281,7 @@ export default async function LeaderboardPage() {
                         )}
                       </div>
                       {/* Progress bar */}
-                      <div className="h-1.5 bg-[#F1F5F9] rounded-full overflow-hidden">
+                      <div className="h-1.5 bg-[#F2F1EE] rounded-full overflow-hidden">
                         <div
                           className={`h-full rounded-full transition-all ${
                             rank === 1 ? "bg-yellow-400" :

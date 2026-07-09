@@ -80,7 +80,7 @@ export default function ExamTaker({ attemptId, subject, questions, durationMinut
 
   if (submitting) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#F1F5F9]">
+      <div className="min-h-screen flex items-center justify-center bg-[#F2F1EE]">
         <div className="text-center">
           <Loader2 className="h-10 w-10 text-[#1D4ED8] animate-spin mx-auto mb-4" />
           <p className="font-semibold text-[#334155]">Marking your exam…</p>
@@ -90,10 +90,10 @@ export default function ExamTaker({ attemptId, subject, questions, durationMinut
   }
 
   return (
-    <div className="min-h-screen bg-[#F1F5F9]">
+    <div className="min-h-screen bg-[#F2F1EE]">
 
       {/* Sticky header */}
-      <div className="sticky top-0 z-30 bg-white border-b border-[#E2E8F0] shadow-sm">
+      <div className="sticky top-0 z-30 bg-white border-b border-[#E6E4DE] shadow-sm">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
           <div className="flex items-center gap-2 min-w-0">
             <span className="text-xl flex-shrink-0">{subject.icon ?? "📚"}</span>
@@ -137,7 +137,7 @@ export default function ExamTaker({ attemptId, subject, questions, durationMinut
                   ? "bg-[#1D4ED8] text-white scale-105"
                   : answers[q.id]
                   ? "bg-green-100 text-green-700 border border-green-200"
-                  : "bg-white text-[#94a3b8] border border-[#E2E8F0]"
+                  : "bg-white text-[#94a3b8] border border-[#E6E4DE]"
               }`}
             >
               {i + 1}
@@ -146,7 +146,7 @@ export default function ExamTaker({ attemptId, subject, questions, durationMinut
         </div>
 
         {/* Question card */}
-        <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5 sm:p-6">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 sm:p-6">
           {current.topics?.title && (
             <p className="text-xs font-semibold text-[#94a3b8] uppercase tracking-wider mb-3">
               {current.topics.title}
@@ -169,7 +169,7 @@ export default function ExamTaker({ attemptId, subject, questions, durationMinut
                   className={`w-full flex items-center gap-3 p-3.5 rounded-xl border-2 text-left text-sm font-medium transition-all ${
                     isSelected
                       ? "border-[#1D4ED8] bg-[#EFF6FF] text-[#1e40af]"
-                      : "border-[#E2E8F0] bg-white text-[#334155] hover:border-[#1D4ED8]/40 hover:bg-[#F8FAFC]"
+                      : "border-[#E6E4DE] bg-white text-[#334155] hover:border-[#1D4ED8]/40 hover:bg-[#F8F7F4]"
                   }`}
                 >
                   <span className={`h-6 w-6 rounded-full border-2 flex items-center justify-center text-xs font-bold flex-shrink-0 ${
@@ -189,14 +189,14 @@ export default function ExamTaker({ attemptId, subject, questions, durationMinut
           <button
             onClick={() => setCurrentIdx((i) => Math.max(0, i - 1))}
             disabled={currentIdx === 0}
-            className="flex items-center gap-1.5 px-4 h-11 rounded-xl bg-white border border-[#E2E8F0] text-sm font-semibold text-[#475569] hover:bg-[#F8FAFC] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex items-center gap-1.5 px-4 h-11 rounded-xl bg-white border border-[#E6E4DE] text-sm font-semibold text-[#475569] hover:bg-[#F8F7F4] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <ChevronLeft className="h-4 w-4" /> Previous
           </button>
           {currentIdx < questions.length - 1 ? (
             <button
               onClick={() => setCurrentIdx((i) => Math.min(questions.length - 1, i + 1))}
-              className="flex items-center gap-1.5 px-4 h-11 rounded-xl bg-white border border-[#E2E8F0] text-sm font-semibold text-[#475569] hover:bg-[#F8FAFC] transition-colors"
+              className="flex items-center gap-1.5 px-4 h-11 rounded-xl bg-white border border-[#E6E4DE] text-sm font-semibold text-[#475569] hover:bg-[#F8F7F4] transition-colors"
             >
               Next <ChevronRight className="h-4 w-4" />
             </button>
@@ -226,7 +226,7 @@ export default function ExamTaker({ attemptId, subject, questions, durationMinut
             <div className="flex gap-3">
               <button
                 onClick={() => setShowConfirm(false)}
-                className="flex-1 h-11 rounded-xl border border-[#E2E8F0] text-sm font-semibold text-[#475569] hover:bg-[#F8FAFC] transition-colors"
+                className="flex-1 h-11 rounded-xl border border-[#E6E4DE] text-sm font-semibold text-[#475569] hover:bg-[#F8F7F4] transition-colors"
               >
                 Keep going
               </button>

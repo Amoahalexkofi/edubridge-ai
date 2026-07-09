@@ -127,7 +127,7 @@ export default async function AdminAnalyticsPage() {
           { label: "Active this week",value: activeThisWeek,          icon: Zap,          color: "bg-orange-50 text-[#E8722A]",suffix: "" },
           { label: "Avg exam score",  value: avgScore ?? "—",         icon: Trophy,       color: "bg-purple-50 text-purple-600",suffix: avgScore != null ? "%" : "" },
         ].map(({ label, value, icon: Icon, color, suffix }) => (
-          <div key={label} className="bg-white rounded-2xl border border-[#E2E8F0] p-5">
+          <div key={label} className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5">
             <div className={`h-9 w-9 rounded-xl flex items-center justify-center mb-3 ${color}`}>
               <Icon className="h-4.5 w-4.5" />
             </div>
@@ -141,7 +141,7 @@ export default async function AdminAnalyticsPage() {
       <div className="grid sm:grid-cols-2 gap-4">
 
         {/* Role breakdown */}
-        <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5 space-y-4">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 space-y-4">
           <div className="flex items-center gap-2">
             <Users className="h-4 w-4 text-[#94a3b8]" />
             <h2 className="font-bold text-[#0f172a] text-sm">User breakdown</h2>
@@ -156,7 +156,7 @@ export default async function AdminAnalyticsPage() {
                 <span className="font-semibold text-[#334155]">{label}</span>
                 <span className="font-black text-[#0f172a] tabular-nums">{count}</span>
               </div>
-              <div className="h-2 bg-[#F1F5F9] rounded-full overflow-hidden">
+              <div className="h-2 bg-[#F2F1EE] rounded-full overflow-hidden">
                 <div className={`h-full rounded-full ${color}`} style={{ width: totalUsers > 0 ? `${(count / totalUsers) * 100}%` : "0%" }} />
               </div>
             </div>
@@ -164,7 +164,7 @@ export default async function AdminAnalyticsPage() {
         </div>
 
         {/* Content + exam summary */}
-        <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5 space-y-4">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 space-y-4">
           <div className="flex items-center gap-2">
             <BarChart2 className="h-4 w-4 text-[#94a3b8]" />
             <h2 className="font-bold text-[#0f172a] text-sm">Platform activity</h2>
@@ -190,7 +190,7 @@ export default async function AdminAnalyticsPage() {
       <div className="grid sm:grid-cols-2 gap-4">
 
         {/* BECE / WASSCE */}
-        <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5 space-y-4">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 space-y-4">
           <div className="flex items-center gap-2">
             <GraduationCap className="h-4 w-4 text-[#94a3b8]" />
             <h2 className="font-bold text-[#0f172a] text-sm">BECE vs WASSCE</h2>
@@ -205,7 +205,7 @@ export default async function AdminAnalyticsPage() {
                 <span className="font-semibold text-[#334155]">{label}</span>
                 <span className={`font-black tabular-nums ${text}`}>{count} <span className="text-[#94a3b8] font-normal text-xs">({examTotal > 0 ? Math.round((count / examTotal) * 100) : 0}%)</span></span>
               </div>
-              <div className="h-2.5 bg-[#F1F5F9] rounded-full overflow-hidden">
+              <div className="h-2.5 bg-[#F2F1EE] rounded-full overflow-hidden">
                 <div className={`h-full rounded-full ${color}`} style={{ width: examTotal > 0 ? `${(count / examTotal) * 100}%` : "0%" }} />
               </div>
             </div>
@@ -216,7 +216,7 @@ export default async function AdminAnalyticsPage() {
         </div>
 
         {/* Grade level */}
-        <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5 space-y-4">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 space-y-4">
           <div className="flex items-center gap-2">
             <BookOpen className="h-4 w-4 text-[#94a3b8]" />
             <h2 className="font-bold text-[#0f172a] text-sm">Students by class</h2>
@@ -227,7 +227,7 @@ export default async function AdminAnalyticsPage() {
                 <span className="font-semibold text-[#334155]">{grade}</span>
                 <span className="font-black text-[#0f172a] tabular-nums">{count}</span>
               </div>
-              <div className="h-2 bg-[#F1F5F9] rounded-full overflow-hidden">
+              <div className="h-2 bg-[#F2F1EE] rounded-full overflow-hidden">
                 <div className="h-full rounded-full bg-[#1B3A8A]" style={{ width: `${(count / gradeMax) * 100}%` }} />
               </div>
             </div>
@@ -239,20 +239,20 @@ export default async function AdminAnalyticsPage() {
 
       {/* Exam performance + Pass rate */}
       {(avgScore != null || passRate != null) && (
-        <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5 space-y-4">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 space-y-4">
           <div className="flex items-center gap-2">
             <Trophy className="h-4 w-4 text-[#94a3b8]" />
             <h2 className="font-bold text-[#0f172a] text-sm">Exam performance</h2>
             <span className="ml-auto text-xs text-[#94a3b8]">{allAttempts?.length ?? 0} submissions</span>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-[#F8FAFC] rounded-xl p-4 text-center">
+            <div className="bg-[#F8F7F4] rounded-xl p-4 text-center">
               <p className={`text-4xl font-black tabular-nums ${avgScore != null ? scoreColor(avgScore) : "text-[#94a3b8]"}`}>
                 {avgScore != null ? `${avgScore}%` : "—"}
               </p>
               <p className="text-xs font-semibold text-[#94a3b8] uppercase tracking-wider mt-1">Average score</p>
             </div>
-            <div className="bg-[#F8FAFC] rounded-xl p-4 text-center">
+            <div className="bg-[#F8F7F4] rounded-xl p-4 text-center">
               <p className={`text-4xl font-black tabular-nums ${passRate != null ? scoreColor(passRate) : "text-[#94a3b8]"}`}>
                 {passRate != null ? `${passRate}%` : "—"}
               </p>
@@ -268,7 +268,7 @@ export default async function AdminAnalyticsPage() {
                     {type.toUpperCase()}
                   </span>
                   <span className="flex-1 text-sm text-[#334155] truncate">{name}</span>
-                  <div className="w-24 h-1.5 bg-[#F1F5F9] rounded-full overflow-hidden">
+                  <div className="w-24 h-1.5 bg-[#F2F1EE] rounded-full overflow-hidden">
                     <div className={`h-full rounded-full ${scoreBarColor(avg)}`} style={{ width: `${avg}%` }} />
                   </div>
                   <span className={`text-sm font-black tabular-nums w-10 text-right ${scoreColor(avg)}`}>{avg}%</span>
@@ -281,7 +281,7 @@ export default async function AdminAnalyticsPage() {
       )}
 
       {/* Top students */}
-      <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5 space-y-4">
+      <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 space-y-4">
         <div className="flex items-center gap-2">
           <TrendingUp className="h-4 w-4 text-[#94a3b8]" />
           <h2 className="font-bold text-[#0f172a] text-sm">Top students by lessons completed</h2>
@@ -293,7 +293,7 @@ export default async function AdminAnalyticsPage() {
                 <div className={`h-7 w-7 rounded-full flex items-center justify-center text-xs font-black flex-shrink-0 ${
                   idx === 0 ? "bg-yellow-400 text-yellow-900" :
                   idx === 1 ? "bg-slate-200 text-slate-600" :
-                  idx === 2 ? "bg-orange-300 text-orange-900" : "bg-[#F1F5F9] text-[#64748B]"
+                  idx === 2 ? "bg-orange-300 text-orange-900" : "bg-[#F2F1EE] text-[#64748B]"
                 }`}>
                   {idx < 3 ? ["🥇","🥈","🥉"][idx] : idx + 1}
                 </div>
@@ -302,7 +302,7 @@ export default async function AdminAnalyticsPage() {
                 </div>
                 <div className="flex-1 min-w-0 space-y-1">
                   <p className="text-sm font-semibold text-[#0f172a] truncate">{profile?.full_name ?? "Unknown"}</p>
-                  <div className="h-1.5 bg-[#F1F5F9] rounded-full overflow-hidden">
+                  <div className="h-1.5 bg-[#F2F1EE] rounded-full overflow-hidden">
                     <div className="h-full rounded-full bg-[#1D4ED8]" style={{ width: `${(completions / topMax) * 100}%` }} />
                   </div>
                 </div>

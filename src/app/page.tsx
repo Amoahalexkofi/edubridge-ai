@@ -136,7 +136,7 @@ export default function LandingPage() {
             </Link>
 
             {/* Floating-pill nav — one calm hover affordance */}
-            <nav className="hidden md:flex items-center gap-0.5 rounded-full border border-slate-200/80 bg-slate-50/70 p-1">
+            <nav className="hidden md:flex items-center gap-0.5 rounded-full border border-[#E6E4DE]/80 bg-[#F8F7F4]/70 p-1">
               {navLinks.map((l) => (
                 <a key={l.label} href={l.href} className="px-3.5 py-1.5 text-sm font-medium text-slate-600 hover:text-[#1B3A8A] rounded-full hover:bg-white hover:shadow-[0_1px_3px_rgba(0,0,0,0.06)] transition-all duration-200">
                   {l.label}
@@ -151,19 +151,19 @@ export default function LandingPage() {
               </Link>
             </div>
 
-            <button className="md:hidden p-2 rounded-xl hover:bg-slate-100 transition-colors" onClick={() => setMobileOpen(!mobileOpen)}>
+            <button className="md:hidden p-2 rounded-xl hover:bg-[#F1F0EC] transition-colors" onClick={() => setMobileOpen(!mobileOpen)}>
               {mobileOpen ? <X className="h-5 w-5 text-slate-700" /> : <Menu className="h-5 w-5 text-slate-700" />}
             </button>
           </div>
         </div>
         {mobileOpen && (
-          <div className="md:hidden border-t border-slate-100 bg-white px-5 py-4 space-y-1">
+          <div className="md:hidden border-t border-[#EEEDE8] bg-white px-5 py-4 space-y-1">
             {navLinks.map((l) => (
               <a key={l.label} href={l.href} className="flex items-center justify-between text-sm font-medium text-slate-700 py-2.5 px-3 rounded-lg hover:bg-[#F0F4FF] hover:text-[#1B3A8A] transition-colors" onClick={() => setMobileOpen(false)}>
                 {l.label} <ChevronRight className="h-4 w-4 text-slate-400" />
               </a>
             ))}
-            <div className="flex gap-3 pt-3 mt-1 border-t border-slate-100">
+            <div className="flex gap-3 pt-3 mt-1 border-t border-[#EEEDE8]">
               <Link href="/login"  className="flex-1 text-center py-3 border-2 border-[#1B3A8A] text-[#1B3A8A] text-sm font-bold rounded-xl">Sign in</Link>
               <Link href="/signup" className="flex-1 text-center py-3 bg-[#E8722A] text-white text-sm font-bold rounded-xl">Get started</Link>
             </div>
@@ -222,7 +222,7 @@ export default function LandingPage() {
               </div>
 
               {/* Card 1 — AI Tutor (top left, refined) */}
-              <div className="absolute top-6 -left-8 w-[220px] bg-white rounded-2xl shadow-[0_16px_48px_rgba(0,0,0,0.14)] border border-slate-100/80 overflow-hidden">
+              <div className="absolute top-6 -left-8 w-[220px] bg-white rounded-2xl shadow-[0_16px_48px_rgba(0,0,0,0.14)] border border-[#EEEDE8]/80 overflow-hidden">
                 <div className="h-1 w-full bg-gradient-to-r from-[#0D9488] to-[#0f766e]" />
                 <div className="p-4">
                   <div className="flex items-center gap-2.5 mb-3">
@@ -237,7 +237,7 @@ export default function LandingPage() {
                       </div>
                     </div>
                   </div>
-                  <div className="bg-slate-50 rounded-xl p-2.5 border border-slate-100">
+                  <div className="bg-[#F8F7F4] rounded-xl p-2.5 border border-[#EEEDE8]">
                     <p className="text-[10px] text-slate-500 italic leading-relaxed">&ldquo;Explain quadratic equations in simple terms&rdquo;</p>
                     <div className="flex gap-1 mt-2">
                       <span className="h-1.5 w-1.5 rounded-full bg-[#0D9488] animate-pulse" style={{ animationDelay: "0ms" }} />
@@ -249,7 +249,7 @@ export default function LandingPage() {
               </div>
 
               {/* Card 2 — Score (right, refined) */}
-              <div className="absolute top-44 -right-6 w-[160px] bg-white rounded-2xl shadow-[0_16px_48px_rgba(0,0,0,0.14)] border border-slate-100/80 overflow-hidden">
+              <div className="absolute top-44 -right-6 w-[160px] bg-white rounded-2xl shadow-[0_16px_48px_rgba(0,0,0,0.14)] border border-[#EEEDE8]/80 overflow-hidden">
                 <div className="h-1 w-full bg-gradient-to-r from-[#1B3A8A] to-[#1e40af]" />
                 <div className="p-4">
                   <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Mock Exam</p>
@@ -258,7 +258,7 @@ export default function LandingPage() {
                     <span className="text-sm font-bold text-[#1B3A8A]/40">%</span>
                   </div>
                   {/* Mini progress bar */}
-                  <div className="h-1.5 bg-slate-100 rounded-full mt-2 mb-2 overflow-hidden">
+                  <div className="h-1.5 bg-[#F1F0EC] rounded-full mt-2 mb-2 overflow-hidden">
                     <div className="h-full bg-gradient-to-r from-[#1B3A8A] to-[#0D9488] rounded-full" style={{ width: "87%" }} />
                   </div>
                   <div className="flex items-center gap-1">
@@ -336,7 +336,7 @@ export default function LandingPage() {
             {steps.map((step) => {
               const Icon = step.icon;
               return (
-                <div key={step.number} className="group relative bg-white rounded-3xl overflow-hidden border border-slate-100 hover:border-slate-200 hover:shadow-xl transition-all duration-300">
+                <div key={step.number} className="group relative bg-white rounded-3xl overflow-hidden border border-[#EEEDE8] hover:border-[#E6E4DE] hover:shadow-xl transition-all duration-300">
                   <div className="relative h-52 overflow-hidden">
                     <Image src={step.img} alt={step.title} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
@@ -385,7 +385,7 @@ export default function LandingPage() {
               return (
                 <div key={f.title}
                   className={`rounded-2xl p-7 border transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 ${
-                    f.featured ? "bg-[#1B3A8A] border-[#1B3A8A]" : "bg-white border-slate-200 hover:border-slate-300"
+                    f.featured ? "bg-[#1B3A8A] border-[#1B3A8A]" : "bg-white border-[#E6E4DE] hover:border-slate-300"
                   }`}>
                   <div className={`h-12 w-12 rounded-2xl bg-gradient-to-br ${f.color} flex items-center justify-center mb-6 shadow-[0_4px_12px_rgba(0,0,0,0.12)]`}>
                     <Icon className="h-5.5 w-5.5 text-white" />
@@ -411,7 +411,7 @@ export default function LandingPage() {
               const Icon = f.icon;
               return (
                 <div key={f.title}
-                  className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-slate-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex items-start gap-4">
+                  className="bg-white rounded-2xl p-5 border border-[#E6E4DE] hover:border-slate-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex items-start gap-4">
                   <div className={`h-9 w-9 rounded-xl bg-gradient-to-br ${f.color} flex items-center justify-center shadow-sm flex-shrink-0 mt-0.5`}>
                     <Icon className="h-4 w-4 text-white" />
                   </div>
@@ -427,7 +427,7 @@ export default function LandingPage() {
       </section>
 
       {/* ─── GAMIFICATION ──────────────────────────────────────────────── */}
-      <section className="bg-white py-20 lg:py-28 border-t border-slate-100">
+      <section className="bg-white py-20 lg:py-28 border-t border-[#EEEDE8]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div>
@@ -475,7 +475,7 @@ export default function LandingPage() {
 
               {/* Badges + Leaderboard side by side */}
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+                <div className="bg-[#F8F7F4] rounded-2xl p-4 border border-[#EEEDE8]">
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="font-bold text-slate-800 text-sm">Badges to unlock</h3>
                     <span className="text-[10px] text-slate-400 font-medium">8 of 32</span>
@@ -489,7 +489,7 @@ export default function LandingPage() {
                     ); })}
                   </div>
                 </div>
-                <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+                <div className="bg-[#F8F7F4] rounded-2xl p-4 border border-[#EEEDE8]">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-1.5">
                       <Trophy className="h-3.5 w-3.5 text-yellow-500" />
@@ -532,7 +532,7 @@ export default function LandingPage() {
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {roles.map((r) => { const Icon = r.icon; return (
-                  <div key={r.title} className={`bg-white rounded-2xl p-5 border border-slate-100 ${r.border} hover:shadow-md transition-all duration-200`}>
+                  <div key={r.title} className={`bg-white rounded-2xl p-5 border border-[#EEEDE8] ${r.border} hover:shadow-md transition-all duration-200`}>
                     <div className={`h-10 w-10 rounded-xl ${r.iconBg} flex items-center justify-center mb-3.5`}><Icon className={`h-5 w-5 ${r.iconColor}`} /></div>
                     <h3 className="font-bold text-slate-900 mb-1.5">{r.title}</h3>
                     <p className="text-sm text-slate-500 leading-relaxed">{r.desc}</p>
@@ -545,7 +545,7 @@ export default function LandingPage() {
       </section>
 
       {/* ─── CURRICULUM ────────────────────────────────────────────────── */}
-      <section id="curriculum" className="bg-white border-y border-slate-100 py-20 lg:py-28">
+      <section id="curriculum" className="bg-white border-y border-[#EEEDE8] py-20 lg:py-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
             <div className="lg:sticky lg:top-32">
@@ -561,7 +561,7 @@ export default function LandingPage() {
                 <p className="text-xs font-bold tracking-widest text-slate-400 uppercase mb-3">BECE · Junior High</p>
                 <div className="flex flex-wrap gap-2">
                   {beceSubjects.map((s) => (
-                    <Link key={s} href="/signup" className="px-3.5 py-1.5 rounded-full border border-slate-200 bg-slate-50 hover:border-[#1B3A8A] hover:bg-[#F0F4FF] hover:text-[#1B3A8A] text-sm text-slate-700 font-medium transition-all">{s}</Link>
+                    <Link key={s} href="/signup" className="px-3.5 py-1.5 rounded-full border border-[#E6E4DE] bg-[#F8F7F4] hover:border-[#1B3A8A] hover:bg-[#F0F4FF] hover:text-[#1B3A8A] text-sm text-slate-700 font-medium transition-all">{s}</Link>
                   ))}
                 </div>
               </div>
@@ -569,7 +569,7 @@ export default function LandingPage() {
                 <p className="text-xs font-bold tracking-widest text-slate-400 uppercase mb-3">WASSCE · Senior High</p>
                 <div className="flex flex-wrap gap-2">
                   {wassceSubjects.map((s) => (
-                    <Link key={s} href="/signup" className="px-3.5 py-1.5 rounded-full border border-slate-200 bg-slate-50 hover:border-[#E8722A] hover:bg-orange-50 hover:text-[#E8722A] text-sm text-slate-700 font-medium transition-all">{s}</Link>
+                    <Link key={s} href="/signup" className="px-3.5 py-1.5 rounded-full border border-[#E6E4DE] bg-[#F8F7F4] hover:border-[#E8722A] hover:bg-orange-50 hover:text-[#E8722A] text-sm text-slate-700 font-medium transition-all">{s}</Link>
                   ))}
                 </div>
               </div>

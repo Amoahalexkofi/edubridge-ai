@@ -80,7 +80,7 @@ export default async function ParentInvitePage({
   const initials = studentName.split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase();
 
   return (
-    <div className="min-h-screen bg-[#F1F5F9] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#F2F1EE] flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="flex justify-center mb-8">
@@ -99,7 +99,7 @@ export default async function ParentInvitePage({
             </div>
 
             {/* Student card */}
-            <div className="bg-[#F8FAFC] rounded-2xl p-5 flex items-center gap-4 border border-[#E2E8F0]">
+            <div className="bg-[#F8F7F4] rounded-2xl p-5 flex items-center gap-4 border border-[#E6E4DE]">
               <div className="h-14 w-14 rounded-full bg-[#1B3A8A] flex items-center justify-center text-white text-lg font-black flex-shrink-0">
                 {initials}
               </div>
@@ -141,7 +141,7 @@ export default async function ParentInvitePage({
 
 function ErrorPage({ message }: { message: string }) {
   return (
-    <div className="min-h-screen bg-[#F1F5F9] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#F2F1EE] flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-white rounded-3xl shadow-xl p-8 text-center space-y-4">
         <div className="h-14 w-14 rounded-full bg-red-50 flex items-center justify-center mx-auto">
           <AlertCircle className="h-7 w-7 text-red-500" />

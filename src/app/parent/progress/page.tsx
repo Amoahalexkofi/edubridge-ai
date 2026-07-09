@@ -62,7 +62,7 @@ export default async function ParentProgressPage({
       </Link>
 
       {/* Student header */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-5">
+      <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5">
         <div className="flex items-center gap-3">
           <div className="h-12 w-12 rounded-full bg-[#1B3A8A] flex items-center justify-center text-white font-bold text-lg">
             {(student?.full_name ?? "?").split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase()}
@@ -85,13 +85,13 @@ export default async function ParentProgressPage({
             const pct = allLessons.length > 0 ? Math.round((done / allLessons.length) * 100) : 0;
 
             return (
-              <div key={subject.id} className="bg-white rounded-xl border border-slate-200 p-4">
+              <div key={subject.id} className="bg-white rounded-xl border border-[#E6E4DE] p-4">
                 <div className="flex items-center gap-3 mb-2">
                   <span className="text-xl">{subject.icon ?? "📚"}</span>
                   <p className="font-semibold text-sm text-slate-800 flex-1">{subject.name}</p>
                   <p className="text-xs font-bold text-slate-500 tabular-nums">{done}/{allLessons.length} lessons</p>
                 </div>
-                <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                <div className="h-2 bg-[#F1F0EC] rounded-full overflow-hidden">
                   <div
                     className={`h-full rounded-full ${pct >= 60 ? "bg-green-500" : pct > 0 ? "bg-[#1D4ED8]" : "bg-slate-200"}`}
                     style={{ width: `${pct}%` }}
@@ -114,7 +114,7 @@ export default async function ParentProgressPage({
               const sub = e.subjects as any;
               const pct = e.score != null && e.total_marks ? Math.round((e.score / e.total_marks) * 100) : null;
               return (
-                <div key={e.id} className="bg-white rounded-xl border border-slate-200 p-4 flex items-center gap-3">
+                <div key={e.id} className="bg-white rounded-xl border border-[#E6E4DE] p-4 flex items-center gap-3">
                   <div className="h-9 w-9 rounded-xl bg-purple-50 flex items-center justify-center text-xl flex-shrink-0">
                     {sub?.icon ?? <Trophy className="h-4 w-4 text-purple-600" />}
                   </div>
@@ -135,7 +135,7 @@ export default async function ParentProgressPage({
       )}
 
       {completedSet.size === 0 && (!exams || exams.length === 0) && (
-        <div className="bg-white rounded-2xl border border-dashed border-slate-200 py-10 text-center">
+        <div className="bg-white rounded-2xl border border-dashed border-[#E6E4DE] py-10 text-center">
           <BookOpen className="h-8 w-8 text-slate-300 mx-auto mb-3" />
           <p className="font-semibold text-slate-600 text-sm">No activity yet</p>
           <p className="text-xs text-slate-400 mt-1">Your ward hasn&apos;t started any lessons or exams.</p>

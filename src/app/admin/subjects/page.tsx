@@ -35,7 +35,7 @@ export default async function AdminSubjectsPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="bg-white rounded-2xl border border-[#E2E8F0] p-4">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-4">
           <p className="text-xs font-semibold text-[#94a3b8] uppercase tracking-wider">Subjects</p>
           <p className="text-3xl font-black text-[#0f172a] tabular-nums mt-1">{all.length}</p>
         </div>
@@ -47,15 +47,15 @@ export default async function AdminSubjectsPage() {
           <p className="text-xs font-semibold text-[#15803D] uppercase tracking-wider">WASSCE</p>
           <p className="text-3xl font-black text-[#15803D] tabular-nums mt-1">{wassce.length}</p>
         </div>
-        <div className="bg-white rounded-2xl border border-[#E2E8F0] p-4">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-4">
           <p className="text-xs font-semibold text-[#94a3b8] uppercase tracking-wider">Topics</p>
           <p className="text-3xl font-black text-[#0f172a] tabular-nums mt-1">{totalTopics}</p>
         </div>
       </div>
 
       {all.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-dashed border-[#E2E8F0] py-20 text-center">
-          <div className="h-14 w-14 rounded-2xl bg-[#F1F5F9] flex items-center justify-center mx-auto mb-4">
+        <div className="bg-white rounded-2xl border border-dashed border-[#E6E4DE] py-20 text-center">
+          <div className="h-14 w-14 rounded-2xl bg-[#F2F1EE] flex items-center justify-center mx-auto mb-4">
             <BookOpen className="h-7 w-7 text-[#CBD5E1]" />
           </div>
           <p className="font-bold text-[#334155]">No subjects yet</p>
@@ -97,7 +97,7 @@ function SubjectSection({
     return (
       <div>
         <SectionHeader title={title} count={0} badge={badge} header={header} />
-        <div className="bg-white rounded-2xl border border-dashed border-[#E2E8F0] py-10 text-center mt-3">
+        <div className="bg-white rounded-2xl border border-dashed border-[#E6E4DE] py-10 text-center mt-3">
           <p className="text-sm text-[#94a3b8]">No {title} subjects yet</p>
         </div>
       </div>
@@ -113,11 +113,11 @@ function SubjectSection({
         return (
           <div
             key={subject.id}
-            className="bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden hover:shadow-sm transition-shadow"
+            className="bg-white rounded-2xl border border-[#E6E4DE] overflow-hidden hover:shadow-sm transition-shadow"
           >
             {/* Subject header */}
             <div className="flex items-center gap-3 px-5 py-4">
-              <div className="h-11 w-11 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] flex items-center justify-center text-2xl flex-shrink-0">
+              <div className="h-11 w-11 rounded-xl bg-[#F8F7F4] border border-[#E6E4DE] flex items-center justify-center text-2xl flex-shrink-0">
                 {subject.icon ?? "📚"}
               </div>
               <div className="flex-1 min-w-0">
@@ -134,14 +134,14 @@ function SubjectSection({
               <Link
                 href={`/student/subjects/${subject.slug}`}
                 target="_blank"
-                className="flex items-center gap-1.5 text-xs font-semibold text-[#64748B] hover:text-[#1D4ED8] transition-colors flex-shrink-0 px-3 py-1.5 rounded-lg hover:bg-[#F1F5F9]"
+                className="flex items-center gap-1.5 text-xs font-semibold text-[#64748B] hover:text-[#1D4ED8] transition-colors flex-shrink-0 px-3 py-1.5 rounded-lg hover:bg-[#F2F1EE]"
               >
                 Preview <ExternalLink className="h-3.5 w-3.5" />
               </Link>
             </div>
 
             {/* Divider */}
-            <div className="h-px bg-[#F1F5F9] mx-5" />
+            <div className="h-px bg-[#F2F1EE] mx-5" />
 
             {/* Topics */}
             <div className="px-5 py-4 space-y-3">
@@ -157,7 +157,7 @@ function SubjectSection({
                   {sortedTopics.map((topic) => (
                     <span
                       key={topic.id}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] text-xs font-medium text-[#475569]"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#E6E4DE] bg-[#F8F7F4] text-xs font-medium text-[#475569]"
                     >
                       <span className="text-[10px] font-bold text-[#CBD5E1]">{topic.order_index}</span>
                       {topic.title}

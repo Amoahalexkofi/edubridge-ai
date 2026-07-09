@@ -110,7 +110,7 @@ export default async function AdminUsersPage({
             name="q"
             defaultValue={search ?? ""}
             placeholder="Search by name or email…"
-            className="w-full h-10 px-4 rounded-xl border border-slate-200 bg-white text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all"
+            className="w-full h-10 px-4 rounded-xl border border-[#E6E4DE] bg-white text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all"
           />
           {filterRole && <input type="hidden" name="role" value={filterRole} />}
         </form>
@@ -124,7 +124,7 @@ export default async function AdminUsersPage({
               className={`px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all whitespace-nowrap ${
                 (filterRole ?? "") === t.value
                   ? "bg-slate-900 text-white border-slate-900"
-                  : "bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:text-slate-900"
+                  : "bg-white text-slate-600 border-[#E6E4DE] hover:border-slate-300 hover:text-slate-900"
               }`}
             >
               {t.label}
@@ -135,10 +135,10 @@ export default async function AdminUsersPage({
 
       {/* Table */}
       {combined.length > 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-sm">
 
           {/* Table header */}
-          <div className="grid grid-cols-[2fr_2fr_1fr_1fr_auto] gap-4 px-5 py-3 bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase tracking-wider rounded-t-2xl">
+          <div className="grid grid-cols-[2fr_2fr_1fr_1fr_auto] gap-4 px-5 py-3 bg-[#F8F7F4] border-b border-[#E6E4DE] text-xs font-semibold text-slate-500 uppercase tracking-wider rounded-t-2xl">
             <span>User</span>
             <span>Email</span>
             <span>Exam</span>
@@ -151,11 +151,11 @@ export default async function AdminUsersPage({
             {combined.map((u) => (
               <div
                 key={u.id}
-                className="grid grid-cols-[2fr_2fr_1fr_1fr_auto] gap-4 items-center px-5 py-3.5 hover:bg-slate-50 transition-colors"
+                className="grid grid-cols-[2fr_2fr_1fr_1fr_auto] gap-4 items-center px-5 py-3.5 hover:bg-[#F8F7F4] transition-colors"
               >
                 {/* User */}
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className={`h-9 w-9 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 ${avatarColors[u.role] ?? "bg-slate-500"}`}>
+                  <div className={`h-9 w-9 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 ${avatarColors[u.role] ?? "bg-[#F8F7F4]0"}`}>
                     {initials(u.full_name ?? "")}
                   </div>
                   <div className="min-w-0">
@@ -177,7 +177,7 @@ export default async function AdminUsersPage({
                 {/* Exam */}
                 <div>
                   {u.exam_target ? (
-                    <span className={`inline-flex px-2.5 py-1 rounded-lg text-xs font-bold ${roleColors[u.role] ?? "bg-slate-100 text-slate-600"}`}>
+                    <span className={`inline-flex px-2.5 py-1 rounded-lg text-xs font-bold ${roleColors[u.role] ?? "bg-[#F1F0EC] text-slate-600"}`}>
                       {u.exam_target}
                     </span>
                   ) : (
@@ -198,8 +198,8 @@ export default async function AdminUsersPage({
           </div>
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-dashed border-slate-200 py-16 text-center">
-          <div className="h-12 w-12 rounded-2xl bg-slate-50 flex items-center justify-center mx-auto mb-3">
+        <div className="bg-white rounded-2xl border border-dashed border-[#E6E4DE] py-16 text-center">
+          <div className="h-12 w-12 rounded-2xl bg-[#F8F7F4] flex items-center justify-center mx-auto mb-3">
             <Users className="h-6 w-6 text-slate-300" />
           </div>
           <p className="font-semibold text-slate-700">No users found</p>

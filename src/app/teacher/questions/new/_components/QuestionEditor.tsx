@@ -109,11 +109,11 @@ export default function QuestionEditor({
     }
   }
 
-  const inputCls = "w-full h-11 px-4 rounded-xl border border-[#E2E8F0] bg-white text-[#0f172a] text-sm placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1D4ED8] focus:ring-2 focus:ring-[#1D4ED8]/10 transition-all";
+  const inputCls = "w-full h-11 px-4 rounded-xl border border-[#E6E4DE] bg-white text-[#0f172a] text-sm placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1D4ED8] focus:ring-2 focus:ring-[#1D4ED8]/10 transition-all";
 
   return (
     <form onSubmit={handleSave} className="space-y-4">
-      <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5 space-y-4">
+      <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 space-y-4">
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
@@ -138,7 +138,7 @@ export default function QuestionEditor({
                       ? d === "easy" ? "border-green-400 bg-green-50 text-green-700"
                         : d === "medium" ? "border-amber-400 bg-amber-50 text-amber-700"
                         : "border-red-400 bg-red-50 text-red-700"
-                      : "border-[#E2E8F0] bg-white text-[#64748B] hover:border-slate-300"
+                      : "border-[#E6E4DE] bg-white text-[#64748B] hover:border-slate-300"
                   }`}
                 >
                   {d}
@@ -157,7 +157,7 @@ export default function QuestionEditor({
             placeholder="Write the question here…"
             required
             rows={3}
-            className="w-full px-4 py-3 rounded-xl border border-[#E2E8F0] bg-white text-[#334155] text-sm placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1D4ED8] focus:ring-2 focus:ring-[#1D4ED8]/10 transition-all resize-none"
+            className="w-full px-4 py-3 rounded-xl border border-[#E6E4DE] bg-white text-[#334155] text-sm placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1D4ED8] focus:ring-2 focus:ring-[#1D4ED8]/10 transition-all resize-none"
           />
         </div>
 
@@ -175,7 +175,7 @@ export default function QuestionEditor({
                   className={`h-8 w-8 rounded-full border-2 text-xs font-bold flex-shrink-0 transition-all ${
                     correct === opt.id
                       ? "border-green-400 bg-green-400 text-white"
-                      : "border-[#E2E8F0] text-[#94a3b8] hover:border-green-400/50"
+                      : "border-[#E6E4DE] text-[#94a3b8] hover:border-green-400/50"
                   }`}
                 >
                   {opt.id.toUpperCase()}
@@ -185,7 +185,7 @@ export default function QuestionEditor({
                   value={opt.text}
                   onChange={(e) => setOption(idx, e.target.value)}
                   placeholder={`Option ${opt.id.toUpperCase()}`}
-                  className="flex-1 h-10 px-3 rounded-xl border border-[#E2E8F0] bg-white text-sm text-[#334155] placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1D4ED8] focus:ring-2 focus:ring-[#1D4ED8]/10 transition-all"
+                  className="flex-1 h-10 px-3 rounded-xl border border-[#E6E4DE] bg-white text-sm text-[#334155] placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1D4ED8] focus:ring-2 focus:ring-[#1D4ED8]/10 transition-all"
                 />
                 {options.length > 2 && (
                   <button type="button" onClick={() => removeOption(idx)} className="h-8 w-8 flex items-center justify-center text-[#CBD5E1] hover:text-red-500 transition-colors">
@@ -212,7 +212,7 @@ export default function QuestionEditor({
             onChange={(e) => setExplanation(e.target.value)}
             placeholder="Explain why the correct answer is right…"
             rows={2}
-            className="w-full px-4 py-3 rounded-xl border border-[#E2E8F0] bg-white text-[#334155] text-sm placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1D4ED8] focus:ring-2 focus:ring-[#1D4ED8]/10 transition-all resize-none"
+            className="w-full px-4 py-3 rounded-xl border border-[#E6E4DE] bg-white text-[#334155] text-sm placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1D4ED8] focus:ring-2 focus:ring-[#1D4ED8]/10 transition-all resize-none"
           />
         </div>
       </div>
@@ -224,7 +224,7 @@ export default function QuestionEditor({
               type="checkbox"
               checked={addAnother}
               onChange={(e) => setAddAnother(e.target.checked)}
-              className="h-4 w-4 rounded border-[#E2E8F0] text-[#1D4ED8] accent-[#1D4ED8]"
+              className="h-4 w-4 rounded border-[#E6E4DE] text-[#1D4ED8] accent-[#1D4ED8]"
             />
             Add another after saving
           </label>

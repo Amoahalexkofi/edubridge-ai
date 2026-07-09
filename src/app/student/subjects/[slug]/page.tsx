@@ -64,7 +64,7 @@ export default async function SubjectPage({
       </Link>
 
       {/* Subject header */}
-      <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5 sm:p-6">
+      <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 sm:p-6">
         <div className="flex items-start gap-4">
           <div className="h-14 w-14 sm:h-16 sm:w-16 rounded-2xl bg-[#EFF6FF] border border-[#BFDBFE] flex items-center justify-center text-3xl flex-shrink-0">
             {subject.icon ?? "📚"}
@@ -119,7 +119,7 @@ export default async function SubjectPage({
               return (
                 <div
                   key={topic.id}
-                  className="bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden hover:border-[#1D4ED8]/30 hover:shadow-sm transition-all group"
+                  className="bg-white rounded-2xl border border-[#E6E4DE] overflow-hidden hover:border-[#1D4ED8]/30 hover:shadow-sm transition-all group"
                 >
                   <div className="p-4 sm:p-5">
                     <div className="flex items-start gap-3 sm:gap-4">
@@ -127,7 +127,7 @@ export default async function SubjectPage({
                       <div className={`h-8 w-8 rounded-xl flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5 ${
                         isComplete
                           ? "bg-[#22C55E]/10 text-[#22C55E]"
-                          : "bg-[#F1F5F9] text-[#64748B]"
+                          : "bg-[#F2F1EE] text-[#64748B]"
                       }`}>
                         {isComplete ? <CheckCircle2 className="h-4 w-4" /> : idx + 1}
                       </div>
@@ -202,8 +202,8 @@ export default async function SubjectPage({
             })}
           </div>
         ) : (
-          <div className="bg-white rounded-2xl border border-dashed border-[#E2E8F0] py-14 text-center">
-            <div className="h-12 w-12 rounded-2xl bg-[#F1F5F9] flex items-center justify-center mx-auto mb-3">
+          <div className="bg-white rounded-2xl border border-dashed border-[#E6E4DE] py-14 text-center">
+            <div className="h-12 w-12 rounded-2xl bg-[#F2F1EE] flex items-center justify-center mx-auto mb-3">
               <FileText className="h-6 w-6 text-[#94a3b8]" />
             </div>
             <p className="font-semibold text-[#334155] text-sm">No topics yet</p>
@@ -216,7 +216,7 @@ export default async function SubjectPage({
 
       {/* Bottom CTA when topics exist */}
       {topics && topics.length > 0 && totalLessons > 0 && (
-        <div className="flex items-center justify-between bg-white rounded-2xl border border-[#E2E8F0] p-4">
+        <div className="flex items-center justify-between bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-4">
           <div>
             <p className="text-sm font-semibold text-[#0f172a]">Ready to practice?</p>
             <p className="text-xs text-[#64748B]">Test what you've learned in {subject.name}</p>

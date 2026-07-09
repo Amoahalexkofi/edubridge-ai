@@ -30,7 +30,7 @@ export default function ParentPhoneForm({ currentPhone }: { currentPhone: string
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           placeholder="0244 123 456"
-          className="w-full h-12 pl-11 pr-4 rounded-xl border border-[#E2E8F0] bg-white text-[#0f172a] text-sm placeholder:text-[#94a3b8] focus:outline-none focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all"
+          className="w-full h-12 pl-11 pr-4 rounded-xl border border-[#E6E4DE] bg-white text-[#0f172a] text-sm placeholder:text-[#94a3b8] focus:outline-none focus:border-green-500 focus:ring-4 focus:ring-green-500/10 transition-all"
         />
       </div>
       <button

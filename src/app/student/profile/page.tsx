@@ -41,7 +41,7 @@ export default async function ProfilePage() {
     <div className="max-w-2xl mx-auto px-4 sm:px-6 py-6 lg:py-8">
 
       {/* ── Cover-banner hero ── */}
-      <div className="bg-white rounded-3xl border border-[#E8ECF0] shadow-sm overflow-hidden">
+      <div className="bg-white rounded-3xl border border-[#E6E4DE] shadow-sm overflow-hidden">
         {/* Cover */}
         <div className="relative h-20 bg-gradient-to-br from-[#1B3A8A] via-[#1D4ED8] to-[#2563EB]">
           <div className="absolute -top-8 -right-6 h-32 w-32 rounded-full bg-white/10" />
@@ -68,17 +68,17 @@ export default async function ProfilePage() {
               <GraduationCap className="h-3.5 w-3.5" /> {examLabel} Candidate
             </span>
             {gradeLabel && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F1F5F9] text-[#475569] text-xs font-semibold">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F2F1EE] text-[#475569] text-xs font-semibold">
                 {gradeLabel}
               </span>
             )}
             {profile?.school && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F1F5F9] text-[#475569] text-xs font-semibold">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F2F1EE] text-[#475569] text-xs font-semibold">
                 <School className="h-3.5 w-3.5" /> {profile.school}
               </span>
             )}
             <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${
-              parentLinked ? "bg-[#F0FDF4] text-[#1A6B3C]" : "bg-[#F1F5F9] text-[#94a3b8]"
+              parentLinked ? "bg-[#F0FDF4] text-[#1A6B3C]" : "bg-[#F2F1EE] text-[#94a3b8]"
             }`}>
               <BadgeCheck className="h-3.5 w-3.5" /> {parentLinked ? "Parent linked" : "No parent linked"}
             </span>
@@ -87,7 +87,7 @@ export default async function ProfilePage() {
       </div>
 
       {/* ── Badge case ── */}
-      <div id="badges" className="mt-6 bg-white rounded-2xl border border-[#E8ECF0] p-5 sm:p-6 scroll-mt-20">
+      <div id="badges" className="mt-6 bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 sm:p-6 scroll-mt-20">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="font-bold text-slate-900">Badges</h2>
@@ -103,12 +103,12 @@ export default async function ProfilePage() {
               <div
                 key={b.id}
                 className={`rounded-xl border p-3 flex flex-col gap-2 ${
-                  earnedAt ? "bg-white border-slate-200" : "bg-slate-50 border-slate-100"
+                  earnedAt ? "bg-white border-[#E6E4DE]" : "bg-[#F8F7F4] border-[#EEEDE8]"
                 }`}
               >
                 <div className="flex items-center justify-between">
                   <span className={`h-9 w-9 rounded-xl border flex items-center justify-center ${
-                    earnedAt ? b.tint : "bg-white text-slate-300 border-slate-200"
+                    earnedAt ? b.tint : "bg-white text-slate-300 border-[#E6E4DE]"
                   }`}>
                     <Icon className="h-4 w-4" />
                   </span>

@@ -62,11 +62,11 @@ export default function OnboardingForm() {
                 type="button"
                 onClick={() => { setExamTarget(opt.value); setGradeLevel(""); }}
                 className={`text-left rounded-2xl border-2 p-4 transition-all ${
-                  active ? "border-[#1D4ED8] bg-[#EFF6FF]" : "border-slate-200 bg-white hover:border-slate-300"
+                  active ? "border-[#1D4ED8] bg-[#EFF6FF]" : "border-[#E6E4DE] bg-white hover:border-slate-300"
                 }`}
               >
                 <span className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mb-2 ${
-                  active ? "bg-[#1D4ED8] text-white" : "bg-slate-100 text-slate-500"
+                  active ? "bg-[#1D4ED8] text-white" : "bg-[#F1F0EC] text-slate-500"
                 }`}>
                   {opt.badge}
                 </span>
@@ -88,7 +88,7 @@ export default function OnboardingForm() {
             id="gradeLevel"
             value={gradeLevel}
             onChange={(e) => setGradeLevel(e.target.value)}
-            className="w-full h-12 px-4 rounded-xl border border-slate-200 bg-white text-[#0f172a] text-sm focus:outline-none focus:border-[#1D4ED8] focus:ring-4 focus:ring-[#1D4ED8]/8 transition-all"
+            className="w-full h-12 px-4 rounded-xl border border-[#E6E4DE] bg-white text-[#0f172a] text-sm focus:outline-none focus:border-[#1D4ED8] focus:ring-4 focus:ring-[#1D4ED8]/8 transition-all"
           >
             <option value="">Select your class</option>
             {GRADES[examTarget].map((g) => (

@@ -82,14 +82,14 @@ export default function ProfileForm({ email, initial, parentLinked }: Props) {
   }
 
   const inputCls =
-    "w-full h-11 px-3.5 rounded-xl border border-[#E2E8F0] bg-white text-[#0f172a] text-sm placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1D4ED8] focus:ring-4 focus:ring-[#1D4ED8]/8 transition-all";
+    "w-full h-11 px-3.5 rounded-xl border border-[#E6E4DE] bg-white text-[#0f172a] text-sm placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1D4ED8] focus:ring-4 focus:ring-[#1D4ED8]/8 transition-all";
   const labelCls = "block text-[13px] font-semibold text-[#334155] mb-1.5";
 
   return (
     <form onSubmit={handleSave} className="space-y-5">
 
       {/* Personal details */}
-      <section className="bg-white rounded-2xl border border-[#E8ECF0] shadow-sm p-5 sm:p-6">
+      <section className="bg-white rounded-2xl border border-[#E6E4DE] shadow-sm p-5 sm:p-6">
         <SectionHeader icon={User} title="Personal details" desc="Your name and contact information" />
         <div className="mt-5 space-y-4">
           <div className="grid sm:grid-cols-2 gap-4">
@@ -104,14 +104,14 @@ export default function ProfileForm({ email, initial, parentLinked }: Props) {
           </div>
           <div>
             <label className={labelCls}>Email address</label>
-            <input type="email" value={email} disabled className={`${inputCls} bg-[#F8FAFC] text-[#94a3b8] cursor-not-allowed`} />
+            <input type="email" value={email} disabled className={`${inputCls} bg-[#F8F7F4] text-[#94a3b8] cursor-not-allowed`} />
             <p className="text-xs text-[#94a3b8] mt-1.5">Email cannot be changed here.</p>
           </div>
         </div>
       </section>
 
       {/* Academic details */}
-      <section className="bg-white rounded-2xl border border-[#E8ECF0] shadow-sm p-5 sm:p-6">
+      <section className="bg-white rounded-2xl border border-[#E6E4DE] shadow-sm p-5 sm:p-6">
         <SectionHeader icon={GraduationCap} title="Academic details" desc="Your exam track, school and class" />
         <div className="mt-5 space-y-4">
           <div>
@@ -119,7 +119,7 @@ export default function ProfileForm({ email, initial, parentLinked }: Props) {
             {!editingExam ? (
               // Locked by default — chosen at registration, changing it switches
               // the whole curriculum, so it isn't a casual one-tap toggle.
-              <div className="flex items-center justify-between gap-3 h-11 pl-3.5 pr-2 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC]">
+              <div className="flex items-center justify-between gap-3 h-11 pl-3.5 pr-2 rounded-xl border border-[#E6E4DE] bg-[#F8F7F4]">
                 <span className="flex items-center gap-2 text-sm font-semibold text-[#0f172a]">
                   <GraduationCap className="h-4 w-4 text-[#1B3A8A]" />
                   {form.exam_target === "wassce" ? "WASSCE · Senior High" : "BECE · Junior High"}
@@ -139,7 +139,7 @@ export default function ProfileForm({ email, initial, parentLinked }: Props) {
                       className={`flex-1 h-11 rounded-xl border-2 text-sm font-bold transition-all ${
                         form.exam_target === exam.toLowerCase()
                           ? "border-[#1D4ED8] bg-[#EFF6FF] text-[#1D4ED8]"
-                          : "border-[#E2E8F0] bg-white text-[#64748B] hover:border-[#1D4ED8]/40"
+                          : "border-[#E6E4DE] bg-white text-[#64748B] hover:border-[#1D4ED8]/40"
                       }`}
                     >
                       {exam}
@@ -175,7 +175,7 @@ export default function ProfileForm({ email, initial, parentLinked }: Props) {
       </section>
 
       {/* Parent / Guardian */}
-      <section className="bg-white rounded-2xl border border-[#E8ECF0] shadow-sm p-5 sm:p-6">
+      <section className="bg-white rounded-2xl border border-[#E6E4DE] shadow-sm p-5 sm:p-6">
         <div className="flex items-start justify-between gap-3">
           <SectionHeader icon={Users} title="Parent / Guardian" desc="Link a parent to follow your progress" />
           {parentLinked && (
@@ -201,8 +201,8 @@ export default function ProfileForm({ email, initial, parentLinked }: Props) {
       <div className="sticky bottom-4 z-10">
         <div className={`flex items-center gap-3 rounded-2xl border p-2.5 pl-4 transition-all ${
           isDirty
-            ? "bg-white/90 backdrop-blur border-[#E2E8F0] shadow-[0_8px_30px_rgba(0,0,0,0.10)]"
-            : "bg-[#F8FAFC] border-transparent"
+            ? "bg-white/90 backdrop-blur border-[#E6E4DE] shadow-[0_8px_30px_rgba(0,0,0,0.10)]"
+            : "bg-[#F8F7F4] border-transparent"
         }`}>
           <p className={`flex-1 text-sm font-medium ${isDirty ? "text-[#0f172a]" : "text-[#94a3b8]"}`}>
             {isDirty ? "You have unsaved changes" : "All changes saved"}
@@ -212,7 +212,7 @@ export default function ProfileForm({ email, initial, parentLinked }: Props) {
               type="button"
               onClick={discard}
               disabled={saving}
-              className="h-10 px-3.5 flex items-center gap-1.5 rounded-xl border border-[#E2E8F0] bg-white text-sm font-semibold text-[#64748B] hover:bg-[#F1F5F9] transition-all disabled:opacity-60"
+              className="h-10 px-3.5 flex items-center gap-1.5 rounded-xl border border-[#E6E4DE] bg-white text-sm font-semibold text-[#64748B] hover:bg-[#F2F1EE] transition-all disabled:opacity-60"
             >
               <RotateCcw className="h-4 w-4" /> Discard
             </button>

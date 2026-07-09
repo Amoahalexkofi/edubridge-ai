@@ -83,7 +83,7 @@ export default async function LessonPage({
       </nav>
 
       {/* Lesson card */}
-      <article className="bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden mb-6">
+      <article className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] overflow-hidden mb-6">
 
         {/* Header */}
         <div className="px-6 py-5 border-b border-[#F1F5F9]">
@@ -139,7 +139,7 @@ export default async function LessonPage({
         {prevLesson ? (
           <Link
             href={`/student/lessons/${prevLesson.id}`}
-            className="flex items-center gap-2 p-4 bg-white rounded-xl border border-[#E2E8F0] hover:border-[#1D4ED8]/30 hover:shadow-sm transition-all group"
+            className="flex items-center gap-2 p-4 bg-white rounded-xl border border-[#E6E4DE] hover:border-[#1D4ED8]/30 hover:shadow-sm transition-all group"
           >
             <ArrowLeft className="h-4 w-4 text-[#64748B] flex-shrink-0" />
             <div className="min-w-0">
@@ -153,7 +153,7 @@ export default async function LessonPage({
         {nextLesson ? (
           <Link
             href={`/student/lessons/${nextLesson.id}`}
-            className="flex items-center gap-2 p-4 bg-white rounded-xl border border-[#E2E8F0] hover:border-[#1D4ED8]/30 hover:shadow-sm transition-all text-right col-start-2"
+            className="flex items-center gap-2 p-4 bg-white rounded-xl border border-[#E6E4DE] hover:border-[#1D4ED8]/30 hover:shadow-sm transition-all text-right col-start-2"
           >
             <div className="flex-1 min-w-0">
               <p className="text-xs text-[#94a3b8]">Next</p>

@@ -14,16 +14,17 @@
   --color-success: #22C55E;
   --color-warning: #F97316;
   --color-background: #FFFFFF;
-  --color-surface: #F8FAFC;
+  --color-surface: #F8F7F4; /* warm off-white (was cool slate #F8FAFC) */
   --color-foreground: #334155;
   --color-muted: #64748B;
-  --color-border: #E2E8F0;
+  --color-border: #E6E4DE; /* warm soft border (was cool #E2E8F0) */
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  --font-sans: var(--font-hanken);
-  --font-display: var(--font-brand);
+  /* One family across the product (Plus Jakarta Sans) */
+  --font-sans: var(--font-jakarta);
+  --font-display: var(--font-jakarta);
 
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -39,15 +40,15 @@
   --popover-foreground: #334155;
   --primary: #1D4ED8;
   --primary-foreground: #FFFFFF;
-  --secondary: #F1F5F9;
+  --secondary: #F2F1EE;
   --secondary-foreground: #334155;
-  --muted: #F8FAFC;
+  --muted: #F8F7F4;
   --muted-foreground: #64748B;
   --accent: #F59E0B;
   --accent-foreground: #FFFFFF;
   --destructive: #EF4444;
-  --border: #E2E8F0;
-  --input: #E2E8F0;
+  --border: #E6E4DE;
+  --input: #E6E4DE;
   --ring: #1D4ED8;
   --radius: 0.75rem;
   --success: #22C55E;
@@ -61,12 +62,12 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), 'Hanken Grotesk', system-ui, sans-serif;
+  font-family: var(--font-sans), 'Plus Jakarta Sans', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-display), 'Bricolage Grotesque', system-ui, sans-serif;
+  font-family: var(--font-display), 'Plus Jakarta Sans', system-ui, sans-serif;
 }
 
 /* Brand entrance: a single, calm rise-in. Reveal enhances already-visible

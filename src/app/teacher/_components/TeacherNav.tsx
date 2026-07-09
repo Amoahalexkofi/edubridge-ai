@@ -39,7 +39,7 @@ export default function TeacherNav({ userName }: Props) {
   return (
     <>
       {/* Mobile top header */}
-      <header className="lg:hidden fixed top-0 inset-x-0 z-40 h-14 bg-white border-b border-slate-100 flex items-center justify-between px-4 shadow-sm">
+      <header className="lg:hidden fixed top-0 inset-x-0 z-40 h-14 bg-white border-b border-[#EEEDE8] flex items-center justify-between px-4 shadow-sm">
         <Link href="/teacher">
           <Image src="/logo-no-bg.png" alt="EduBridge Educational Solutions" width={120} height={120} className="h-11 w-auto object-contain" />
         </Link>
@@ -49,7 +49,7 @@ export default function TeacherNav({ userName }: Props) {
       </header>
 
       {/* Mobile bottom tab bar */}
-      <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-slate-100 flex items-center justify-around px-2 pb-safe" style={{ height: "64px" }}>
+      <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-[#EEEDE8] flex items-center justify-around px-2 pb-safe" style={{ height: "64px" }}>
         {navItems.map(({ href, label, icon: Icon }) => {
           const active = isActive(href);
           return (
@@ -62,14 +62,14 @@ export default function TeacherNav({ userName }: Props) {
       </nav>
 
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex fixed inset-y-0 left-0 z-40 w-60 flex-col bg-white border-r border-slate-100">
-        <div className="h-16 flex items-center px-4 border-b border-slate-100">
+      <aside className="hidden lg:flex fixed inset-y-0 left-0 z-40 w-60 flex-col bg-white border-r border-[#EEEDE8]">
+        <div className="h-16 flex items-center px-4 border-b border-[#EEEDE8]">
           <Link href="/teacher">
             <Image src="/logo-no-bg.png" alt="EduBridge Educational Solutions" width={140} height={140} className="h-16 w-auto object-contain" />
           </Link>
         </div>
 
-        <div className="px-3 py-2 border-b border-slate-100">
+        <div className="px-3 py-2 border-b border-[#EEEDE8]">
           <span className="text-[10px] font-bold tracking-widest uppercase text-[#E8722A] px-2">Teacher Portal</span>
         </div>
 
@@ -77,7 +77,7 @@ export default function TeacherNav({ userName }: Props) {
           {navItems.map(({ href, label, icon: Icon }) => {
             const active = isActive(href);
             return (
-              <Link key={href} href={href} className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all ${active ? "bg-[#E8722A]/8 text-[#E8722A]" : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"}`}>
+              <Link key={href} href={href} className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all ${active ? "bg-[#E8722A]/8 text-[#E8722A]" : "text-slate-500 hover:bg-[#F8F7F4] hover:text-slate-900"}`}>
                 <Icon className={`h-[18px] w-[18px] flex-shrink-0 ${active ? "stroke-[2.5]" : "stroke-2"}`} />
                 {label}
                 {active && <div className="ml-auto h-1.5 w-1.5 rounded-full bg-[#E8722A]" />}
@@ -86,7 +86,7 @@ export default function TeacherNav({ userName }: Props) {
           })}
         </nav>
 
-        <div className="border-t border-slate-100 p-3 space-y-1">
+        <div className="border-t border-[#EEEDE8] p-3 space-y-1">
           <div className="flex items-center gap-3 px-3 py-2">
             <div className="h-9 w-9 rounded-full bg-gradient-to-br from-[#E8722A] to-[#d4641e] flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
               {initials}

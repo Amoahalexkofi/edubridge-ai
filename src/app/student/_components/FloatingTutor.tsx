@@ -49,7 +49,7 @@ function CopyBtn({ text }: { text: string }) {
   return (
     <button
       onClick={() => { navigator.clipboard.writeText(text).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000); }); }}
-      className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-md hover:bg-slate-100 text-slate-400 hover:text-slate-600 flex-shrink-0 mt-0.5"
+      className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-md hover:bg-[#F1F0EC] text-slate-400 hover:text-slate-600 flex-shrink-0 mt-0.5"
     >
       {copied ? <Check className="h-3 w-3 text-green-500" /> : <Copy className="h-3 w-3" />}
     </button>
@@ -119,12 +119,12 @@ export default function FloatingTutor({ userId, firstName, examTarget }: Props) 
     <>
       {/* ── Chat panel ──────────────────────────────────────────── */}
       {open && (
-        <div className={`fixed z-50 bottom-20 right-4 lg:bottom-6 lg:right-6 w-[calc(100vw-2rem)] sm:w-[380px] bg-white rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.18)] border border-[#E2E8F0] flex flex-col transition-all duration-200 ${
+        <div className={`fixed z-50 bottom-20 right-4 lg:bottom-6 lg:right-6 w-[calc(100vw-2rem)] sm:w-[380px] bg-white rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.18)] border border-[#E6E4DE] flex flex-col transition-all duration-200 ${
           minimised ? "h-[56px] overflow-hidden" : "h-[520px] sm:h-[560px] max-h-[calc(100dvh-6rem)]"
         }`}>
 
           {/* Panel header */}
-          <div className="flex items-center gap-3 px-4 py-3 border-b border-[#E2E8F0] bg-gradient-to-r from-[#1B3A8A] to-[#1D4ED8] rounded-t-2xl flex-shrink-0">
+          <div className="flex items-center gap-3 px-4 py-3 border-b border-[#E6E4DE] bg-gradient-to-r from-[#1B3A8A] to-[#1D4ED8] rounded-t-2xl flex-shrink-0">
             <div className="h-8 w-8 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
               <Brain className="h-4 w-4 text-white" />
             </div>
@@ -161,7 +161,7 @@ export default function FloatingTutor({ userId, firstName, examTarget }: Props) 
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 bg-[#F8FAFC]">
+          <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 bg-[#F8F7F4]">
             {messages.map((msg) => (
               <div key={msg.id} className={`flex items-end gap-2 ${msg.role === "user" ? "flex-row-reverse" : ""}`}>
                 {msg.role === "assistant" && (
@@ -175,7 +175,7 @@ export default function FloatingTutor({ userId, firstName, examTarget }: Props) 
                   </div>
                 ) : (
                   <div className="group flex items-start gap-1 flex-1">
-                    <div className="flex-1 bg-white border border-[#E2E8F0] rounded-xl rounded-bl-sm px-3 py-2.5 shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
+                    <div className="flex-1 bg-white border border-[#E6E4DE] rounded-xl rounded-bl-sm px-3 py-2.5 shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
                       <div className="prose prose-xs max-w-none text-[#334155]
                         prose-p:my-1 prose-p:text-[13px] prose-p:leading-relaxed
                         prose-headings:text-[#1B3A8A] prose-headings:font-bold
@@ -183,13 +183,13 @@ export default function FloatingTutor({ userId, firstName, examTarget }: Props) 
                         prose-strong:text-[#0f172a] prose-strong:font-semibold
                         prose-ul:my-1 prose-ol:my-1 prose-li:my-0.5 prose-li:text-[13px]
                         prose-code:bg-[#EEF2FF] prose-code:text-[#1B3A8A] prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-[11px] prose-code:before:content-none prose-code:after:content-none
-                        prose-hr:my-2 prose-hr:border-[#E2E8F0]">
+                        prose-hr:my-2 prose-hr:border-[#E6E4DE]">
                         <ReactMarkdown
                           remarkPlugins={[remarkGfm, remarkMath]}
                           rehypePlugins={[rehypeKatex]}
                           components={{
                             table: ({ children }) => (
-                              <div className="not-prose my-2 overflow-x-auto rounded-lg border border-[#E2E8F0]">
+                              <div className="not-prose my-2 overflow-x-auto rounded-lg border border-[#E6E4DE]">
                                 <table className="w-full text-[12px] border-collapse">{children}</table>
                               </div>
                             ),
@@ -218,7 +218,7 @@ export default function FloatingTutor({ userId, firstName, examTarget }: Props) 
                 <div className="h-6 w-6 rounded-lg bg-gradient-to-br from-[#1B3A8A] to-[#1D4ED8] flex items-center justify-center flex-shrink-0">
                   <Brain className="h-3 w-3 text-white" />
                 </div>
-                <div className="bg-white border border-[#E2E8F0] rounded-xl rounded-bl-sm px-3 py-2.5">
+                <div className="bg-white border border-[#E6E4DE] rounded-xl rounded-bl-sm px-3 py-2.5">
                   <div className="flex items-center gap-1">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#1B3A8A]/30 animate-pulse" style={{ animationDelay: "0ms" }} />
                     <span className="h-1.5 w-1.5 rounded-full bg-[#1B3A8A]/30 animate-pulse" style={{ animationDelay: "150ms" }} />
@@ -231,7 +231,7 @@ export default function FloatingTutor({ userId, firstName, examTarget }: Props) 
           </div>
 
           {/* Input */}
-          <div className="flex-shrink-0 px-3 py-3 bg-white border-t border-[#E2E8F0] rounded-b-2xl">
+          <div className="flex-shrink-0 px-3 py-3 bg-white border-t border-[#E6E4DE] rounded-b-2xl">
             <form onSubmit={handleSubmit} className="flex items-end gap-2">
               <textarea
                 ref={inputRef}
@@ -245,11 +245,11 @@ export default function FloatingTutor({ userId, firstName, examTarget }: Props) 
                 }}
                 placeholder="Ask anything…"
                 rows={1}
-                className="flex-1 resize-none rounded-xl border border-[#E2E8F0] bg-[#F8FAFC] px-3 py-2.5 text-[13px] text-[#0f172a] placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1B3A8A] focus:bg-white transition-all leading-relaxed max-h-24 overflow-y-auto"
+                className="flex-1 resize-none rounded-xl border border-[#E6E4DE] bg-[#F8F7F4] px-3 py-2.5 text-[13px] text-[#0f172a] placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1B3A8A] focus:bg-white transition-all leading-relaxed max-h-24 overflow-y-auto"
                 style={{ minHeight: "40px" }}
               />
               {isLoading ? (
-                <button type="button" onClick={stop} className="h-10 w-10 rounded-xl bg-[#F1F5F9] flex items-center justify-center flex-shrink-0">
+                <button type="button" onClick={stop} className="h-10 w-10 rounded-xl bg-[#F2F1EE] flex items-center justify-center flex-shrink-0">
                   <Loader2 className="h-4 w-4 text-slate-400 animate-spin" />
                 </button>
               ) : (

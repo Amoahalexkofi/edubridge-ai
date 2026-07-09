@@ -34,13 +34,13 @@ export default function AdminNav({ userName }: { userName: string }) {
 
   return (
     <>
-      <header className="lg:hidden fixed top-0 inset-x-0 z-40 h-14 bg-white border-b border-slate-100 flex items-center justify-between px-4 shadow-sm">
+      <header className="lg:hidden fixed top-0 inset-x-0 z-40 h-14 bg-white border-b border-[#EEEDE8] flex items-center justify-between px-4 shadow-sm">
         <Link href="/admin">
           <Image src="/logo-no-bg.png" alt="EduBridge Educational Solutions" width={120} height={120} className="h-14 w-auto object-contain" />
         </Link>
         <div className="h-8 w-8 rounded-full bg-slate-800 flex items-center justify-center text-white text-xs font-bold">{initials}</div>
       </header>
-      <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-slate-100 flex items-center justify-around px-2 pb-safe" style={{ height: "64px" }}>
+      <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-[#EEEDE8] flex items-center justify-around px-2 pb-safe" style={{ height: "64px" }}>
         {navItems.slice(0, 4).map(({ href, label, icon: Icon }) => {
           const active = isActive(href);
           return (

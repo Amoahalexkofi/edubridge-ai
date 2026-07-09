@@ -21,7 +21,7 @@ export default async function OnboardingPage() {
   const firstName = profile?.full_name?.split(" ")[0] ?? "there";
 
   return (
-    <div className="min-h-screen bg-[#F1F5F9] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#F2F1EE] flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="flex justify-center mb-8">
           <Image src="/logo-no-bg.png" alt="EduBridge AI" width={140} height={140} className="h-14 w-auto object-contain" />

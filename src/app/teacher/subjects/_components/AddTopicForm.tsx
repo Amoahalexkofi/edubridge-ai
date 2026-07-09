@@ -55,7 +55,7 @@ export default function AddTopicForm({ subjectId, nextOrder }: Props) {
         placeholder="Topic name"
         autoFocus
         required
-        className="flex-1 h-9 px-3 rounded-xl border border-[#E2E8F0] bg-white text-sm text-[#0f172a] placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1D4ED8] focus:ring-2 focus:ring-[#1D4ED8]/10 transition-all"
+        className="flex-1 h-9 px-3 rounded-xl border border-[#E6E4DE] bg-white text-sm text-[#0f172a] placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1D4ED8] focus:ring-2 focus:ring-[#1D4ED8]/10 transition-all"
       />
       <button
         type="submit"
@@ -64,7 +64,7 @@ export default function AddTopicForm({ subjectId, nextOrder }: Props) {
       >
         {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Add"}
       </button>
-      <button type="button" onClick={() => setOpen(false)} className="h-9 px-3 rounded-xl border border-[#E2E8F0] text-sm text-[#64748B]">
+      <button type="button" onClick={() => setOpen(false)} className="h-9 px-3 rounded-xl border border-[#E6E4DE] text-sm text-[#64748B]">
         Cancel
       </button>
     </form>

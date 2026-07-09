@@ -27,7 +27,7 @@ export default async function TeacherSubjectsPage() {
       </div>
 
       {/* Add Subject */}
-      <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5">
+      <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5">
         <h2 className="font-bold text-[#0f172a] mb-4 flex items-center gap-2">
           <Plus className="h-4 w-4 text-[#E8722A]" /> Add new subject
         </h2>
@@ -41,7 +41,7 @@ export default async function TeacherSubjectsPage() {
             All subjects ({subjects.length})
           </h2>
           {subjects.map((subject) => (
-            <div key={subject.id} className="bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden">
+            <div key={subject.id} className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] overflow-hidden">
               {/* Subject header */}
               <div className="flex items-center gap-3 p-4 border-b border-[#F1F5F9]">
                 <div className="h-10 w-10 rounded-xl bg-[#EFF6FF] border border-[#BFDBFE] flex items-center justify-center text-xl flex-shrink-0">
@@ -65,7 +65,7 @@ export default async function TeacherSubjectsPage() {
                   <div className="space-y-1.5">
                     {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                     {(subject.topics as any[]).sort((a, b) => a.order_index - b.order_index).map((topic: { id: string; title: string; order_index: number }) => (
-                      <div key={topic.id} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[#F8FAFC] text-sm">
+                      <div key={topic.id} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[#F8F7F4] text-sm">
                         <span className="h-5 w-5 rounded flex items-center justify-center text-xs font-bold text-[#94a3b8] flex-shrink-0">
                           {topic.order_index}
                         </span>
@@ -86,7 +86,7 @@ export default async function TeacherSubjectsPage() {
           ))}
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-dashed border-[#E2E8F0] py-14 text-center">
+        <div className="bg-white rounded-2xl border border-dashed border-[#E6E4DE] py-14 text-center">
           <BookOpen className="h-10 w-10 text-[#CBD5E1] mx-auto mb-3" />
           <p className="font-semibold text-[#334155]">No subjects yet</p>
           <p className="text-sm text-[#94a3b8] mt-1">Add the first subject above to get started.</p>

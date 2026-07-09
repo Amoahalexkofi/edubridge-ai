@@ -46,7 +46,7 @@ export default function AddSubjectForm({ onSuccess }: Props) {
     router.refresh();
   }
 
-  const inputCls = "h-10 px-3 rounded-xl border border-[#E2E8F0] bg-white text-[#0f172a] text-sm placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1D4ED8] focus:ring-2 focus:ring-[#1D4ED8]/10 transition-all";
+  const inputCls = "h-10 px-3 rounded-xl border border-[#E6E4DE] bg-white text-[#0f172a] text-sm placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1D4ED8] focus:ring-2 focus:ring-[#1D4ED8]/10 transition-all";
 
   return (
     <form onSubmit={handleAdd} className="space-y-3">
@@ -85,7 +85,7 @@ export default function AddSubjectForm({ onSuccess }: Props) {
             type="button"
             onClick={() => setIcon(e)}
             className={`h-8 w-8 rounded-lg text-lg flex items-center justify-center transition-all ${
-              icon === e ? "bg-[#EFF6FF] ring-2 ring-[#1D4ED8]" : "bg-[#F8FAFC] hover:bg-[#EFF6FF]"
+              icon === e ? "bg-[#EFF6FF] ring-2 ring-[#1D4ED8]" : "bg-[#F8F7F4] hover:bg-[#EFF6FF]"
             }`}
           >
             {e}

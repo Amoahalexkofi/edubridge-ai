@@ -31,7 +31,7 @@ export default async function StudentLayout({ children }: { children: React.Reac
   const locked = isRealStudent && user.user_metadata?.app_verified === false;
 
   return (
-    <div className="min-h-screen bg-[#F1F5F9]">
+    <div className="min-h-screen bg-[#F2F1EE]">
       {isPreviewingAdmin && (
         <div className="fixed top-0 left-0 right-0 z-50 bg-[#E8722A] text-white px-4 py-2 flex items-center justify-between gap-3 text-sm font-semibold shadow-md">
           <div className="flex items-center gap-2">

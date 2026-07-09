@@ -37,7 +37,7 @@ export default function LessonCompleteButton({
       className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all disabled:opacity-60 ${
         completed
           ? "bg-green-50 text-green-600 hover:bg-green-100 border border-green-100"
-          : "bg-[#F8FAFC] text-[#475569] hover:bg-[#F1F5F9] border border-[#E2E8F0]"
+          : "bg-[#F8F7F4] text-[#475569] hover:bg-[#F2F1EE] border border-[#E6E4DE]"
       }`}
     >
       {loading ? (

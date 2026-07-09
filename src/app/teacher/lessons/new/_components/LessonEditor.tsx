@@ -77,11 +77,11 @@ export default function LessonEditor({
     }
   }
 
-  const inputCls = "w-full h-11 px-4 rounded-xl border border-[#E2E8F0] bg-white text-[#0f172a] text-sm placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1D4ED8] focus:ring-2 focus:ring-[#1D4ED8]/10 transition-all";
+  const inputCls = "w-full h-11 px-4 rounded-xl border border-[#E6E4DE] bg-white text-[#0f172a] text-sm placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1D4ED8] focus:ring-2 focus:ring-[#1D4ED8]/10 transition-all";
 
   return (
     <form onSubmit={handleSave} className="space-y-4">
-      <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5 space-y-4">
+      <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 space-y-4">
 
         {/* Topic selector */}
         <div>
@@ -116,7 +116,7 @@ export default function LessonEditor({
       </div>
 
       {/* Content editor */}
-      <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5">
+      <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5">
         <div className="flex items-center justify-between mb-3">
           <label className="block text-sm font-semibold text-[#334155]">Lesson content</label>
           <button
@@ -131,7 +131,7 @@ export default function LessonEditor({
           Use # for headings, ## for sub-headings, - for bullet points. Separate paragraphs with a blank line.
         </p>
         {preview ? (
-          <div className="min-h-[300px] border border-[#E2E8F0] rounded-xl p-4 bg-[#F8FAFC] prose prose-slate max-w-none text-sm space-y-3">
+          <div className="min-h-[300px] border border-[#E6E4DE] rounded-xl p-4 bg-[#F8F7F4] prose prose-slate max-w-none text-sm space-y-3">
             {content.split(/\n{2,}/).filter(Boolean).map((para, i) => {
               if (para.startsWith("# ")) return <h2 key={i} className="text-base font-bold text-[#0f172a]">{para.slice(2)}</h2>;
               if (para.startsWith("## ")) return <h3 key={i} className="text-sm font-bold text-[#334155]">{para.slice(3)}</h3>;
@@ -148,7 +148,7 @@ export default function LessonEditor({
             onChange={(e) => setContent(e.target.value)}
             placeholder={`# Introduction\n\nWrite your lesson content here.\n\n## Key Points\n\n- Point one\n- Point two\n\nExplain the main concept clearly...`}
             rows={16}
-            className="w-full px-4 py-3 rounded-xl border border-[#E2E8F0] bg-white text-[#334155] text-sm font-mono placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1D4ED8] focus:ring-2 focus:ring-[#1D4ED8]/10 transition-all resize-none"
+            className="w-full px-4 py-3 rounded-xl border border-[#E6E4DE] bg-white text-[#334155] text-sm font-mono placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1D4ED8] focus:ring-2 focus:ring-[#1D4ED8]/10 transition-all resize-none"
           />
         )}
       </div>

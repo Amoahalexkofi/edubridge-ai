@@ -49,13 +49,13 @@ export default function LessonContent({ content }: { content: string }) {
             const isBlock = className?.includes("language-");
             if (isBlock) {
               return (
-                <pre className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl p-4 overflow-x-auto text-xs font-mono text-[#334155] my-4">
+                <pre className="bg-[#F8F7F4] border border-[#E6E4DE] rounded-xl p-4 overflow-x-auto text-xs font-mono text-[#334155] my-4">
                   <code>{children}</code>
                 </pre>
               );
             }
             return (
-              <code className="bg-[#F1F5F9] text-[#1D4ED8] text-xs font-mono px-1.5 py-0.5 rounded">
+              <code className="bg-[#F2F1EE] text-[#1D4ED8] text-xs font-mono px-1.5 py-0.5 rounded">
                 {children}
               </code>
             );
@@ -66,12 +66,12 @@ export default function LessonContent({ content }: { content: string }) {
             </div>
           ),
           th: ({ children }) => (
-            <th className="bg-[#F1F5F9] text-[#0f172a] font-bold px-4 py-2 border border-[#E2E8F0] text-left">{children}</th>
+            <th className="bg-[#F2F1EE] text-[#0f172a] font-bold px-4 py-2 border border-[#E6E4DE] text-left">{children}</th>
           ),
           td: ({ children }) => (
-            <td className="px-4 py-2 border border-[#E2E8F0] text-[#334155]">{children}</td>
+            <td className="px-4 py-2 border border-[#E6E4DE] text-[#334155]">{children}</td>
           ),
-          hr: () => <hr className="border-[#E2E8F0] my-6" />,
+          hr: () => <hr className="border-[#E6E4DE] my-6" />,
         }}
       >
         {content}

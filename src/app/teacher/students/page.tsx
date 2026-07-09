@@ -61,8 +61,8 @@ export default async function TeacherStudentsPage() {
       </div>
 
       {profiles && profiles.length > 0 ? (
-        <div className="bg-white rounded-2xl border border-[#E2E8F0] overflow-hidden">
-          <div className="grid grid-cols-[1fr_auto_auto_auto] text-xs font-semibold text-[#94a3b8] uppercase tracking-wider px-4 py-3 border-b border-[#F1F5F9] bg-[#F8FAFC]">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] overflow-hidden">
+          <div className="grid grid-cols-[1fr_auto_auto_auto] text-xs font-semibold text-[#94a3b8] uppercase tracking-wider px-4 py-3 border-b border-[#F1F5F9] bg-[#F8F7F4]">
             <span>Student</span>
             <span className="w-20 text-center">Exam</span>
             <span className="w-24 text-center">Lessons done</span>
@@ -76,7 +76,7 @@ export default async function TeacherStudentsPage() {
                 : null;
               const initials = (p.full_name ?? "?").split(" ").map((n: string) => n[0]).join("").slice(0, 2).toUpperCase();
               return (
-                <div key={p.id} className="grid grid-cols-[1fr_auto_auto_auto] items-center px-4 py-3 hover:bg-[#F8FAFC] transition-colors">
+                <div key={p.id} className="grid grid-cols-[1fr_auto_auto_auto] items-center px-4 py-3 hover:bg-[#F8F7F4] transition-colors">
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="h-8 w-8 rounded-full bg-[#1B3A8A] flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
                       {initials}
@@ -109,7 +109,7 @@ export default async function TeacherStudentsPage() {
           </div>
         </div>
       ) : (
-        <div className="bg-white rounded-2xl border border-dashed border-[#E2E8F0] py-14 text-center">
+        <div className="bg-white rounded-2xl border border-dashed border-[#E6E4DE] py-14 text-center">
           <Users className="h-10 w-10 text-[#CBD5E1] mx-auto mb-3" />
           <p className="font-semibold text-[#334155]">No students yet</p>
           <p className="text-sm text-[#94a3b8] mt-1">Students will appear here once they sign up.</p>

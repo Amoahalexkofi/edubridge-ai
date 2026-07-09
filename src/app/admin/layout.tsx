@@ -25,7 +25,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     .single();
 
   return (
-    <div className="min-h-screen bg-[#F1F5F9]">
+    <div className="min-h-screen bg-[#F2F1EE]">
       <AdminNav userName={profile?.full_name ?? "Admin"} />
       <main className="lg:pl-60 min-h-screen">
         <div className="pt-14 pb-20 lg:pt-0 lg:pb-0">

@@ -34,7 +34,7 @@ export default async function AdminDashboard() {
   ]);
 
   const stats = [
-    { label: "Total users",   value: totalUsers    ?? 0, icon: Users,    href: "/admin/users",    color: "bg-slate-50 text-slate-700" },
+    { label: "Total users",   value: totalUsers    ?? 0, icon: Users,    href: "/admin/users",    color: "bg-[#F8F7F4] text-slate-700" },
     { label: "Students",      value: totalStudents  ?? 0, icon: BookOpen, href: "/admin/users",    color: "bg-blue-50 text-blue-700" },
     { label: "Teachers",      value: totalTeachers  ?? 0, icon: Users,   href: "/admin/users",    color: "bg-orange-50 text-[#E8722A]" },
     { label: "Subjects",      value: totalSubjects  ?? 0, icon: BookOpen, href: "/admin/subjects", color: "bg-purple-50 text-purple-700" },
@@ -60,7 +60,7 @@ export default async function AdminDashboard() {
       {/* Stats grid */}
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 mb-8">
         {stats.map(({ label, value, icon: Icon, href, color }) => (
-          <Link key={label} href={href} className="bg-white rounded-2xl p-4 border border-slate-200 flex flex-col gap-2 hover:shadow-sm hover:border-slate-300 transition-all">
+          <Link key={label} href={href} className="bg-white rounded-2xl p-4 border border-[#E6E4DE] flex flex-col gap-2 hover:shadow-sm hover:border-slate-300 transition-all">
             <div className={`h-8 w-8 rounded-xl flex items-center justify-center ${color}`}>
               <Icon className="h-4 w-4" />
             </div>
@@ -75,7 +75,7 @@ export default async function AdminDashboard() {
       {/* Quick links */}
       <div className="grid sm:grid-cols-2 gap-3">
         {quickLinks.map(({ href, label, desc }) => (
-          <Link key={href} href={href} className="bg-white rounded-2xl border border-slate-200 p-4 flex items-center gap-3 hover:border-slate-300 hover:shadow-sm transition-all group">
+          <Link key={href} href={href} className="bg-white rounded-2xl border border-[#E6E4DE] p-4 flex items-center gap-3 hover:border-slate-300 hover:shadow-sm transition-all group">
             <div className="flex-1 min-w-0">
               <p className="font-bold text-slate-900">{label}</p>
               <p className="text-xs text-slate-400 mt-0.5">{desc}</p>

@@ -149,7 +149,7 @@ export default async function StudentDashboard() {
         </div>
         <div className="flex items-center gap-2">
           <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border ${
-            streak > 0 ? "bg-[#E8722A]/10 border-[#E8722A]/20" : "bg-slate-50 border-slate-200"
+            streak > 0 ? "bg-[#E8722A]/10 border-[#E8722A]/20" : "bg-[#F8F7F4] border-[#E6E4DE]"
           }`}>
             <Flame className={`h-3.5 w-3.5 ${streak > 0 ? "text-[#E8722A]" : "text-slate-300"}`} />
             <span className={`text-xs font-bold ${streak > 0 ? "text-[#E8722A]" : "text-slate-400"}`}>
@@ -186,7 +186,7 @@ export default async function StudentDashboard() {
           <Link
             key={label}
             href={href}
-            className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 flex flex-col gap-3 hover:border-[#1B3A8A]/30 hover:shadow-sm transition-all group"
+            className="bg-white rounded-2xl p-4 sm:p-5 border border-[#E6E4DE] flex flex-col gap-3 hover:border-[#1B3A8A]/30 hover:shadow-sm transition-all group"
           >
             <div className={`h-9 w-9 rounded-xl flex items-center justify-center ${color}`}>
               <Icon className="h-4 w-4" />
@@ -258,7 +258,7 @@ export default async function StudentDashboard() {
                 <Link
                   key={rec.title}
                   href={rec.href}
-                  className="group bg-white rounded-2xl border border-slate-200 p-4 hover:border-[#1B3A8A]/30 hover:shadow-sm transition-all flex flex-col gap-2.5"
+                  className="group bg-white rounded-2xl border border-[#E6E4DE] p-4 hover:border-[#1B3A8A]/30 hover:shadow-sm transition-all flex flex-col gap-2.5"
                 >
                   <div className="flex items-center justify-between">
                     <span className={`inline-flex items-center gap-1.5 text-[10px] font-bold px-2 py-1 rounded-full border ${style.chip}`}>
@@ -299,9 +299,9 @@ export default async function StudentDashboard() {
                   <Link
                     key={subject.id}
                     href={`/student/subjects/${subject.slug}`}
-                    className="group bg-white rounded-2xl border border-[#E8ECF0] p-4 hover:border-[#1D4ED8]/30 hover:shadow-md transition-all flex flex-col gap-3"
+                    className="group bg-white rounded-2xl border border-[#E6E4DE] p-4 hover:border-[#1D4ED8]/30 hover:shadow-md transition-all flex flex-col gap-3"
                   >
-                    <div className="h-10 w-10 rounded-xl bg-[#F8FAFC] border border-[#E8ECF0] flex items-center justify-center text-lg">
+                    <div className="h-10 w-10 rounded-xl bg-[#F8F7F4] border border-[#E6E4DE] flex items-center justify-center text-lg">
                       {subject.icon ?? "📚"}
                     </div>
                     <div className="flex-1">
@@ -317,8 +317,8 @@ export default async function StudentDashboard() {
                 ))}
               </div>
             ) : (
-              <div className="bg-white rounded-2xl border border-dashed border-slate-200 p-10 text-center">
-                <div className="h-12 w-12 rounded-2xl bg-slate-50 flex items-center justify-center mx-auto mb-3">
+              <div className="bg-white rounded-2xl border border-dashed border-[#E6E4DE] p-10 text-center">
+                <div className="h-12 w-12 rounded-2xl bg-[#F8F7F4] flex items-center justify-center mx-auto mb-3">
                   <BookOpen className="h-6 w-6 text-slate-300" />
                 </div>
                 <p className="font-bold text-slate-700 text-sm">No subjects yet</p>
@@ -334,14 +334,14 @@ export default async function StudentDashboard() {
         <div className="space-y-4">
 
           {/* Quick actions */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-4">
+          <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-4">
             <h3 className="font-bold text-slate-900 text-sm mb-3">Quick actions</h3>
             <div className="space-y-2">
               {quickActions.map(({ href, label, desc, icon: Icon, bg }) => (
                 <Link
                   key={href}
                   href={href}
-                  className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-colors group"
+                  className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-[#F8F7F4] transition-colors group"
                 >
                   <div className={`h-8 w-8 rounded-lg ${bg} flex items-center justify-center flex-shrink-0`}>
                     <Icon className="h-4 w-4 text-white" />
@@ -378,7 +378,7 @@ export default async function StudentDashboard() {
           </div>
 
           {/* Badges */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-4">
+          <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-4">
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-bold text-slate-900 text-sm">Badges</h3>
               <span className="text-xs font-bold text-slate-400 tabular-nums">{earnedCount}/{BADGES.length}</span>
@@ -392,7 +392,7 @@ export default async function StudentDashboard() {
                     key={b.id}
                     title={`${b.title} — ${b.desc}`}
                     className={`h-9 w-9 rounded-xl border flex items-center justify-center ${
-                      isEarned ? b.tint : "bg-slate-50 text-slate-300 border-slate-100"
+                      isEarned ? b.tint : "bg-[#F8F7F4] text-slate-300 border-[#EEEDE8]"
                     }`}
                   >
                     <Icon className="h-4 w-4" />
@@ -406,7 +406,7 @@ export default async function StudentDashboard() {
           </div>
 
           {/* Leaderboard teaser */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-4">
+          <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-4">
             <div className="flex items-center gap-2 mb-3">
               <Trophy className="h-4 w-4 text-amber-500" />
               <h3 className="font-bold text-slate-900 text-sm">Leaderboard</h3>

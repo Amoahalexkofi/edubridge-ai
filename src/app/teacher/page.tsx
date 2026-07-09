@@ -80,7 +80,7 @@ export default async function TeacherDashboard() {
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
         {stats.map(({ label, value, icon: Icon, href, color }) => (
-          <Link key={label} href={href} className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 flex flex-col gap-3 hover:border-[#E8722A]/30 hover:shadow-sm transition-all group">
+          <Link key={label} href={href} className="bg-white rounded-2xl p-4 sm:p-5 border border-[#E6E4DE] flex flex-col gap-3 hover:border-[#E8722A]/30 hover:shadow-sm transition-all group">
             <div className={`h-9 w-9 rounded-xl flex items-center justify-center ${color}`}>
               <Icon className="h-4 w-4" />
             </div>
@@ -93,13 +93,13 @@ export default async function TeacherDashboard() {
       </div>
 
       {/* Quick actions */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-5 mb-6">
+      <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 mb-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-bold text-slate-900">Quick actions</h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {quickActions.map(({ href, label, desc, icon: Icon, bg }) => (
-            <Link key={href} href={href} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors group">
+            <Link key={href} href={href} className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#F8F7F4] transition-colors group">
               <div className={`h-10 w-10 rounded-xl ${bg} flex items-center justify-center flex-shrink-0`}>
                 <Icon className="h-5 w-5 text-white" />
               </div>

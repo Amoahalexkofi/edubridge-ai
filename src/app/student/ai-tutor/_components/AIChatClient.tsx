@@ -130,7 +130,7 @@ function CopyButton({ text }: { text: string }) {
     <button
       onClick={() => navigator.clipboard.writeText(text).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000); })}
       title="Copy"
-      className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 rounded-lg hover:bg-[#F1F5F9] text-[#94a3b8] hover:text-[#475569] flex-shrink-0"
+      className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 rounded-lg hover:bg-[#F2F1EE] text-[#94a3b8] hover:text-[#475569] flex-shrink-0"
     >
       {copied ? <Check className="h-3.5 w-3.5 text-[#1A6B3C]" /> : <Copy className="h-3.5 w-3.5" />}
     </button>
@@ -316,7 +316,7 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
               key={s.id}
               onClick={() => switchSession(s.id)}
               className={`group w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-left transition-all ${
-                isActive ? "bg-[#EEF2FF]" : "hover:bg-[#F1F5F9]"
+                isActive ? "bg-[#EEF2FF]" : "hover:bg-[#F2F1EE]"
               }`}
             >
               <div className={`flex-shrink-0 ${isActive ? "text-[#1B3A8A]" : s.type === "exam" ? "text-[#6366F1]" : "text-[#94a3b8]"}`}>
@@ -347,14 +347,14 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
     <div className="flex h-[calc(100dvh-8.5rem)] lg:h-screen">
 
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex flex-col w-60 xl:w-64 flex-shrink-0 bg-[#F8FAFC] border-r border-[#E2E8F0]">
+      <aside className="hidden lg:flex flex-col w-60 xl:w-64 flex-shrink-0 bg-[#F8F7F4] border-r border-[#E6E4DE]">
         <Sidebar />
       </aside>
 
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div className="lg:hidden fixed inset-0 z-50 flex">
-          <div className="w-72 bg-[#F8FAFC] flex flex-col border-r border-[#E2E8F0] shadow-2xl">
+          <div className="w-72 bg-[#F8F7F4] flex flex-col border-r border-[#E6E4DE] shadow-2xl">
             <Sidebar mobile />
           </div>
           <div className="flex-1 bg-black/40" onClick={() => setSidebarOpen(false)} />
@@ -365,13 +365,13 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
       <div className="flex-1 flex flex-col min-w-0 bg-white">
 
         {/* Header */}
-        <div className="flex-shrink-0 border-b border-[#E2E8F0] bg-white">
+        <div className="flex-shrink-0 border-b border-[#E6E4DE] bg-white">
           <div className="px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
             <div className="flex items-center gap-3 min-w-0">
               {/* Mobile menu */}
               <button
                 onClick={() => setSidebarOpen(true)}
-                className="lg:hidden p-1.5 rounded-lg hover:bg-[#F1F5F9] text-[#64748B] flex-shrink-0"
+                className="lg:hidden p-1.5 rounded-lg hover:bg-[#F2F1EE] text-[#64748B] flex-shrink-0"
               >
                 <Menu className="h-5 w-5" />
               </button>
@@ -416,7 +416,7 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto bg-[#F8FAFC]">
+        <div className="flex-1 overflow-y-auto bg-[#F8F7F4]">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 space-y-4">
 
             {messages.map((msg, i) => {
@@ -449,7 +449,7 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
                   </div>
 
                   <div className="group flex items-end gap-1.5 flex-1">
-                    <div className={`flex-1 bg-white px-5 py-3.5 shadow-[0_1px_3px_rgba(0,0,0,0.06)] border border-[#E8ECF0] ${
+                    <div className={`flex-1 bg-white px-5 py-3.5 shadow-[0_1px_3px_rgba(0,0,0,0.06)] border border-[#E6E4DE] ${
                       isFirstInGroup ? "rounded-2xl rounded-bl-md" : "rounded-2xl rounded-l-md"
                     }`}>
                       <div className="prose prose-sm max-w-none text-[#1e293b]
@@ -459,7 +459,7 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
                         prose-h4:text-[13px] prose-h4:mt-3 prose-h4:mb-1 prose-h4:text-[#334155]
                         prose-strong:text-[#0f172a] prose-strong:font-semibold
                         prose-ul:my-1.5 prose-ol:my-1.5 prose-li:my-0.5 prose-li:leading-relaxed prose-li:text-[#334155]
-                        prose-hr:border-[#E2E8F0] prose-hr:my-3
+                        prose-hr:border-[#E6E4DE] prose-hr:my-3
                         prose-code:bg-[#EEF2FF] prose-code:text-[#4338CA] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:text-[11px] prose-code:font-mono prose-code:font-semibold prose-code:before:content-none prose-code:after:content-none
                         prose-blockquote:border-l-[3px] prose-blockquote:border-[#0D9488] prose-blockquote:bg-[#F0FDFA] prose-blockquote:rounded-r-xl prose-blockquote:px-4 prose-blockquote:py-2 prose-blockquote:not-italic">
                         <ReactMarkdown
@@ -469,7 +469,7 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
                             // Comparison tables (soil types, cell parts, etc.)
                             table({ children }) {
                               return (
-                                <div className="not-prose my-3 overflow-x-auto rounded-xl border border-[#E2E8F0] shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+                                <div className="not-prose my-3 overflow-x-auto rounded-xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
                                   <table className="w-full text-[13px] border-collapse">{children}</table>
                                 </div>
                               );
@@ -501,7 +501,7 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
                                     return `<svg${a} width="100%" overflow="visible">`;
                                   });
                                 return (
-                                  <div className="my-4 not-prose rounded-2xl border border-[#E2E8F0] bg-[#F8FAFC] p-4 pb-8">
+                                  <div className="my-4 not-prose rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] bg-[#F8F7F4] p-4 pb-8">
                                     <div dangerouslySetInnerHTML={{ __html: svgHtml }} />
                                   </div>
                                 );
@@ -528,7 +528,7 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
                     <Brain className="h-4 w-4 text-white" />
                   </div>
                 </div>
-                <div className="bg-white border border-[#E8ECF0] rounded-2xl rounded-bl-md px-5 py-3.5 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+                <div className="bg-white border border-[#E6E4DE] rounded-2xl rounded-bl-md px-5 py-3.5 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
                   <div className="flex items-center gap-1.5">
                     <span className="h-2 w-2 rounded-full bg-[#1B3A8A]/30 animate-pulse" style={{ animationDelay: "0ms" }} />
                     <span className="h-2 w-2 rounded-full bg-[#1B3A8A]/30 animate-pulse" style={{ animationDelay: "150ms" }} />
@@ -578,7 +578,7 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
         </div>
 
         {/* Input */}
-        <div className="flex-shrink-0 bg-white border-t border-[#E2E8F0] px-4 sm:px-6 py-3">
+        <div className="flex-shrink-0 bg-white border-t border-[#E6E4DE] px-4 sm:px-6 py-3">
           <div className="max-w-3xl mx-auto">
             <form id="chat-form" onSubmit={handleSubmit} className="flex items-end gap-2.5">
               <textarea
@@ -594,11 +594,11 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
                   ? `Ask about ${activeSession.examContext?.subject ?? "your exam topics"}…`
                   : `Ask your ${examTarget} AI Tutor anything…`}
                 rows={1}
-                className="flex-1 resize-none rounded-2xl border border-[#E2E8F0] bg-[#F8FAFC] px-4 py-3 text-sm text-[#0f172a] placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1B3A8A]/50 focus:bg-white focus:ring-4 focus:ring-[#1B3A8A]/6 transition-all leading-relaxed max-h-36 overflow-y-auto"
+                className="flex-1 resize-none rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] bg-[#F8F7F4] px-4 py-3 text-sm text-[#0f172a] placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1B3A8A]/50 focus:bg-white focus:ring-4 focus:ring-[#1B3A8A]/6 transition-all leading-relaxed max-h-36 overflow-y-auto"
                 style={{ minHeight: "48px" }}
               />
               {isLoading ? (
-                <button type="button" onClick={stop} className="h-11 w-11 rounded-xl bg-[#F1F5F9] hover:bg-[#E2E8F0] flex items-center justify-center flex-shrink-0 transition-colors">
+                <button type="button" onClick={stop} className="h-11 w-11 rounded-xl bg-[#F2F1EE] hover:bg-[#E2E8F0] flex items-center justify-center flex-shrink-0 transition-colors">
                   <Loader2 className="h-4.5 w-4.5 text-[#64748B] animate-spin" style={{ width: 18, height: 18 }} />
                 </button>
               ) : (

@@ -1,20 +1,16 @@
 import type { Metadata } from "next";
-import { Hanken_Grotesk, Bricolage_Grotesque } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 
-// Body/UI text — a warm, highly legible humanist grotesque (mobile-first).
-const hanken = Hanken_Grotesk({
+// One warm, humanist family across the whole product — headings and body.
+// Reads as serious and trustworthy without the quirk of a display grotesque;
+// its open, rounded letterforms feel soft rather than hard.
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-hanken",
+  variable: "--font-jakarta",
   display: "swap",
-});
-
-// Display/headings — a confident, distinctive grotesque used product-wide.
-const bricolage = Bricolage_Grotesque({
-  subsets: ["latin"],
-  variable: "--font-brand",
-  display: "swap",
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -29,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${hanken.variable} ${bricolage.variable} h-full`}>
+    <html lang="en" className={`${jakarta.variable} h-full`}>
       <body className="min-h-full antialiased">
         {children}
         <Toaster richColors position="top-right" />

@@ -46,7 +46,7 @@ export default function DeactivateButton({
       className={`inline-flex items-center justify-center h-8 w-8 rounded-lg border transition-colors disabled:opacity-60 ${
         deactivated
           ? "border-green-200 text-green-600 hover:bg-green-50"
-          : "border-slate-200 text-slate-400 hover:text-red-500 hover:border-red-200 hover:bg-red-50"
+          : "border-[#E6E4DE] text-slate-400 hover:text-red-500 hover:border-red-200 hover:bg-red-50"
       }`}
     >
       {saving

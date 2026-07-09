@@ -19,7 +19,7 @@ export default function AddSubjectPanel() {
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-[#E2E8F0] shadow-sm p-5 space-y-4">
+    <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-sm p-5 space-y-4">
       <div className="flex items-center justify-between">
         <div>
           <h3 className="font-bold text-[#0f172a]">New Subject</h3>
@@ -27,7 +27,7 @@ export default function AddSubjectPanel() {
         </div>
         <button
           onClick={() => setOpen(false)}
-          className="h-8 w-8 rounded-lg hover:bg-[#F1F5F9] flex items-center justify-center text-[#64748B] transition-colors"
+          className="h-8 w-8 rounded-lg hover:bg-[#F2F1EE] flex items-center justify-center text-[#64748B] transition-colors"
         >
           <X className="h-4 w-4" />
         </button>

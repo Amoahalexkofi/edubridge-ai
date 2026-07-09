@@ -60,14 +60,14 @@ export default function RoleChanger({ userId, currentRole }: { userId: string; c
       {open && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 bottom-full mb-2 z-50 w-36 bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden py-1">
+          <div className="absolute right-0 bottom-full mb-2 z-50 w-36 bg-white border border-[#E6E4DE] rounded-xl shadow-xl overflow-hidden py-1">
             {ROLES.map((r) => {
               const s = roleStyles[r];
               return (
                 <button
                   key={r}
                   onClick={() => changeRole(r)}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+                  className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-slate-700 hover:bg-[#F8F7F4] transition-colors"
                 >
                   <span className={`h-2 w-2 rounded-full flex-shrink-0 ${s.dot}`} />
                   <span className="flex-1 text-left">{s.label}</span>

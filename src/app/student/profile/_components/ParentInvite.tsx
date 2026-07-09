@@ -35,7 +35,7 @@ export default function ParentInvite() {
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5 sm:p-6 space-y-4">
+    <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5 sm:p-6 space-y-4">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="font-bold text-[#0f172a]">Invite your parent</h2>
@@ -57,14 +57,14 @@ export default function ParentInvite() {
       ) : (
         <div className="space-y-3">
           {/* Token display */}
-          <div className="bg-[#F8FAFC] rounded-xl border border-[#E2E8F0] p-3 flex items-center justify-between gap-3">
+          <div className="bg-[#F8F7F4] rounded-xl border border-[#E6E4DE] p-3 flex items-center justify-between gap-3">
             <div className="min-w-0">
               <p className="text-[10px] text-[#94a3b8] uppercase tracking-widest mb-0.5">Invite code</p>
               <p className="font-mono font-black text-[#1B3A8A] text-lg tracking-[0.2em]">{token}</p>
             </div>
             <button
               onClick={copyLink}
-              className="h-9 w-9 rounded-lg bg-white border border-[#E2E8F0] flex items-center justify-center hover:bg-slate-50 transition-all flex-shrink-0"
+              className="h-9 w-9 rounded-lg bg-white border border-[#E6E4DE] flex items-center justify-center hover:bg-[#F8F7F4] transition-all flex-shrink-0"
             >
               {copied ? <CheckCircle2 className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4 text-slate-400" />}
             </button>
@@ -84,13 +84,13 @@ export default function ParentInvite() {
           <div className="flex gap-2">
             <button
               onClick={copyLink}
-              className="flex-1 h-10 flex items-center justify-center gap-1.5 border border-[#E2E8F0] rounded-xl text-sm font-semibold text-slate-600 hover:bg-slate-50 transition-all"
+              className="flex-1 h-10 flex items-center justify-center gap-1.5 border border-[#E6E4DE] rounded-xl text-sm font-semibold text-slate-600 hover:bg-[#F8F7F4] transition-all"
             >
               <Copy className="h-3.5 w-3.5" /> Copy link
             </button>
             <button
               onClick={generate}
-              className="flex-1 h-10 flex items-center justify-center gap-1.5 border border-[#E2E8F0] rounded-xl text-sm font-semibold text-slate-500 hover:bg-slate-50 transition-all"
+              className="flex-1 h-10 flex items-center justify-center gap-1.5 border border-[#E6E4DE] rounded-xl text-sm font-semibold text-slate-500 hover:bg-[#F8F7F4] transition-all"
             >
               <RefreshCw className="h-3.5 w-3.5" /> New link
             </button>

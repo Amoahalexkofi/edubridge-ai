@@ -54,7 +54,7 @@ export default async function AdminLinksPage() {
       </div>
 
       {/* Add link form */}
-      <div className="bg-white rounded-2xl border border-[#E2E8F0] p-5">
+      <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-[0_1px_2px_rgba(31,26,15,0.04),0_6px_20px_-6px_rgba(31,26,15,0.07)] p-5">
         <h2 className="font-bold text-[#0f172a] mb-4">Create new link</h2>
         <LinkParentForm
           parents={parentProfiles ?? []}
@@ -68,7 +68,7 @@ export default async function AdminLinksPage() {
           <h2 className="text-sm font-semibold text-[#64748B] uppercase tracking-wider mb-3">Existing links ({links.length})</h2>
           <div className="space-y-2">
             {links.map((link) => (
-              <div key={link.id} className="bg-white rounded-xl border border-[#E2E8F0] p-4 flex items-center gap-3">
+              <div key={link.id} className="bg-white rounded-xl border border-[#E6E4DE] p-4 flex items-center gap-3">
                 <div className="flex-1">
                   <p className="text-sm font-semibold text-[#0f172a]">
                     <span className="text-green-600">Parent:</span> {nameMap[link.parent_id] ?? link.parent_id}
@@ -85,7 +85,7 @@ export default async function AdminLinksPage() {
       )}
 
       {(!links || links.length === 0) && (
-        <div className="bg-white rounded-2xl border border-dashed border-[#E2E8F0] py-10 text-center">
+        <div className="bg-white rounded-2xl border border-dashed border-[#E6E4DE] py-10 text-center">
           <Link2 className="h-8 w-8 text-[#CBD5E1] mx-auto mb-3" />
           <p className="font-semibold text-[#334155] text-sm">No parent links yet</p>
         </div>

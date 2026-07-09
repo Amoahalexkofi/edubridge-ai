@@ -139,7 +139,7 @@ function LoginForm() {
                   options: { redirectTo: callbackUrl },
                 });
               }}
-              className="w-full h-12 flex items-center justify-center gap-3 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 rounded-xl transition-all text-sm font-semibold text-slate-700 shadow-sm"
+              className="w-full h-12 flex items-center justify-center gap-3 bg-white border border-[#E6E4DE] hover:border-slate-300 hover:bg-[#F8F7F4] rounded-xl transition-all text-sm font-semibold text-slate-700 shadow-sm"
             >
               <svg className="h-5 w-5 flex-shrink-0" viewBox="0 0 24 24">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -170,7 +170,7 @@ function LoginForm() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full h-12 px-4 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
+                  className="w-full h-12 px-4 rounded-xl border border-[#E6E4DE] bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
                 />
               </div>
 
@@ -192,7 +192,7 @@ function LoginForm() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="w-full h-12 px-4 pr-12 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
+                    className="w-full h-12 px-4 pr-12 rounded-xl border border-[#E6E4DE] bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
                   />
                   <button
                     type="button"
@@ -226,7 +226,7 @@ function LoginForm() {
         </div>
 
         {/* Bottom bar */}
-        <div className="px-8 py-4 border-t border-slate-100">
+        <div className="px-8 py-4 border-t border-[#EEEDE8]">
           <p className="text-xs text-slate-400 text-center">
             © 2026 EduBridge Educational Solutions · Ghana 🇬🇭
           </p>

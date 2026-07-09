@@ -145,7 +145,7 @@ export default function SignupPage() {
       <div className="flex-1 flex flex-col min-h-screen bg-white">
 
         {/* Top bar */}
-        <div className="flex items-center justify-between px-4 sm:px-8 lg:px-12 py-5 border-b border-slate-100">
+        <div className="flex items-center justify-between px-4 sm:px-8 lg:px-12 py-5 border-b border-[#EEEDE8]">
           {/* Back to home — desktop */}
           <Link href="/" className="hidden lg:inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-900 font-medium transition-colors">
             <ArrowLeft className="h-4 w-4" /> Back to home
@@ -243,11 +243,11 @@ export default function SignupPage() {
                         type="button"
                         onClick={() => setSelectedRole(role.value)}
                         className={`w-full flex items-center gap-4 p-4 rounded-2xl border-2 text-left transition-all hover:shadow-sm ${
-                          active ? role.color : "border-slate-200 bg-white hover:border-slate-300"
+                          active ? role.color : "border-[#E6E4DE] bg-white hover:border-slate-300"
                         }`}
                       >
                         <div className={`h-11 w-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors ${
-                          active ? role.iconBg : "bg-slate-100"
+                          active ? role.iconBg : "bg-[#F1F0EC]"
                         }`}>
                           <Icon className={`h-5 w-5 ${active ? "text-white" : "text-slate-500"}`} />
                         </div>
@@ -302,7 +302,7 @@ export default function SignupPage() {
                       },
                     });
                   }}
-                  className="w-full h-12 flex items-center justify-center gap-3 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 rounded-xl transition-all text-sm font-semibold text-slate-700 shadow-sm disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="w-full h-12 flex items-center justify-center gap-3 bg-white border border-[#E6E4DE] hover:border-slate-300 hover:bg-[#F8F7F4] rounded-xl transition-all text-sm font-semibold text-slate-700 shadow-sm disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   <svg className="h-5 w-5 flex-shrink-0" viewBox="0 0 24 24">
                     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -351,7 +351,7 @@ export default function SignupPage() {
                       onChange={(e) => setFullName(sanitizeNameInput(e.target.value))}
                       autoCapitalize="words"
                       required
-                      className="w-full h-12 px-4 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
+                      className="w-full h-12 px-4 rounded-xl border border-[#E6E4DE] bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
                     />
                   </div>
 
@@ -366,7 +366,7 @@ export default function SignupPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
-                      className="w-full h-12 px-4 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
+                      className="w-full h-12 px-4 rounded-xl border border-[#E6E4DE] bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
                     />
                   </div>
 
@@ -382,7 +382,7 @@ export default function SignupPage() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
-                        className="w-full h-12 px-4 pr-12 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
+                        className="w-full h-12 px-4 pr-12 rounded-xl border border-[#E6E4DE] bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
                       />
                       <button type="button" onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
@@ -406,7 +406,7 @@ export default function SignupPage() {
                         className={`w-full h-12 px-4 pr-12 rounded-xl border bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:ring-4 transition-all ${
                           confirmPassword && confirmPassword !== password
                             ? "border-red-400 focus:border-red-400 focus:ring-red-400/8"
-                            : "border-slate-200 focus:border-[#1B3A8A] focus:ring-[#1B3A8A]/8"
+                            : "border-[#E6E4DE] focus:border-[#1B3A8A] focus:ring-[#1B3A8A]/8"
                         }`}
                       />
                       <button type="button" onClick={() => setShowConfirm(!showConfirm)}
@@ -436,11 +436,11 @@ export default function SignupPage() {
                               className={`flex flex-col items-start gap-1 p-4 rounded-xl border-2 text-left transition-all ${
                                 active
                                   ? "border-[#1B3A8A] bg-[#EEF2FF]"
-                                  : "border-slate-200 bg-white hover:border-slate-300"
+                                  : "border-[#E6E4DE] bg-white hover:border-slate-300"
                               }`}
                             >
                               <div className="flex items-center gap-2">
-                                <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${active ? "bg-[#1B3A8A] text-white" : "bg-slate-100 text-slate-600"}`}>
+                                <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${active ? "bg-[#1B3A8A] text-white" : "bg-[#F1F0EC] text-slate-600"}`}>
                                   {opt.badge}
                                 </span>
                                 <span className={`font-bold text-sm ${active ? "text-[#1B3A8A]" : "text-slate-800"}`}>{opt.label}</span>
@@ -473,11 +473,11 @@ export default function SignupPage() {
                               className={`flex flex-col items-start gap-1 p-4 rounded-xl border-2 text-left transition-all ${
                                 active
                                   ? "border-[#E8722A] bg-orange-50"
-                                  : "border-slate-200 bg-white hover:border-slate-300"
+                                  : "border-[#E6E4DE] bg-white hover:border-slate-300"
                               }`}
                             >
                               <div className="flex items-center gap-2">
-                                <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${active ? "bg-[#E8722A] text-white" : "bg-slate-100 text-slate-600"}`}>
+                                <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${active ? "bg-[#E8722A] text-white" : "bg-[#F1F0EC] text-slate-600"}`}>
                                   {opt.badge}
                                 </span>
                                 <span className={`font-bold text-sm ${active ? "text-[#E8722A]" : "text-slate-800"}`}>{opt.label}</span>
@@ -503,7 +503,7 @@ export default function SignupPage() {
                             value={gradeLevel}
                             onChange={(e) => setGradeLevel(e.target.value)}
                             required
-                            className="w-full h-12 pl-4 pr-10 rounded-xl border border-slate-200 bg-white text-slate-900 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all appearance-none cursor-pointer"
+                            className="w-full h-12 pl-4 pr-10 rounded-xl border border-[#E6E4DE] bg-white text-slate-900 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all appearance-none cursor-pointer"
                           >
                             <option value="">Select class</option>
                             {(examTarget === "bece"
@@ -526,7 +526,7 @@ export default function SignupPage() {
                           placeholder="e.g. Accra Academy"
                           value={school}
                           onChange={(e) => setSchool(e.target.value)}
-                          className="w-full h-12 px-4 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
+                          className="w-full h-12 px-4 rounded-xl border border-[#E6E4DE] bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
                         />
                       </div>
                     </div>
@@ -549,7 +549,7 @@ export default function SignupPage() {
                         className={`w-full h-12 px-4 rounded-xl border bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:ring-4 transition-all ${
                           parentPhone.trim() && !isValidGhanaPhone(parentPhone)
                             ? "border-red-400 focus:border-red-400 focus:ring-red-400/8"
-                            : "border-slate-200 focus:border-[#1B3A8A] focus:ring-[#1B3A8A]/8"
+                            : "border-[#E6E4DE] focus:border-[#1B3A8A] focus:ring-[#1B3A8A]/8"
                         }`}
                       />
                       {parentPhone.trim() && !isValidGhanaPhone(parentPhone) ? (
@@ -573,7 +573,7 @@ export default function SignupPage() {
                         placeholder="0244 123 456"
                         value={phone}
                         onChange={(e) => setPhone(sanitizePhoneInput(e.target.value))}
-                        className="w-full h-12 px-4 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
+                        className="w-full h-12 px-4 rounded-xl border border-[#E6E4DE] bg-white text-slate-900 placeholder:text-slate-400 text-sm focus:outline-none focus:border-[#1B3A8A] focus:ring-4 focus:ring-[#1B3A8A]/8 transition-all"
                       />
                       <p className="text-xs text-slate-400">If your child has already registered and entered this number, you&apos;ll be auto-linked.</p>
                     </div>
@@ -604,7 +604,7 @@ export default function SignupPage() {
         </div>
 
         {/* Bottom bar */}
-        <div className="px-8 py-4 border-t border-slate-100">
+        <div className="px-8 py-4 border-t border-[#EEEDE8]">
           <p className="text-xs text-slate-400 text-center">
             © 2026 EduBridge Educational Solutions · Ghana 🇬🇭
           </p>
