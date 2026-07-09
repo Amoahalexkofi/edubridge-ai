@@ -9,6 +9,12 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "lh3.googleusercontent.com" },
     ],
   },
+  experimental: {
+    // Avatar uploads go through a Server Action. The default body limit is 1MB,
+    // but phone-camera photos are commonly 2-4MB (the client caps at 5MB), so
+    // the action was silently failing and the spinner hung. Allow up to 6MB.
+    serverActions: { bodySizeLimit: "6mb" },
+  },
 };
 
 export default nextConfig;

@@ -40,19 +40,24 @@ export default function AvatarUpload({ userId: _userId, avatarUrl, fullName }: P
     const fd = new FormData();
     fd.append("file", file);
 
-    const result = await uploadAvatar(fd);
-
-    setUploading(false);
-
-    if (result.error) {
-      toast.error("Upload failed: " + result.error);
+    // try/finally guarantees the spinner always clears — a thrown/rejected
+    // action (e.g. body-size limit) previously left it spinning forever.
+    try {
+      const result = await uploadAvatar(fd);
+      if (result.error) {
+        toast.error("Upload failed: " + result.error);
+        setPreview(avatarUrl);
+      } else {
+        setPreview(result.url!);
+        toast.success("Profile picture updated!");
+      }
+    } catch {
+      toast.error("Upload failed — please try a smaller image and check your connection.");
       setPreview(avatarUrl);
-    } else {
-      setPreview(result.url!);
-      toast.success("Profile picture updated!");
+    } finally {
+      setUploading(false);
+      if (inputRef.current) inputRef.current.value = "";
     }
-
-    if (inputRef.current) inputRef.current.value = "";
   }
 
   return (

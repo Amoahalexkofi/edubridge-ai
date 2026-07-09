@@ -23,30 +23,38 @@ export async function uploadAvatar(formData: FormData) {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
-  const ext = file.name.split(".").pop() ?? "jpg";
-  const path = `${user.id}/avatar.${ext}`;
-  const bytes = await file.arrayBuffer();
+  try {
+    // Extension from MIME type (filenames from some phones lack one)
+    const extByType: Record<string, string> = {
+      "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp", "image/gif": "gif",
+    };
+    const ext = extByType[file.type] ?? "jpg";
+    const path = `${user.id}/avatar.${ext}`;
+    const bytes = await file.arrayBuffer();
 
-  const { error: uploadError } = await admin.storage
-    .from("avatars")
-    .upload(path, bytes, { upsert: true, contentType: file.type });
+    const { error: uploadError } = await admin.storage
+      .from("avatars")
+      .upload(path, bytes, { upsert: true, contentType: file.type });
 
-  if (uploadError) return { error: uploadError.message };
+    if (uploadError) return { error: uploadError.message };
 
-  const { data: { publicUrl } } = admin.storage
-    .from("avatars")
-    .getPublicUrl(path);
+    const { data: { publicUrl } } = admin.storage
+      .from("avatars")
+      .getPublicUrl(path);
 
-  const bustedUrl = `${publicUrl}?t=${Date.now()}`;
+    const bustedUrl = `${publicUrl}?t=${Date.now()}`;
 
-  const { error: dbError } = await admin
-    .from("profiles")
-    .update({ avatar_url: bustedUrl })
-    .eq("id", user.id);
+    const { error: dbError } = await admin
+      .from("profiles")
+      .update({ avatar_url: bustedUrl })
+      .eq("id", user.id);
 
-  if (dbError) return { error: dbError.message };
+    if (dbError) return { error: dbError.message };
 
-  return { url: bustedUrl };
+    return { url: bustedUrl };
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Upload failed" };
+  }
 }
 
 export async function saveStudentProfile(data: {
