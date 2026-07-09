@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, BookOpen, CheckCircle2, Trophy } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/auth";
 
 export default async function ParentProgressPage({
   searchParams,
@@ -9,7 +10,7 @@ export default async function ParentProgressPage({
   searchParams: Promise<{ student?: string }>;
 }) {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getAuthUser();
   if (!user) redirect("/login");
 
   const { student: studentId } = await searchParams;

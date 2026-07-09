@@ -1,12 +1,13 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/auth";
 import { Users, BookOpen, Trophy, TrendingUp, ArrowRight, Phone } from "lucide-react";
 import ParentPhoneForm from "./_components/ParentPhoneForm";
 
 export default async function ParentDashboard() {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getAuthUser();
   if (!user) redirect("/login");
 
   const { data: profile } = await supabase

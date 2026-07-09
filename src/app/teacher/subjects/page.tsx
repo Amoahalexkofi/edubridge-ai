@@ -1,13 +1,14 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/auth";
 import { BookOpen, ChevronRight, Plus } from "lucide-react";
 import AddSubjectForm from "./_components/AddSubjectForm";
 import AddTopicForm from "./_components/AddTopicForm";
 
 export default async function TeacherSubjectsPage() {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getAuthUser();
   if (!user) redirect("/login");
 
   const { data: subjects } = await supabase

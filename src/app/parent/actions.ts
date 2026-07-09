@@ -1,12 +1,13 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/auth";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
 import { normalizePhone, matchParentStudent } from "@/lib/phone";
 
 export async function saveParentPhone(phone: string) {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getAuthUser();
   if (!user) return { error: "Not authenticated" };
 
   const norm = normalizePhone(phone);

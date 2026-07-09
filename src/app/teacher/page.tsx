@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/auth";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
 import {
   BookOpen, PenLine, FileText, Users,
@@ -9,7 +10,7 @@ import {
 
 export default async function TeacherDashboard() {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getAuthUser();
   if (!user) redirect("/login");
 
   const { data: profile } = await supabase

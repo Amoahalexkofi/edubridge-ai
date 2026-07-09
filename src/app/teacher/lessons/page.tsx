@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/auth";
 import { FileText, Plus, Pencil } from "lucide-react";
 
 export default async function TeacherLessonsPage({
@@ -9,7 +10,7 @@ export default async function TeacherLessonsPage({
   searchParams: Promise<{ topic?: string }>;
 }) {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getAuthUser();
   if (!user) redirect("/login");
 
   const { topic: topicId } = await searchParams;

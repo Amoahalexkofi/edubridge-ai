@@ -1,12 +1,13 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/auth";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
 import { Users, BookOpen, PenLine, FileText, TrendingUp, ArrowRight } from "lucide-react";
 
 export default async function AdminDashboard() {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getAuthUser();
   if (!user) redirect("/login");
 
   // Service role bypasses RLS so counts reflect all users, not just the caller's own row

@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/auth";
 import QuestionEditor from "./_components/QuestionEditor";
 
 export default async function NewQuestionPage({
@@ -10,7 +11,7 @@ export default async function NewQuestionPage({
   searchParams: Promise<{ topic?: string }>;
 }) {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getAuthUser();
   if (!user) redirect("/login");
 
   const { topic } = await searchParams;

@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { getAuthUser } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { Users, AlertTriangle } from "lucide-react";
 import RoleChanger from "./_components/RoleChanger";
@@ -27,7 +28,7 @@ export default async function AdminUsersPage({
   searchParams: Promise<{ role?: string; q?: string }>;
 }) {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getAuthUser();
   if (!user) redirect("/login");
 
   const { role: filterRole, q: search } = await searchParams;
