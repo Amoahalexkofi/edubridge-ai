@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { BookOpen, ChevronRight, GraduationCap, Flame } from "lucide-react";
+import { subjectGradient } from "@/lib/subject-style";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthUser } from "@/lib/auth";
 
@@ -22,7 +23,7 @@ export default async function SubjectsPage() {
   // Subjects with topics and their lessons
   const { data: subjects } = await supabase
     .from("subjects")
-    .select("id, name, slug, icon, description, topics(id, lessons(id))")
+    .select("id, name, slug, icon, color, description, topics(id, lessons(id))")
     .eq("exam_type", activeExam.toLowerCase())
     .order("name");
 
@@ -112,7 +113,7 @@ export default async function SubjectsPage() {
               >
                 {/* Icon + status */}
                 <div className="flex items-center justify-between">
-                  <div className="h-11 w-11 rounded-xl bg-[#F8F7F4] border border-[#E6E4DE] flex items-center justify-center text-2xl">
+                  <div className={`h-12 w-12 rounded-2xl bg-gradient-to-br ${subjectGradient(subject.color)} flex items-center justify-center text-2xl shadow-sm`}>
                     {subject.icon ?? "📚"}
                   </div>
                   {started ? (

@@ -9,6 +9,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getAuthUser } from "@/lib/auth";
 import { getRecommendations, type Recommendation } from "@/lib/recommendations";
 import { checkAndAwardBadges, BADGES } from "@/lib/badges";
+import { subjectGradient } from "@/lib/subject-style";
 
 const LESSON_XP = 10;
 const EXAM_XP = 20;
@@ -121,10 +122,10 @@ export default async function StudentDashboard() {
   const recent = recentProgress as any;
 
   const stats = [
-    { label: "Subjects",     value: subjects?.length ?? 0,                        icon: BookOpen,   color: "bg-blue-50 text-blue-600",     href: "/student/subjects" },
-    { label: "Lessons done", value: lessonsCompleted ?? 0,                         icon: TrendingUp, color: "bg-green-50 text-green-600",   href: "/student/subjects" },
-    { label: "Mock exams",   value: examsTaken ?? 0,                               icon: FileText,   color: "bg-purple-50 text-purple-600", href: "/student/exams"    },
-    { label: "Avg score",    value: avgScore != null ? `${avgScore}%` : "—",       icon: Trophy,     color: "bg-amber-50 text-amber-600",   href: "/student/exams"    },
+    { label: "Subjects",     value: subjects?.length ?? 0,                        icon: BookOpen,   color: "from-blue-500 to-blue-600",     href: "/student/subjects" },
+    { label: "Lessons done", value: lessonsCompleted ?? 0,                         icon: TrendingUp, color: "from-emerald-500 to-emerald-600", href: "/student/subjects" },
+    { label: "Mock exams",   value: examsTaken ?? 0,                               icon: FileText,   color: "from-violet-500 to-violet-600", href: "/student/exams"    },
+    { label: "Avg score",    value: avgScore != null ? `${avgScore}%` : "—",       icon: Trophy,     color: "from-amber-500 to-amber-600",   href: "/student/exams"    },
   ];
 
   const quickActions = [
@@ -189,12 +190,12 @@ export default async function StudentDashboard() {
             href={href}
             className="bg-white rounded-2xl p-4 sm:p-5 border border-[#E6E4DE] eb-card eb-lift flex flex-col gap-3 hover:border-[#1B3A8A]/40 group"
           >
-            <div className={`h-9 w-9 rounded-xl flex items-center justify-center ${color}`}>
-              <Icon className="h-4 w-4" />
+            <div className={`h-11 w-11 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center shadow-sm`}>
+              <Icon className="h-5 w-5 text-white" />
             </div>
             <div>
-              <p className="text-2xl font-black text-slate-900 leading-none tabular-nums">{value}</p>
-              <p className="text-xs text-slate-500 mt-1 font-medium">{label}</p>
+              <p className="text-[1.75rem] font-black text-slate-900 leading-none tabular-nums">{value}</p>
+              <p className="text-xs text-slate-500 mt-1.5 font-medium">{label}</p>
             </div>
           </Link>
         ))}
@@ -302,7 +303,7 @@ export default async function StudentDashboard() {
                     href={`/student/subjects/${subject.slug}`}
                     className="group bg-white rounded-2xl border border-[#E6E4DE] eb-card eb-lift p-4 hover:border-[#1D4ED8]/40 flex flex-col gap-3"
                   >
-                    <div className="h-10 w-10 rounded-xl bg-[#F8F7F4] border border-[#E6E4DE] flex items-center justify-center text-lg">
+                    <div className={`h-12 w-12 rounded-2xl bg-gradient-to-br ${subjectGradient(subject.color)} flex items-center justify-center text-xl shadow-sm`}>
                       {subject.icon ?? "📚"}
                     </div>
                     <div className="flex-1">
