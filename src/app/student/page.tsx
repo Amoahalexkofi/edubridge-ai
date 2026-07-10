@@ -296,27 +296,26 @@ export default async function StudentDashboard() {
             </div>
 
             {subjects && subjects.length > 0 ? (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {[...subjects].sort((a, b) => (b.topics?.length ?? 0) - (a.topics?.length ?? 0)).map((subject) => (
-                  <Link
-                    key={subject.id}
-                    href={`/student/subjects/${subject.slug}`}
-                    className="group bg-white rounded-2xl border border-[#E6E4DE] eb-card eb-lift p-4 hover:border-[#1D4ED8]/40 flex flex-col gap-3"
-                  >
-                    <div className={`h-12 w-12 rounded-2xl bg-gradient-to-br ${subjectGradient(subject.color)} flex items-center justify-center text-xl shadow-sm`}>
-                      {subject.icon ?? "📚"}
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-semibold text-sm text-[#0f172a] leading-snug group-hover:text-[#1D4ED8] transition-colors">{subject.name}</p>
-                      {subject.description && (
-                        <p className="text-xs text-[#94a3b8] mt-0.5 line-clamp-2">{subject.description}</p>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-1 text-[#1D4ED8] text-xs font-semibold">
-                      Open <ArrowRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
-                    </div>
-                  </Link>
-                ))}
+              <div className="grid sm:grid-cols-2 gap-2.5">
+                {[...subjects].sort((a, b) => (b.topics?.length ?? 0) - (a.topics?.length ?? 0)).map((subject) => {
+                  const topicCount = subject.topics?.length ?? 0;
+                  return (
+                    <Link
+                      key={subject.id}
+                      href={`/student/subjects/${subject.slug}`}
+                      className="group bg-white rounded-xl border border-[#E6E4DE] eb-card eb-lift p-3 flex items-center gap-3 hover:border-[#1D4ED8]/40"
+                    >
+                      <div className={`h-11 w-11 rounded-xl bg-gradient-to-br ${subjectGradient(subject.color)} flex items-center justify-center text-lg shadow-sm flex-shrink-0`}>
+                        {subject.icon ?? "📚"}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-sm text-[#0f172a] truncate group-hover:text-[#1D4ED8] transition-colors">{subject.name}</p>
+                        <p className="text-xs text-slate-400">{topicCount} topic{topicCount === 1 ? "" : "s"}</p>
+                      </div>
+                      <ChevronRight className="h-4 w-4 text-slate-300 group-hover:text-[#1D4ED8] transition-colors flex-shrink-0" />
+                    </Link>
+                  );
+                })}
               </div>
             ) : (
               <div className="bg-white rounded-2xl border border-dashed border-[#E6E4DE] p-10 text-center">
