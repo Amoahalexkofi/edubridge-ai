@@ -183,8 +183,8 @@ export default async function StudentDashboard() {
             href={href}
             className="bg-white rounded-2xl p-4 sm:p-5 border border-[#E6E4DE] eb-card eb-lift flex flex-col gap-3 hover:border-[#1B3A8A]/40 group"
           >
-            <div className={`h-11 w-11 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center shadow-sm`}>
-              <Icon className="h-5 w-5 text-white" />
+            <div className={`h-9 w-9 rounded-lg bg-gradient-to-br ${color} flex items-center justify-center shadow-sm`}>
+              <Icon className="h-4 w-4 text-white" />
             </div>
             <div>
               <p className="text-[1.75rem] font-black text-slate-900 leading-none tabular-nums">{value}</p>
@@ -299,8 +299,8 @@ export default async function StudentDashboard() {
                       href={`/student/subjects/${subject.slug}`}
                       className="group bg-white rounded-xl border border-[#E6E4DE] eb-card eb-lift p-3 flex items-center gap-3 hover:border-[#1D4ED8]/40"
                     >
-                      <div className={`h-11 w-11 rounded-xl bg-gradient-to-br ${subjectGradient(subject.color)} flex items-center justify-center shadow-sm flex-shrink-0`}>
-                        <SubjIcon className="h-5 w-5 text-white" strokeWidth={2} />
+                      <div className={`h-9 w-9 rounded-lg bg-gradient-to-br ${subjectGradient(subject.color)} flex items-center justify-center shadow-sm flex-shrink-0`}>
+                        <SubjIcon className="h-4 w-4 text-white" strokeWidth={2} />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-semibold text-sm text-[#0f172a] truncate group-hover:text-[#1D4ED8] transition-colors">{subject.name}</p>

@@ -114,8 +114,8 @@ export default async function SubjectsPage() {
               >
                 {/* Icon + status */}
                 <div className="flex items-center justify-between">
-                  <div className={`h-12 w-12 rounded-2xl bg-gradient-to-br ${subjectGradient(subject.color)} flex items-center justify-center shadow-sm`}>
-                    <SubjIcon className="h-6 w-6 text-white" strokeWidth={2} />
+                  <div className={`h-10 w-10 rounded-xl bg-gradient-to-br ${subjectGradient(subject.color)} flex items-center justify-center shadow-sm`}>
+                    <SubjIcon className="h-5 w-5 text-white" strokeWidth={2} />
                   </div>
                   {started ? (
                     <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-[#EFF6FF] text-[#1D4ED8]">

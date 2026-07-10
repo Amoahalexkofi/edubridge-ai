@@ -82,8 +82,8 @@ export default async function TeacherDashboard() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
         {stats.map(({ label, value, icon: Icon, href, color }) => (
           <Link key={label} href={href} className="bg-white rounded-2xl p-4 sm:p-5 border border-[#E6E4DE] eb-card eb-lift flex flex-col gap-3 hover:border-[#E8722A]/40 group">
-            <div className={`h-11 w-11 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center shadow-sm`}>
-              <Icon className="h-5 w-5 text-white" />
+            <div className={`h-9 w-9 rounded-lg bg-gradient-to-br ${color} flex items-center justify-center shadow-sm`}>
+              <Icon className="h-4 w-4 text-white" />
             </div>
             <div>
               <p className="text-[1.75rem] font-black text-slate-900 leading-none tabular-nums">{value}</p>
@@ -102,7 +102,7 @@ export default async function TeacherDashboard() {
           {quickActions.map(({ href, label, desc, icon: Icon, bg }) => (
             <Link key={href} href={href} className="flex items-center gap-3 p-3 rounded-xl hover:bg-[#F8F7F4] transition-colors group">
               <div className={`h-10 w-10 rounded-xl ${bg} flex items-center justify-center flex-shrink-0`}>
-                <Icon className="h-5 w-5 text-white" />
+                <Icon className="h-4 w-4 text-white" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-slate-800">{label}</p>
