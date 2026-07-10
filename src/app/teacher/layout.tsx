@@ -26,7 +26,7 @@ export default async function TeacherLayout({ children }: { children: React.Reac
     .single();
 
   return (
-    <div className="min-h-screen bg-[#F2F1EE]">
+    <div className="min-h-screen bg-gradient-to-b from-[#F4F3EF] to-[#E5E3DC]">
       <TeacherNav userName={profile?.full_name ?? "Teacher"} />
       <main className="lg:pl-60 min-h-screen">
         <div className="pt-14 pb-20 lg:pt-0 lg:pb-0">

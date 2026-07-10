@@ -32,9 +32,9 @@ export default async function StudentLayout({ children }: { children: React.Reac
   const locked = isRealStudent && user.user_metadata?.app_verified === false;
 
   return (
-    // Layered ground: a subtle warm vertical gradient (not flat) so white cards
-    // float with real depth — the premium "designed background" feel, kept light.
-    <div className="min-h-screen bg-gradient-to-b from-[#F3F1EC] to-[#E9E7E0]">
+    // Layered ground: refined warm-neutral greige gradient (cleaner/less cream
+    // than before = more premium), deeper at the base so white cards float.
+    <div className="min-h-screen bg-gradient-to-b from-[#F4F3EF] to-[#E5E3DC]">
       {isPreviewingAdmin && (
         <div className="fixed top-0 left-0 right-0 z-50 bg-[#E8722A] text-white px-4 py-2 flex items-center justify-between gap-3 text-sm font-semibold shadow-md">
           <div className="flex items-center gap-2">
