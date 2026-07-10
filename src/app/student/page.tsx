@@ -9,7 +9,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getAuthUser } from "@/lib/auth";
 import { getRecommendations, type Recommendation } from "@/lib/recommendations";
 import { checkAndAwardBadges, BADGES } from "@/lib/badges";
-import { subjectGradient } from "@/lib/subject-style";
+import { subjectGradient, subjectIcon } from "@/lib/subject-style";
 
 const LESSON_XP = 10;
 const EXAM_XP = 20;
@@ -292,14 +292,15 @@ export default async function StudentDashboard() {
               <div className="grid sm:grid-cols-2 gap-2.5">
                 {[...subjects].sort((a, b) => (b.topics?.length ?? 0) - (a.topics?.length ?? 0)).map((subject) => {
                   const topicCount = subject.topics?.length ?? 0;
+                  const SubjIcon = subjectIcon(subject.name);
                   return (
                     <Link
                       key={subject.id}
                       href={`/student/subjects/${subject.slug}`}
                       className="group bg-white rounded-xl border border-[#E6E4DE] eb-card eb-lift p-3 flex items-center gap-3 hover:border-[#1D4ED8]/40"
                     >
-                      <div className={`h-11 w-11 rounded-xl bg-gradient-to-br ${subjectGradient(subject.color)} flex items-center justify-center text-lg shadow-sm flex-shrink-0`}>
-                        {subject.icon ?? "📚"}
+                      <div className={`h-11 w-11 rounded-xl bg-gradient-to-br ${subjectGradient(subject.color)} flex items-center justify-center shadow-sm flex-shrink-0`}>
+                        <SubjIcon className="h-5 w-5 text-white" strokeWidth={2} />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-semibold text-sm text-[#0f172a] truncate group-hover:text-[#1D4ED8] transition-colors">{subject.name}</p>

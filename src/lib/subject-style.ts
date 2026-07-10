@@ -1,3 +1,9 @@
+import {
+  BookOpen, BookText, BookMarked, Calculator, Sigma, FlaskConical, Atom,
+  Microscope, Dna, Laptop, Palette, Wrench, Languages, Map, Landmark,
+  TrendingUp, Users, GraduationCap, type LucideIcon,
+} from "lucide-react";
+
 /**
  * Maps a subject's stored color name (emerald, amber, sky, …) to a saturated
  * gradient tile for its card. Full class strings are written literally so
@@ -26,4 +32,31 @@ const GRADIENTS: Record<string, string> = {
 /** Gradient classes for a subject tile. Pair with `bg-gradient-to-br`. */
 export function subjectGradient(color: string | null | undefined): string {
   return GRADIENTS[color ?? ""] ?? "from-slate-500 to-slate-600";
+}
+
+/**
+ * A consistent line icon per subject — replaces device-inconsistent emoji so
+ * the tiles read as a professional, cohesive icon set. Keyword-matched by
+ * name, most-specific first, with a graduation-cap fallback.
+ */
+export function subjectIcon(name: string | null | undefined): LucideIcon {
+  const n = (name ?? "").toLowerCase();
+  if (n.includes("elective") && n.includes("math")) return Sigma;
+  if (n.includes("math")) return Calculator;
+  if (n.includes("biology")) return Dna;
+  if (n.includes("chemistry")) return FlaskConical;
+  if (n.includes("physics")) return Atom;
+  if (n.includes("science")) return Microscope;          // Integrated Science
+  if (n.includes("comput") || n.includes("ict")) return Laptop;
+  if (n.includes("creative") || n.includes("art")) return Palette;
+  if (n.includes("career") || n.includes("technolog") || n.includes("technical")) return Wrench;
+  if (n.includes("literature")) return BookText;
+  if (n.includes("english")) return BookOpen;
+  if (n.includes("french") || n.includes("language")) return Languages;
+  if (n.includes("geograph")) return Map;
+  if (n.includes("government")) return Landmark;
+  if (n.includes("econom")) return TrendingUp;
+  if (n.includes("social")) return Users;
+  if (n.includes("religious") || n.includes("moral") || n.includes("rme")) return BookMarked;
+  return GraduationCap;
 }

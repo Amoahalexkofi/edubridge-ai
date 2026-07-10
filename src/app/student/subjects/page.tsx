@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { BookOpen, ChevronRight, GraduationCap, Flame } from "lucide-react";
-import { subjectGradient } from "@/lib/subject-style";
+import { subjectGradient, subjectIcon } from "@/lib/subject-style";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthUser } from "@/lib/auth";
 
@@ -104,17 +104,18 @@ export default async function SubjectsPage() {
             const pct = lessonCount > 0 ? Math.round((completedLessons / lessonCount) * 100) : 0;
             const hasContent = lessonCount > 0;
             const started = completedLessons > 0;
+            const SubjIcon = subjectIcon(subject.name);
 
             return (
               <Link
                 key={subject.id}
                 href={`/student/subjects/${subject.slug}`}
-                className="group bg-white rounded-2xl border border-[#E6E4DE] p-5 flex flex-col gap-4 hover:border-[#1D4ED8]/30 hover:shadow-md transition-all duration-200"
+                className="group bg-white rounded-2xl border border-[#E6E4DE] eb-card eb-lift p-5 flex flex-col gap-4 hover:border-[#1D4ED8]/40"
               >
                 {/* Icon + status */}
                 <div className="flex items-center justify-between">
-                  <div className={`h-12 w-12 rounded-2xl bg-gradient-to-br ${subjectGradient(subject.color)} flex items-center justify-center text-2xl shadow-sm`}>
-                    {subject.icon ?? "📚"}
+                  <div className={`h-12 w-12 rounded-2xl bg-gradient-to-br ${subjectGradient(subject.color)} flex items-center justify-center shadow-sm`}>
+                    <SubjIcon className="h-6 w-6 text-white" strokeWidth={2} />
                   </div>
                   {started ? (
                     <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-[#EFF6FF] text-[#1D4ED8]">
