@@ -70,13 +70,15 @@ export default function StudentNav({ userName, examTarget, avatarUrl, previewOff
               {examTarget}
             </span>
           )}
-          {avatarUrl ? (
-            <Image src={avatarUrl} alt={userName} width={32} height={32} className="h-8 w-8 rounded-full object-cover" />
-          ) : (
-            <div className="h-8 w-8 rounded-full bg-[#1B3A8A] flex items-center justify-center text-white text-xs font-bold">
-              {initials}
-            </div>
-          )}
+          <Link href="/student/profile" aria-label="Profile and sign out">
+            {avatarUrl ? (
+              <Image src={avatarUrl} alt={userName} width={32} height={32} className="h-8 w-8 rounded-full object-cover" />
+            ) : (
+              <div className="h-8 w-8 rounded-full bg-[#1B3A8A] flex items-center justify-center text-white text-xs font-bold">
+                {initials}
+              </div>
+            )}
+          </Link>
         </div>
       </header>
 

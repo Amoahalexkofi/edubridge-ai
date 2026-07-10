@@ -5,6 +5,7 @@ import { GraduationCap, School, BadgeCheck, Mail, Lock } from "lucide-react";
 import ProfileForm from "./_components/ProfileForm";
 import AvatarUpload from "./_components/AvatarUpload";
 import ParentInvite from "./_components/ParentInvite";
+import SignOutButton from "../_components/SignOutButton";
 import { checkAndAwardBadges, BADGES } from "@/lib/badges";
 
 const GRADE_LABELS: Record<string, string> = {
@@ -122,6 +123,10 @@ export default async function ProfilePage() {
             }}
           />
           <ParentInvite />
+          {/* Mobile has no sidebar, so sign-out lives here */}
+          <div className="lg:hidden">
+            <SignOutButton />
+          </div>
         </div>
 
         {/* Right: badges */}
