@@ -63,13 +63,13 @@ export default async function TeacherStudentsPage() {
 
       {profiles && profiles.length > 0 ? (
         <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card overflow-hidden">
-          <div className="grid grid-cols-[1fr_auto_auto_auto] text-xs font-semibold text-[#94a3b8] uppercase tracking-wider px-4 py-3 border-b border-[#F1F5F9] bg-[#F8F7F4]">
+          <div className="grid grid-cols-[1fr_auto_auto_auto] text-xs font-semibold text-[#94a3b8] uppercase tracking-wider px-4 py-3 border-b border-[#EEEDE8] bg-[#F8F7F4]">
             <span>Student</span>
             <span className="w-20 text-center">Exam</span>
             <span className="w-24 text-center">Lessons done</span>
             <span className="w-20 text-right">Avg score</span>
           </div>
-          <div className="divide-y divide-[#F1F5F9]">
+          <div className="divide-y divide-[#EEEDE8]">
             {profiles.map((p) => {
               const lessons = progressMap[p.id] ?? 0;
               const avg = examMap[p.id]

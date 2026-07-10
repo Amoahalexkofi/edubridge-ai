@@ -44,7 +44,7 @@ export default async function TeacherSubjectsPage() {
           {subjects.map((subject) => (
             <div key={subject.id} className="bg-white rounded-2xl border border-[#E6E4DE] eb-card overflow-hidden">
               {/* Subject header */}
-              <div className="flex items-center gap-3 p-4 border-b border-[#F1F5F9]">
+              <div className="flex items-center gap-3 p-4 border-b border-[#EEEDE8]">
                 <div className="h-10 w-10 rounded-xl bg-[#EFF6FF] border border-[#BFDBFE] flex items-center justify-center text-xl flex-shrink-0">
                   {subject.icon ?? "📚"}
                 </div>

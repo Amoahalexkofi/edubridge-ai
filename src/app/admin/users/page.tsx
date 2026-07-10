@@ -136,7 +136,7 @@ export default async function AdminUsersPage({
 
       {/* Table */}
       {combined.length > 0 ? (
-        <div className="bg-white rounded-2xl border border-[#E6E4DE] shadow-sm">
+        <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card overflow-hidden">
 
           {/* Table header */}
           <div className="grid grid-cols-[2fr_2fr_1fr_1fr_auto] gap-4 px-5 py-3 bg-[#F8F7F4] border-b border-[#E6E4DE] text-xs font-semibold text-slate-500 uppercase tracking-wider rounded-t-2xl">
@@ -148,7 +148,7 @@ export default async function AdminUsersPage({
           </div>
 
           {/* Rows */}
-          <div className="divide-y divide-slate-100">
+          <div className="divide-y divide-[#EEEDE8]">
             {combined.map((u) => (
               <div
                 key={u.id}

@@ -481,7 +481,7 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
                               return <th className="text-left px-3.5 py-2.5 font-bold text-[#1B3A8A] text-[12px] uppercase tracking-wide border-b border-[#C7D2FE] whitespace-nowrap">{children}</th>;
                             },
                             td({ children }) {
-                              return <td className="px-3.5 py-2.5 text-[#334155] border-b border-[#F1F5F9] align-top leading-relaxed">{children}</td>;
+                              return <td className="px-3.5 py-2.5 text-[#334155] border-b border-[#EEEDE8] align-top leading-relaxed">{children}</td>;
                             },
                             tr({ children }) {
                               return <tr className="even:bg-[#FAFBFF]">{children}</tr>;

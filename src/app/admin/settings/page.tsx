@@ -129,7 +129,7 @@ export default async function AdminSettingsPage() {
             </div>
 
             {/* Items */}
-            <div className="divide-y divide-slate-100">
+            <div className="divide-y divide-[#EEEDE8]">
               {items.map((item) => (
                 <div key={item.label} className="flex items-center justify-between px-5 py-3.5">
                   <p className="text-sm text-slate-700 font-medium">{item.label}</p>

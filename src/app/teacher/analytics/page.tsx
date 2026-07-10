@@ -246,7 +246,7 @@ export default async function TeacherAnalyticsPage() {
             <Users className="h-4 w-4 text-[#94a3b8]" />
             <h2 className="font-bold text-[#0f172a] text-sm">Engagement by class</h2>
           </div>
-          <div className="grid grid-cols-[1fr_auto_auto_auto] text-xs font-semibold text-[#94a3b8] uppercase tracking-wider pb-1 border-b border-[#F1F5F9]">
+          <div className="grid grid-cols-[1fr_auto_auto_auto] text-xs font-semibold text-[#94a3b8] uppercase tracking-wider pb-1 border-b border-[#EEEDE8]">
             <span>Class</span>
             <span className="w-20 text-center">Students</span>
             <span className="w-28 text-center">Lessons done</span>

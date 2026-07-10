@@ -87,7 +87,7 @@ export default async function LessonPage({
       <article className="bg-white rounded-2xl border border-[#E6E4DE] eb-card overflow-hidden mb-6">
 
         {/* Header */}
-        <div className="px-6 py-5 border-b border-[#F1F5F9]">
+        <div className="px-6 py-5 border-b border-[#EEEDE8]">
           <div className="flex items-start gap-3">
             <div className="h-10 w-10 rounded-xl bg-[#EFF6FF] border border-[#BFDBFE] flex items-center justify-center flex-shrink-0 mt-0.5">
               <BookOpen className="h-5 w-5 text-[#1D4ED8]" />
@@ -122,7 +122,7 @@ export default async function LessonPage({
         </div>
 
         {/* Footer actions */}
-        <div className="px-6 py-4 border-t border-[#F1F5F9] flex items-center justify-between gap-3 flex-wrap">
+        <div className="px-6 py-4 border-t border-[#EEEDE8] flex items-center justify-between gap-3 flex-wrap">
           <LessonCompleteButton lessonId={id} userId={user.id} isCompleted={isCompleted} />
           {nextLesson && (
             <Link

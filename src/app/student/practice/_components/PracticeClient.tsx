@@ -207,7 +207,7 @@ export default function PracticeClient({ subjects, activeSubjectId, questions, e
             <p className="text-[#64748B] text-sm mt-1">Practice complete</p>
           </div>
 
-          <div className="py-4 border-y border-[#F1F5F9]">
+          <div className="py-4 border-y border-[#EEEDE8]">
             <p className="text-6xl font-black text-[#0f172a] tabular-nums">{pct}<span className="text-3xl text-[#94a3b8]">%</span></p>
             <p className="text-sm text-[#64748B] mt-2">{score} of {questions.length} correct</p>
           </div>

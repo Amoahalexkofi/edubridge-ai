@@ -198,7 +198,7 @@ export default function FloatingTutor({ userId, firstName, examTarget }: Props) 
                               <th className="text-left px-2.5 py-1.5 font-bold text-[#1B3A8A] text-[10px] uppercase tracking-wide border-b border-[#C7D2FE] whitespace-nowrap">{children}</th>
                             ),
                             td: ({ children }) => (
-                              <td className="px-2.5 py-1.5 text-[#334155] border-b border-[#F1F5F9] align-top">{children}</td>
+                              <td className="px-2.5 py-1.5 text-[#334155] border-b border-[#EEEDE8] align-top">{children}</td>
                             ),
                             tr: ({ children }) => <tr className="even:bg-[#FAFBFF]">{children}</tr>,
                           }}
