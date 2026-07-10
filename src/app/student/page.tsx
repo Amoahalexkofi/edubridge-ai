@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import {
-  BookOpen, PenLine, FileText, TrendingUp,
+  BookOpen, FileText, TrendingUp,
   ArrowRight, ChevronRight, Trophy, Flame,
-  Brain, Zap, Star, Target, Sparkles, CalendarCheck,
+  Zap, Star, Target, Sparkles,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthUser } from "@/lib/auth";
@@ -128,13 +128,6 @@ export default async function StudentDashboard() {
     { label: "Avg score",    value: avgScore != null ? `${avgScore}%` : "—",       icon: Trophy,     color: "from-amber-500 to-amber-600",   href: "/student/exams"    },
   ];
 
-  const quickActions = [
-    { href: "/student/subjects", label: "Browse subjects", desc: "Explore all topics",           icon: BookOpen,      bg: "bg-[#1B3A8A]"   },
-    { href: "/student/practice", label: "Quick practice",  desc: "Sharpen your skills",          icon: PenLine,       bg: "bg-[#E8722A]"   },
-    { href: "/student/exams",    label: "Start mock exam", desc: "WAEC-style timed paper",       icon: FileText,      bg: "bg-purple-600"  },
-    { href: "/student/planner",  label: "Study plan",      desc: "Your week-by-week roadmap",    icon: CalendarCheck, bg: "bg-[#1D4ED8]"   },
-    { href: "/student/ai-tutor", label: "Ask AI Tutor",   desc: "Get instant help",              icon: Brain,         bg: "bg-teal-600"    },
-  ];
 
   const medals = ["🥇", "🥈", "🥉"];
 
@@ -334,76 +327,60 @@ export default async function StudentDashboard() {
         {/* ── Right: Sidebar widgets ── */}
         <div className="space-y-4">
 
-          {/* Quick actions */}
+          {/* Your progress — level, XP and badges in one calm card */}
           <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-4">
-            <h3 className="font-bold text-slate-900 text-sm mb-3">Quick actions</h3>
-            <div className="space-y-2">
-              {quickActions.map(({ href, label, desc, icon: Icon, bg }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-[#F8F7F4] transition-colors group"
-                >
-                  <div className={`h-8 w-8 rounded-lg ${bg} flex items-center justify-center flex-shrink-0`}>
-                    <Icon className="h-4 w-4 text-white" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-slate-800">{label}</p>
-                    <p className="text-xs text-slate-400">{desc}</p>
-                  </div>
-                  <ChevronRight className="h-4 w-4 text-slate-300 group-hover:text-slate-500 transition-colors flex-shrink-0" />
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* XP / Level widget */}
-          <div className="bg-[#1B3A8A] rounded-2xl p-4 text-white eb-card-navy">
             <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <Star className="h-4 w-4 text-[#E8722A]" />
-                <span className="text-sm font-bold">Level {currentLevel.level} · {currentLevel.label}</span>
+              <div className="flex items-center gap-2.5">
+                <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-[#1B3A8A] to-[#1D4ED8] flex items-center justify-center flex-shrink-0">
+                  <Star className="h-4 w-4 text-white" />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-slate-900 leading-tight">Level {currentLevel.level}</p>
+                  <p className="text-xs text-slate-400 leading-tight">{currentLevel.label}</p>
+                </div>
               </div>
-              <span className="text-xs text-white/50 tabular-nums">
-                {totalXP.toLocaleString()}{nextLevel ? ` / ${nextLevel.min.toLocaleString()}` : ""} XP
-              </span>
+              <span className="text-xs text-slate-400 tabular-nums">{totalXP.toLocaleString()} XP</span>
             </div>
-            <div className="h-2 bg-white/15 rounded-full mb-3">
-              <div className="h-full bg-[#E8722A] rounded-full transition-all" style={{ width: `${xpPct}%` }} />
+            <div className="h-2 bg-[#F1F0EC] rounded-full mb-1.5 overflow-hidden">
+              <div className="h-full bg-gradient-to-r from-[#1B3A8A] to-[#1D4ED8] rounded-full transition-all" style={{ width: `${xpPct}%` }} />
             </div>
-            <p className="text-xs text-white/50">
+            <p className="text-xs text-slate-400">
               {nextLevel
-                ? `${(nextLevel.min - totalXP).toLocaleString()} XP to Level ${nextLevel.level} · ${nextLevel.label}`
+                ? `${(nextLevel.min - totalXP).toLocaleString()} XP to ${nextLevel.label}`
                 : "Max level reached — Champion!"}
             </p>
-          </div>
 
-          {/* Badges */}
-          <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-4">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="font-bold text-slate-900 text-sm">Badges</h3>
-              <span className="text-xs font-bold text-slate-400 tabular-nums">{earnedCount}/{BADGES.length}</span>
+            {/* Badges */}
+            <div className="mt-4 pt-3.5 border-t border-[#EEEDE8]">
+              <div className="flex items-center justify-between mb-2.5">
+                <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wide">Badges</p>
+                <span className="text-xs font-bold text-slate-400 tabular-nums">{earnedCount}/{BADGES.length}</span>
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {BADGES.slice(0, 7).map(b => {
+                  const isEarned = !!badgeState.earned[b.id];
+                  const Icon = b.icon;
+                  return (
+                    <span
+                      key={b.id}
+                      title={`${b.title} — ${b.desc}`}
+                      className={`h-8 w-8 rounded-lg border flex items-center justify-center ${
+                        isEarned ? b.tint : "bg-[#F8F7F4] text-slate-300 border-[#EEEDE8]"
+                      }`}
+                    >
+                      <Icon className="h-3.5 w-3.5" />
+                    </span>
+                  );
+                })}
+                <Link
+                  href="/student/profile#badges"
+                  title="View all badges"
+                  className="h-8 w-8 rounded-lg border border-[#EEEDE8] bg-[#F8F7F4] flex items-center justify-center text-slate-400 hover:text-[#1B3A8A] hover:border-[#1B3A8A]/30 transition-colors"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Link>
+              </div>
             </div>
-            <div className="flex flex-wrap gap-2 mb-3">
-              {BADGES.slice(0, 8).map(b => {
-                const isEarned = !!badgeState.earned[b.id];
-                const Icon = b.icon;
-                return (
-                  <span
-                    key={b.id}
-                    title={`${b.title} — ${b.desc}`}
-                    className={`h-9 w-9 rounded-xl border flex items-center justify-center ${
-                      isEarned ? b.tint : "bg-[#F8F7F4] text-slate-300 border-[#EEEDE8]"
-                    }`}
-                  >
-                    <Icon className="h-4 w-4" />
-                  </span>
-                );
-              })}
-            </div>
-            <Link href="/student/profile#badges" className="text-xs font-bold text-[#1B3A8A] hover:underline underline-offset-2">
-              View all badges →
-            </Link>
           </div>
 
           {/* Leaderboard teaser */}
