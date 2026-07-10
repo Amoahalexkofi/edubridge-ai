@@ -35,13 +35,13 @@ export default async function AdminDashboard() {
   ]);
 
   const stats = [
-    { label: "Total users",   value: totalUsers    ?? 0, icon: Users,    href: "/admin/users",    color: "bg-[#F8F7F4] text-slate-700" },
-    { label: "Students",      value: totalStudents  ?? 0, icon: BookOpen, href: "/admin/users",    color: "bg-blue-50 text-blue-700" },
-    { label: "Teachers",      value: totalTeachers  ?? 0, icon: Users,   href: "/admin/users",    color: "bg-orange-50 text-[#E8722A]" },
-    { label: "Subjects",      value: totalSubjects  ?? 0, icon: BookOpen, href: "/admin/subjects", color: "bg-purple-50 text-purple-700" },
-    { label: "Lessons",       value: totalLessons   ?? 0, icon: FileText, href: "/admin/subjects", color: "bg-green-50 text-green-700" },
-    { label: "Questions",     value: totalQuestions ?? 0, icon: PenLine,  href: "/admin/subjects", color: "bg-amber-50 text-amber-700" },
-    { label: "Exams taken",   value: totalAttempts  ?? 0, icon: TrendingUp, href: "/admin/users",  color: "bg-rose-50 text-rose-700" },
+    { label: "Total users",   value: totalUsers    ?? 0, icon: Users,    href: "/admin/users",    color: "from-slate-500 to-slate-600" },
+    { label: "Students",      value: totalStudents  ?? 0, icon: BookOpen, href: "/admin/users",    color: "from-blue-500 to-blue-600" },
+    { label: "Teachers",      value: totalTeachers  ?? 0, icon: Users,   href: "/admin/users",    color: "from-orange-500 to-orange-600" },
+    { label: "Subjects",      value: totalSubjects  ?? 0, icon: BookOpen, href: "/admin/subjects", color: "from-violet-500 to-violet-600" },
+    { label: "Lessons",       value: totalLessons   ?? 0, icon: FileText, href: "/admin/subjects", color: "from-emerald-500 to-emerald-600" },
+    { label: "Questions",     value: totalQuestions ?? 0, icon: PenLine,  href: "/admin/subjects", color: "from-amber-500 to-amber-600" },
+    { label: "Exams taken",   value: totalAttempts  ?? 0, icon: TrendingUp, href: "/admin/users",  color: "from-rose-500 to-rose-600" },
   ];
 
   const quickLinks = [
@@ -61,9 +61,9 @@ export default async function AdminDashboard() {
       {/* Stats grid */}
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 mb-8">
         {stats.map(({ label, value, icon: Icon, href, color }) => (
-          <Link key={label} href={href} className="bg-white rounded-2xl p-4 border border-[#E6E4DE] flex flex-col gap-2 hover:shadow-sm hover:border-slate-300 transition-all">
-            <div className={`h-8 w-8 rounded-xl flex items-center justify-center ${color}`}>
-              <Icon className="h-4 w-4" />
+          <Link key={label} href={href} className="bg-white rounded-2xl p-4 border border-[#E6E4DE] eb-card eb-lift flex flex-col gap-2 hover:border-slate-300">
+            <div className={`h-9 w-9 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center shadow-sm`}>
+              <Icon className="h-4 w-4 text-white" />
             </div>
             <div>
               <p className="text-2xl font-black text-slate-900 tabular-nums">{value}</p>
@@ -76,7 +76,7 @@ export default async function AdminDashboard() {
       {/* Quick links */}
       <div className="grid sm:grid-cols-2 gap-3">
         {quickLinks.map(({ href, label, desc }) => (
-          <Link key={href} href={href} className="bg-white rounded-2xl border border-[#E6E4DE] p-4 flex items-center gap-3 hover:border-slate-300 hover:shadow-sm transition-all group">
+          <Link key={href} href={href} className="bg-white rounded-2xl border border-[#E6E4DE] eb-card eb-lift p-4 flex items-center gap-3 hover:border-slate-300 group">
             <div className="flex-1 min-w-0">
               <p className="font-bold text-slate-900">{label}</p>
               <p className="text-xs text-slate-400 mt-0.5">{desc}</p>

@@ -47,10 +47,10 @@ export default async function TeacherDashboard() {
     .eq("role", "student");
 
   const stats = [
-    { label: "Subjects",   value: subjectCount  ?? 0, icon: BookOpen,  href: "/teacher/subjects",  color: "bg-blue-50 text-blue-600" },
-    { label: "Lessons",    value: lessonCount   ?? 0, icon: FileText,  href: "/teacher/lessons",   color: "bg-purple-50 text-purple-600" },
-    { label: "Questions",  value: questionCount ?? 0, icon: PenLine,   href: "/teacher/questions", color: "bg-orange-50 text-[#E8722A]" },
-    { label: "Students",   value: studentCount  ?? 0, icon: Users,     href: "/teacher/students",  color: "bg-green-50 text-green-600" },
+    { label: "Subjects",   value: subjectCount  ?? 0, icon: BookOpen,  href: "/teacher/subjects",  color: "from-blue-500 to-blue-600" },
+    { label: "Lessons",    value: lessonCount   ?? 0, icon: FileText,  href: "/teacher/lessons",   color: "from-violet-500 to-violet-600" },
+    { label: "Questions",  value: questionCount ?? 0, icon: PenLine,   href: "/teacher/questions", color: "from-orange-500 to-orange-600" },
+    { label: "Students",   value: studentCount  ?? 0, icon: Users,     href: "/teacher/students",  color: "from-emerald-500 to-emerald-600" },
   ];
 
   const quickActions = [
@@ -81,13 +81,13 @@ export default async function TeacherDashboard() {
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
         {stats.map(({ label, value, icon: Icon, href, color }) => (
-          <Link key={label} href={href} className="bg-white rounded-2xl p-4 sm:p-5 border border-[#E6E4DE] flex flex-col gap-3 hover:border-[#E8722A]/30 hover:shadow-sm transition-all group">
-            <div className={`h-9 w-9 rounded-xl flex items-center justify-center ${color}`}>
-              <Icon className="h-4 w-4" />
+          <Link key={label} href={href} className="bg-white rounded-2xl p-4 sm:p-5 border border-[#E6E4DE] eb-card eb-lift flex flex-col gap-3 hover:border-[#E8722A]/40 group">
+            <div className={`h-11 w-11 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center shadow-sm`}>
+              <Icon className="h-5 w-5 text-white" />
             </div>
             <div>
-              <p className="text-2xl font-black text-slate-900 leading-none tabular-nums">{value}</p>
-              <p className="text-xs text-slate-500 mt-1 font-medium">{label}</p>
+              <p className="text-[1.75rem] font-black text-slate-900 leading-none tabular-nums">{value}</p>
+              <p className="text-xs text-slate-500 mt-1.5 font-medium">{label}</p>
             </div>
           </Link>
         ))}

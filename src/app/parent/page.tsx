@@ -124,22 +124,22 @@ export default async function ParentDashboard() {
 
                 <div className="grid grid-cols-3 gap-3">
                   <div className="bg-[#F8F7F4] rounded-xl p-3 text-center">
-                    <div className="h-8 w-8 rounded-lg bg-green-50 flex items-center justify-center mx-auto mb-2">
-                      <BookOpen className="h-4 w-4 text-green-600" />
+                    <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center mx-auto mb-2 shadow-sm">
+                      <BookOpen className="h-4 w-4 text-white" />
                     </div>
                     <p className="text-xl font-black text-slate-900 tabular-nums">{lessons}</p>
                     <p className="text-xs text-slate-500 font-medium">Lessons done</p>
                   </div>
                   <div className="bg-[#F8F7F4] rounded-xl p-3 text-center">
-                    <div className="h-8 w-8 rounded-lg bg-purple-50 flex items-center justify-center mx-auto mb-2">
-                      <Trophy className="h-4 w-4 text-purple-600" />
+                    <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-violet-500 to-violet-600 flex items-center justify-center mx-auto mb-2 shadow-sm">
+                      <Trophy className="h-4 w-4 text-white" />
                     </div>
                     <p className="text-xl font-black text-slate-900 tabular-nums">{examMap[student.id]?.count ?? 0}</p>
                     <p className="text-xs text-slate-500 font-medium">Exams taken</p>
                   </div>
                   <div className="bg-[#F8F7F4] rounded-xl p-3 text-center">
-                    <div className="h-8 w-8 rounded-lg bg-amber-50 flex items-center justify-center mx-auto mb-2">
-                      <TrendingUp className="h-4 w-4 text-amber-600" />
+                    <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center mx-auto mb-2 shadow-sm">
+                      <TrendingUp className="h-4 w-4 text-white" />
                     </div>
                     <p className={`text-xl font-black tabular-nums ${
                       avg == null ? "text-slate-300" :
