@@ -114,7 +114,7 @@ export default function StudentNav({ userName, examTarget, avatarUrl, previewOff
       </nav>
 
       {/* ── Desktop sidebar ── */}
-      <aside className={`hidden lg:flex fixed left-0 z-40 w-60 flex-col bg-white border-r border-[#EEEDE8] ${previewOffset ? "top-10 bottom-0" : "inset-y-0"}`}>
+      <aside className={`hidden lg:flex fixed left-0 z-40 w-60 flex-col bg-white border-r border-[#EEEDE8] shadow-[1px_0_20px_-8px_rgba(31,26,15,0.10)] ${previewOffset ? "top-10 bottom-0" : "inset-y-0"}`}>
         {/* Logo */}
         <div className="h-16 flex items-center px-4 border-b border-[#EEEDE8]">
           <Link href="/student">
