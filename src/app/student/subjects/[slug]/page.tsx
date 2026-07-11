@@ -2,7 +2,7 @@ import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import {
   ArrowLeft, BookOpen, CheckCircle2,
-  ChevronRight, FileText, PlayCircle,
+  ChevronRight, FileText, PlayCircle, Brain,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthUser } from "@/lib/auth";
@@ -56,7 +56,7 @@ export default async function SubjectPage({
   const SubjIcon = subjectIcon(subject.name);
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 lg:py-8 space-y-6">
 
       {/* Back */}
       <Link
@@ -84,28 +84,15 @@ export default async function SubjectPage({
             {subject.description && (
               <p className="text-sm text-[#64748B] mt-1 leading-relaxed">{subject.description}</p>
             )}
-
-            {/* Overall progress */}
-            {totalLessons > 0 && (
-              <div className="mt-4 space-y-1.5">
-                <div className="flex items-center justify-between text-xs font-medium">
-                  <span className="text-[#64748B]">{totalCompleted} of {totalLessons} lessons completed</span>
-                  <span className="text-[#1D4ED8]">{overallPct}%</span>
-                </div>
-                <div className="h-2 bg-[#EEEDE8] rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-[#1B3A8A] to-[#1D4ED8] rounded-full transition-all"
-                    style={{ width: `${overallPct}%` }}
-                  />
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>
 
-      {/* Topics list */}
-      <div>
+      {/* Two-column body */}
+      <div className="grid lg:grid-cols-3 gap-6 items-start">
+
+        {/* Left: topics */}
+        <div className="lg:col-span-2">
         <h2 className="text-sm font-semibold text-[#64748B] uppercase tracking-wider mb-3">
           Topics · {topics?.length ?? 0}
         </h2>
@@ -205,23 +192,52 @@ export default async function SubjectPage({
             </p>
           </div>
         )}
-      </div>
+        </div>
 
-      {/* Bottom CTA when topics exist */}
-      {topics && topics.length > 0 && totalLessons > 0 && (
-        <div className="flex items-center justify-between bg-white rounded-2xl border border-[#E6E4DE] eb-card p-4">
-          <div>
-            <p className="text-sm font-semibold text-[#0f172a]">Ready to practice?</p>
-            <p className="text-xs text-[#64748B]">Test what you've learned in {subject.name}</p>
-          </div>
+        {/* Right rail */}
+        <div className="lg:col-span-1 space-y-4 lg:sticky lg:top-6">
+          {totalLessons > 0 && (
+            <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5">
+              <p className="text-xs font-bold text-[#64748B] uppercase tracking-wide mb-3">Your progress</p>
+              <div className="flex items-end justify-between mb-2">
+                <span className="text-3xl font-black text-[#0f172a] tabular-nums leading-none">{overallPct}%</span>
+                <span className="text-xs text-[#94a3b8]">{totalCompleted}/{totalLessons} lessons</span>
+              </div>
+              <div className="h-2 bg-[#EEEDE8] rounded-full overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-[#1B3A8A] to-[#1D4ED8] rounded-full transition-all" style={{ width: `${overallPct}%` }} />
+              </div>
+            </div>
+          )}
+
+          {topics && topics.length > 0 && totalLessons > 0 && (
+            <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5">
+              <p className="text-sm font-bold text-[#0f172a]">Ready to practice?</p>
+              <p className="text-xs text-[#64748B] mt-0.5 mb-3">Test what you&apos;ve learned in {subject.name}.</p>
+              <Link
+                href={`/student/practice?subject=${subject.id}`}
+                className="w-full flex items-center justify-center gap-1.5 h-11 bg-[#1D4ED8] hover:bg-[#1e40af] text-white text-sm font-semibold rounded-xl transition-colors"
+              >
+                Practice <ChevronRight className="h-4 w-4" />
+              </Link>
+            </div>
+          )}
+
           <Link
-            href={`/student/practice?subject=${subject.id}`}
-            className="flex items-center gap-1.5 px-4 py-3 h-11 bg-[#1D4ED8] hover:bg-[#1e40af] text-white text-sm font-semibold rounded-xl transition-colors flex-shrink-0"
+            href="/student/ai-tutor"
+            className="block rounded-2xl bg-gradient-to-br from-[#1B3A8A] to-[#1D4ED8] eb-card-navy p-5 text-white"
           >
-            Practice <ChevronRight className="h-4 w-4" />
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-xl bg-white/15 flex items-center justify-center flex-shrink-0">
+                <Brain className="h-5 w-5" />
+              </div>
+              <div className="min-w-0">
+                <p className="text-sm font-bold leading-tight">Stuck on {subject.name}?</p>
+                <p className="text-xs text-blue-100 leading-tight mt-0.5">Ask the AI Tutor anything</p>
+              </div>
+            </div>
           </Link>
         </div>
-      )}
+      </div>
     </div>
   );
 }
