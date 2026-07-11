@@ -64,10 +64,27 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans), 'Plus Jakarta Sans', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
+/* Editorial-density headings (craft borrowed from Stripe's type system):
+   tight negative tracking + balanced wrapping reads as premium/deliberate.
+   Kept on EduBridge's own family/palette. */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display), 'Plus Jakarta Sans', system-ui, sans-serif;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+/* Large display headings track a touch tighter still. */
+h1 {
+  letter-spacing: -0.03em;
+}
+
+/* Tabular figures for aligned numeric data (Stripe's quiet data signal). */
+.tabular-nums,
+[class*="tabular"] {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
 }
 
 /* Brand entrance: a single, calm rise-in. Reveal enhances already-visible
