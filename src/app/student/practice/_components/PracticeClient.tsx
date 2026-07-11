@@ -6,8 +6,9 @@ import {
   CheckCircle2, XCircle, ArrowRight, RotateCcw,
   Trophy, BookOpen, PenLine, GraduationCap, Target, ChevronRight,
 } from "lucide-react";
+import { subjectGradient, subjectIcon } from "@/lib/subject-style";
 
-type Subject = { id: string; name: string; slug: string; icon: string | null };
+type Subject = { id: string; name: string; slug: string; icon: string | null; color: string | null };
 type Question = {
   id: string;
   prompt: string;
@@ -147,15 +148,17 @@ export default function PracticeClient({ subjects, activeSubjectId, questions, e
 
         {/* Subject grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-          {subjects.map((s) => (
+          {subjects.map((s) => {
+            const SubjIcon = subjectIcon(s.name);
+            return (
             <button
               key={s.id}
               onClick={() => router.push(`/student/practice?subject=${s.id}`)}
-              className="group bg-white rounded-2xl border border-[#E6E4DE] p-5 flex flex-col gap-4 hover:border-[#1D4ED8]/30 hover:shadow-md transition-all duration-200 text-left"
+              className="group bg-white rounded-2xl border border-[#E6E4DE] eb-card eb-lift p-5 flex flex-col gap-4 hover:border-[#1D4ED8]/40 text-left"
             >
               <div className="flex items-center justify-between">
-                <div className="h-11 w-11 rounded-xl bg-[#F8F7F4] border border-[#E6E4DE] flex items-center justify-center text-2xl">
-                  {s.icon ?? "📚"}
+                <div className={`h-11 w-11 rounded-xl bg-gradient-to-br ${subjectGradient(s.color)} flex items-center justify-center shadow-sm`}>
+                  <SubjIcon className="h-5 w-5 text-white" strokeWidth={2} />
                 </div>
                 <span className="flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full bg-orange-50 text-[#E8722A]">
                   <GraduationCap className="h-3 w-3" /> {examLabel}
@@ -174,7 +177,8 @@ export default function PracticeClient({ subjects, activeSubjectId, questions, e
                 <ChevronRight className="h-4 w-4 text-[#CBD5E1] group-hover:text-[#1D4ED8] transition-colors" />
               </div>
             </button>
-          ))}
+            );
+          })}
         </div>
       </div>
     );

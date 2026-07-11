@@ -3,6 +3,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthUser } from "@/lib/auth";
 import { FileText, Trophy, Clock, ChevronRight, CheckCircle2, BarChart2, AlertCircle, Lock } from "lucide-react";
+import { subjectGradient, subjectIcon } from "@/lib/subject-style";
 
 function formatDate(d: string) {
   return new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
@@ -37,7 +38,7 @@ export default async function ExamsPage({
 
   const { data: subjects } = await supabase
     .from("subjects")
-    .select("id, name, slug, icon")
+    .select("id, name, slug, icon, color")
     .eq("exam_type", examTarget.toLowerCase())
     .order("name");
 
@@ -151,6 +152,7 @@ export default async function ExamsPage({
               const questionCount = questionCountBySubject[s.id] ?? 0;
               const hasContent = questionCount > 0;
               const examCount = Math.min(questionCount, 40);
+              const SubjIcon = subjectIcon(s.name);
 
               if (!hasContent) {
                 return (
@@ -159,8 +161,8 @@ export default async function ExamsPage({
                     className="bg-[#FAFAFA] rounded-2xl border border-[#E6E4DE] eb-card p-5 flex flex-col gap-4 opacity-60 cursor-not-allowed"
                   >
                     <div className="flex items-center justify-between">
-                      <div className="h-11 w-11 rounded-xl bg-[#F2F1EE] border border-[#E6E4DE] flex items-center justify-center text-2xl grayscale">
-                        {s.icon ?? "📚"}
+                      <div className={`h-11 w-11 rounded-xl bg-gradient-to-br ${subjectGradient(s.color)} flex items-center justify-center shadow-sm`}>
+                        <SubjIcon className="h-5 w-5 text-white" strokeWidth={2} />
                       </div>
                       <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-[#F1F0EC] text-slate-400 flex items-center gap-1">
                         <Lock className="h-2.5 w-2.5" /> Coming soon
@@ -181,11 +183,11 @@ export default async function ExamsPage({
                 <Link
                   key={s.id}
                   href={`/student/exams/take?subject=${s.id}`}
-                  className="group bg-white rounded-2xl border border-[#E6E4DE] p-5 flex flex-col gap-4 hover:border-violet-300 hover:shadow-md transition-all duration-200"
+                  className="group bg-white rounded-2xl border border-[#E6E4DE] eb-card eb-lift p-5 flex flex-col gap-4 hover:border-violet-300"
                 >
                   <div className="flex items-center justify-between">
-                    <div className="h-11 w-11 rounded-xl bg-[#F8F7F4] border border-[#E6E4DE] flex items-center justify-center text-2xl">
-                      {s.icon ?? "📚"}
+                    <div className={`h-11 w-11 rounded-xl bg-gradient-to-br ${subjectGradient(s.color)} flex items-center justify-center shadow-sm`}>
+                      <SubjIcon className="h-5 w-5 text-white" strokeWidth={2} />
                     </div>
                     <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-violet-50 text-violet-700">
                       Timed
@@ -233,7 +235,7 @@ export default async function ExamsPage({
               <Link
                 key={attempt.id}
                 href={`/student/exams/${attempt.id}`}
-                className="flex items-center gap-4 bg-white rounded-2xl border border-[#E6E4DE] p-4 hover:border-[#1D4ED8]/30 hover:shadow-sm transition-all"
+                className="flex items-center gap-4 bg-white rounded-2xl border border-[#E6E4DE] eb-card eb-lift p-4 hover:border-[#1D4ED8]/40"
               >
                 <div className="h-11 w-11 rounded-xl bg-[#F8F7F4] border border-[#E6E4DE] flex items-center justify-center text-xl flex-shrink-0">
                   {sub?.icon ?? "📚"}

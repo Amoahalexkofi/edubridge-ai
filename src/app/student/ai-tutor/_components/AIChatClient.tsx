@@ -288,7 +288,7 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
         {mobile && (
           <div className="flex items-center justify-between mb-3">
             <p className="text-sm font-bold text-[#0f172a]">Chats</p>
-            <button onClick={() => setSidebarOpen(false)} className="p-1.5 rounded-lg hover:bg-[#E2E8F0] text-[#64748B]">
+            <button onClick={() => setSidebarOpen(false)} className="p-1.5 rounded-lg hover:bg-[#EEEDE8] text-[#64748B]">
               <X className="h-4 w-4" />
             </button>
           </div>
@@ -598,7 +598,7 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
                 style={{ minHeight: "48px" }}
               />
               {isLoading ? (
-                <button type="button" onClick={stop} className="h-11 w-11 rounded-xl bg-[#F2F1EE] hover:bg-[#E2E8F0] flex items-center justify-center flex-shrink-0 transition-colors">
+                <button type="button" onClick={stop} className="h-11 w-11 rounded-xl bg-[#F2F1EE] hover:bg-[#EEEDE8] flex items-center justify-center flex-shrink-0 transition-colors">
                   <Loader2 className="h-4.5 w-4.5 text-[#64748B] animate-spin" style={{ width: 18, height: 18 }} />
                 </button>
               ) : (

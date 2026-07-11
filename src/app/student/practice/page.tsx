@@ -25,7 +25,7 @@ export default async function PracticePage({
   // Load all subjects for this exam type
   const { data: subjects } = await supabase
     .from("subjects")
-    .select("id, name, slug, icon")
+    .select("id, name, slug, icon, color")
     .eq("exam_type", examTarget.toLowerCase())
     .order("name");
 

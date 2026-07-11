@@ -160,7 +160,7 @@ export default async function SubjectsPage() {
                     <span>{topicCount} {topicCount === 1 ? "topic" : "topics"}</span>
                     {lessonCount > 0 && (
                       <>
-                        <span className="w-px h-3 bg-[#E2E8F0]" />
+                        <span className="w-px h-3 bg-[#EEEDE8]" />
                         <span className="flex items-center gap-1">
                           <BookOpen className="h-3 w-3" />
                           {lessonCount} {lessonCount === 1 ? "lesson" : "lessons"}

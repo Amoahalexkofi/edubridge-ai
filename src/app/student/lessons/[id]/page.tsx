@@ -140,7 +140,7 @@ export default async function LessonPage({
         {prevLesson ? (
           <Link
             href={`/student/lessons/${prevLesson.id}`}
-            className="flex items-center gap-2 p-4 bg-white rounded-xl border border-[#E6E4DE] hover:border-[#1D4ED8]/30 hover:shadow-sm transition-all group"
+            className="flex items-center gap-2 p-4 bg-white rounded-xl border border-[#E6E4DE] eb-card eb-lift hover:border-[#1D4ED8]/40 group"
           >
             <ArrowLeft className="h-4 w-4 text-[#64748B] flex-shrink-0" />
             <div className="min-w-0">
@@ -154,7 +154,7 @@ export default async function LessonPage({
         {nextLesson ? (
           <Link
             href={`/student/lessons/${nextLesson.id}`}
-            className="flex items-center gap-2 p-4 bg-white rounded-xl border border-[#E6E4DE] hover:border-[#1D4ED8]/30 hover:shadow-sm transition-all text-right col-start-2"
+            className="flex items-center gap-2 p-4 bg-white rounded-xl border border-[#E6E4DE] eb-card eb-lift hover:border-[#1D4ED8]/40 text-right col-start-2"
           >
             <div className="flex-1 min-w-0">
               <p className="text-xs text-[#94a3b8]">Next</p>
