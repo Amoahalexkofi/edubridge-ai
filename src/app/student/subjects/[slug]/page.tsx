@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthUser } from "@/lib/auth";
+import { subjectGradient, subjectIcon } from "@/lib/subject-style";
 
 export default async function SubjectPage({
   params,
@@ -52,6 +53,7 @@ export default async function SubjectPage({
   const totalLessons = allLessonIds.length;
   const totalCompleted = completedSet.size;
   const overallPct = totalLessons > 0 ? Math.round((totalCompleted / totalLessons) * 100) : 0;
+  const SubjIcon = subjectIcon(subject.name);
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6 space-y-6">
@@ -67,12 +69,12 @@ export default async function SubjectPage({
       {/* Subject header */}
       <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5 sm:p-6">
         <div className="flex items-start gap-4">
-          <div className="h-14 w-14 sm:h-16 sm:w-16 rounded-2xl bg-[#EFF6FF] border border-[#BFDBFE] flex items-center justify-center text-3xl flex-shrink-0">
-            {subject.icon ?? "📚"}
+          <div className={`h-14 w-14 sm:h-16 sm:w-16 rounded-2xl bg-gradient-to-br ${subjectGradient(subject.color)} flex items-center justify-center shadow-sm flex-shrink-0`}>
+            <SubjIcon className="h-7 w-7 sm:h-8 sm:w-8 text-white" strokeWidth={2} />
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="font-display text-xl sm:text-2xl font-bold text-[#0f172a]">
+              <h1 className="text-xl sm:text-2xl font-bold text-[#0f172a]">
                 {subject.name}
               </h1>
               <span className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#1D4ED8] text-white">
@@ -90,9 +92,9 @@ export default async function SubjectPage({
                   <span className="text-[#64748B]">{totalCompleted} of {totalLessons} lessons completed</span>
                   <span className="text-[#1D4ED8]">{overallPct}%</span>
                 </div>
-                <div className="h-2 bg-[#E2E8F0] rounded-full overflow-hidden">
+                <div className="h-2 bg-[#EEEDE8] rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-[#1D4ED8] rounded-full transition-all"
+                    className="h-full bg-gradient-to-r from-[#1B3A8A] to-[#1D4ED8] rounded-full transition-all"
                     style={{ width: `${overallPct}%` }}
                   />
                 </div>
@@ -117,87 +119,77 @@ export default async function SubjectPage({
               const isComplete = lessonCount > 0 && topicCompleted === lessonCount;
               const firstLesson = topic.lessons?.[0];
 
-              return (
-                <div
-                  key={topic.id}
-                  className="bg-white rounded-2xl border border-[#E6E4DE] overflow-hidden hover:border-[#1D4ED8]/30 hover:shadow-sm transition-all group"
-                >
-                  <div className="p-4 sm:p-5">
-                    <div className="flex items-start gap-3 sm:gap-4">
-                      {/* Topic number / complete badge */}
-                      <div className={`h-8 w-8 rounded-xl flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5 ${
-                        isComplete
-                          ? "bg-[#22C55E]/10 text-[#22C55E]"
-                          : "bg-[#F2F1EE] text-[#64748B]"
-                      }`}>
-                        {isComplete ? <CheckCircle2 className="h-4 w-4" /> : idx + 1}
-                      </div>
+              const inner = (
+                <div className="flex items-center gap-3 sm:gap-4">
+                  {/* Topic number / complete badge */}
+                  <div className={`h-9 w-9 rounded-lg flex items-center justify-center text-sm font-bold flex-shrink-0 ${
+                    isComplete ? "bg-[#22C55E]/10 text-[#16A34A]" : "bg-[#F2F1EE] text-[#64748B]"
+                  }`}>
+                    {isComplete ? <CheckCircle2 className="h-4.5 w-4.5" style={{ width: 18, height: 18 }} /> : idx + 1}
+                  </div>
 
-                      {/* Topic info */}
-                      <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-sm sm:text-base text-[#0f172a] leading-snug">
-                          {topic.title}
-                        </p>
-                        {topic.description && (
-                          <p className="text-xs text-[#94a3b8] mt-0.5 line-clamp-2 leading-relaxed">
-                            {topic.description}
-                          </p>
-                        )}
-
-                        {/* Stats row */}
-                        <div className="flex items-center gap-3 mt-2.5 flex-wrap">
-                          <span className="flex items-center gap-1 text-xs text-[#64748B]">
-                            <BookOpen className="h-3.5 w-3.5" />
-                            {lessonCount} {lessonCount === 1 ? "lesson" : "lessons"}
-                          </span>
-                          {topicCompleted > 0 && (
-                            <span className="flex items-center gap-1 text-xs text-[#22C55E] font-medium">
-                              <CheckCircle2 className="h-3.5 w-3.5" />
-                              {topicCompleted} completed
-                            </span>
-                          )}
+                  {/* Topic info */}
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-sm sm:text-[15px] text-[#0f172a] leading-snug truncate group-hover:text-[#1D4ED8] transition-colors">
+                      {topic.title}
+                    </p>
+                    {topic.description && (
+                      <p className="text-xs text-[#94a3b8] mt-0.5 truncate">{topic.description}</p>
+                    )}
+                    <div className="flex items-center gap-2.5 mt-2">
+                      <span className="flex items-center gap-1 text-xs text-[#64748B] flex-shrink-0">
+                        <BookOpen className="h-3.5 w-3.5" /> {lessonCount} {lessonCount === 1 ? "lesson" : "lessons"}
+                      </span>
+                      {lessonCount > 0 && (
+                        <div className="h-1.5 flex-1 max-w-[160px] bg-[#EEEDE8] rounded-full overflow-hidden">
+                          <div
+                            className={`h-full rounded-full ${isComplete ? "bg-[#22C55E]" : "bg-gradient-to-r from-[#1B3A8A] to-[#1D4ED8]"}`}
+                            style={{ width: `${topicPct}%` }}
+                          />
                         </div>
-
-                        {/* Progress bar */}
-                        {lessonCount > 0 && (
-                          <div className="mt-2.5">
-                            <div className="h-1.5 bg-[#E2E8F0] rounded-full overflow-hidden">
-                              <div
-                                className={`h-full rounded-full transition-all ${isComplete ? "bg-[#22C55E]" : "bg-[#1D4ED8]"}`}
-                                style={{ width: `${topicPct}%` }}
-                              />
-                            </div>
-                          </div>
-                        )}
-                      </div>
-
-                      {/* CTA */}
-                      {firstLesson ? (
-                        <Link
-                          href={`/student/lessons/${firstLesson.id}`}
-                          className={`flex items-center gap-1.5 px-3 py-2 min-h-[36px] rounded-xl text-xs font-semibold flex-shrink-0 transition-all ${
-                            isComplete
-                              ? "bg-[#F0FDF4] text-[#22C55E] hover:bg-[#DCFCE7]"
-                              : topicCompleted > 0
-                              ? "bg-[#EFF6FF] text-[#1D4ED8] hover:bg-[#DBEAFE]"
-                              : "bg-[#1D4ED8] text-white hover:bg-[#1e40af]"
-                          }`}
-                        >
-                          {isComplete ? (
-                            <><CheckCircle2 className="h-3.5 w-3.5" /> Review</>
-                          ) : topicCompleted > 0 ? (
-                            <><PlayCircle className="h-3.5 w-3.5" /> Continue</>
-                          ) : (
-                            <><PlayCircle className="h-3.5 w-3.5" /> Start</>
-                          )}
-                        </Link>
-                      ) : (
-                        <span className="flex items-center gap-1 text-xs text-[#CBD5E1] flex-shrink-0">
-                          <FileText className="h-3.5 w-3.5" /> No lessons
-                        </span>
+                      )}
+                      {topicCompleted > 0 && (
+                        <span className={`text-[11px] font-bold tabular-nums ${isComplete ? "text-[#16A34A]" : "text-[#1D4ED8]"}`}>{topicPct}%</span>
                       )}
                     </div>
                   </div>
+
+                  {/* State pill */}
+                  {firstLesson ? (
+                    <span className={`flex items-center gap-1.5 px-3.5 h-9 rounded-lg text-xs font-bold flex-shrink-0 transition-colors ${
+                      isComplete
+                        ? "bg-[#F0FDF4] text-[#16A34A]"
+                        : topicCompleted > 0
+                        ? "bg-[#EFF6FF] text-[#1D4ED8]"
+                        : "bg-[#1D4ED8] text-white group-hover:bg-[#1e40af]"
+                    }`}>
+                      {isComplete ? (
+                        <><CheckCircle2 className="h-3.5 w-3.5" /> Review</>
+                      ) : topicCompleted > 0 ? (
+                        <><PlayCircle className="h-3.5 w-3.5" /> Continue</>
+                      ) : (
+                        <><PlayCircle className="h-3.5 w-3.5" /> Start</>
+                      )}
+                    </span>
+                  ) : (
+                    <span className="flex items-center gap-1 text-xs text-[#CBD5E1] flex-shrink-0">
+                      <FileText className="h-3.5 w-3.5" /> Soon
+                    </span>
+                  )}
+                </div>
+              );
+
+              return firstLesson ? (
+                <Link
+                  key={topic.id}
+                  href={`/student/lessons/${firstLesson.id}`}
+                  className="block bg-white rounded-2xl border border-[#E6E4DE] eb-card eb-lift p-4 group hover:border-[#1D4ED8]/40"
+                >
+                  {inner}
+                </Link>
+              ) : (
+                <div key={topic.id} className="block bg-white rounded-2xl border border-[#E6E4DE] eb-card p-4 opacity-75">
+                  {inner}
                 </div>
               );
             })}
