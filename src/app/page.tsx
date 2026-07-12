@@ -386,8 +386,8 @@ export default function LandingPage() {
               const Icon = f.icon;
               return (
                 <div key={f.title}
-                  className={`rounded-2xl p-7 border transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 ${
-                    f.featured ? "bg-[#1B3A8A] border-[#1B3A8A]" : "bg-white border-[#E6E4DE] hover:border-slate-300"
+                  className={`rounded-2xl p-7 border eb-lift ${
+                    f.featured ? "bg-[#1B3A8A] border-[#1B3A8A] eb-card-navy" : "bg-white border-[#E6E4DE] eb-card hover:border-slate-300"
                   }`}>
                   <div className={`h-12 w-12 rounded-2xl bg-gradient-to-br ${f.color} flex items-center justify-center mb-6 shadow-[0_4px_12px_rgba(0,0,0,0.12)]`}>
                     <Icon className="h-5.5 w-5.5 text-white" />
@@ -413,7 +413,7 @@ export default function LandingPage() {
               const Icon = f.icon;
               return (
                 <div key={f.title}
-                  className="bg-white rounded-2xl p-5 border border-[#E6E4DE] hover:border-slate-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex items-start gap-4">
+                  className="bg-white rounded-2xl p-5 border border-[#E6E4DE] eb-card eb-lift hover:border-slate-300 flex items-start gap-4">
                   <div className={`h-9 w-9 rounded-xl bg-gradient-to-br ${f.color} flex items-center justify-center shadow-sm flex-shrink-0 mt-0.5`}>
                     <Icon className="h-4 w-4 text-white" />
                   </div>
@@ -534,7 +534,7 @@ export default function LandingPage() {
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {roles.map((r) => { const Icon = r.icon; return (
-                  <div key={r.title} className={`bg-white rounded-2xl p-5 border border-[#EEEDE8] ${r.border} hover:shadow-md transition-all duration-200`}>
+                  <div key={r.title} className={`bg-white rounded-2xl p-5 border border-[#EEEDE8] eb-card eb-lift ${r.border}`}>
                     <div className={`h-10 w-10 rounded-xl ${r.iconBg} flex items-center justify-center mb-3.5`}><Icon className={`h-5 w-5 ${r.iconColor}`} /></div>
                     <h3 className="font-bold text-slate-900 mb-1.5">{r.title}</h3>
                     <p className="text-sm text-slate-500 leading-relaxed">{r.desc}</p>
