@@ -159,7 +159,7 @@ export default function LandingPage() {
         {mobileOpen && (
           <div className="md:hidden border-t border-[#EEEDE8] bg-white px-5 py-4 space-y-1">
             {navLinks.map((l) => (
-              <a key={l.label} href={l.href} className="flex items-center justify-between text-sm font-medium text-slate-700 py-2.5 px-3 rounded-lg hover:bg-[#F0F4FF] hover:text-[#1B3A8A] transition-colors" onClick={() => setMobileOpen(false)}>
+              <a key={l.label} href={l.href} className="flex items-center justify-between text-sm font-medium text-slate-700 py-2.5 px-3 rounded-lg hover:bg-[#F1F0EC] hover:text-[#1B3A8A] transition-colors" onClick={() => setMobileOpen(false)}>
                 {l.label} <ChevronRight className="h-4 w-4 text-slate-400" />
               </a>
             ))}
@@ -172,8 +172,10 @@ export default function LandingPage() {
       </header>
 
       {/* ─── HERO ──────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-[#F0F4FF]">
-        <div className="absolute inset-0" style={{ background: "radial-gradient(90% 75% at 80% 8%, rgba(29,78,216,0.12) 0%, rgba(29,78,216,0) 55%), radial-gradient(75% 70% at 8% 30%, rgba(13,148,136,0.09) 0%, rgba(13,148,136,0) 55%), linear-gradient(180deg, #E9EFFF 0%, #F2F6FF 42%, #FFFFFF 100%)" }} />
+      <section className="relative overflow-hidden bg-[#F4F3EF]">
+        {/* Atmospheric brand mesh (borrowed from Stripe's "color is the depth
+            medium" craft) — navy + orange + teal glows on a warm cream base. */}
+        <div className="absolute inset-0" style={{ background: "radial-gradient(85% 65% at 78% 4%, rgba(27,58,138,0.14) 0%, rgba(27,58,138,0) 55%), radial-gradient(70% 60% at 6% 18%, rgba(232,114,42,0.10) 0%, rgba(232,114,42,0) 55%), radial-gradient(65% 55% at 95% 60%, rgba(13,148,136,0.08) 0%, rgba(13,148,136,0) 60%), linear-gradient(180deg, #F4F3EF 0%, #F8F7F2 46%, #FFFFFF 100%)" }} />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-0 lg:pt-20">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-end">
@@ -184,7 +186,7 @@ export default function LandingPage() {
                 <span>🇬🇭</span> Built for Ghana&apos;s BECE &amp; WASSCE candidates
               </div>
 
-              <h1 className="eb-rise-2 font-[family-name:var(--font-brand)] font-extrabold tracking-[-0.035em] leading-[0.98] mb-6 text-[clamp(2.75rem,6vw,4.25rem)] text-balance">
+              <h1 className="eb-rise-2 font-[family-name:var(--font-jakarta)] font-extrabold tracking-[-0.035em] leading-[0.98] mb-6 text-[clamp(2.75rem,6vw,4.25rem)] text-balance">
                 <span className="block text-slate-900">Smart learning.</span>
                 <span className="block text-[#1B3A8A]">Smarter assessment.</span>
                 <span className="block text-[#E8722A]">Better outcomes.</span>
@@ -218,7 +220,7 @@ export default function LandingPage() {
               {/* Image with subtle frame */}
               <div className="relative rounded-t-[2rem] overflow-hidden h-[520px] shadow-[0_32px_64px_rgba(27,58,138,0.18)]">
                 <Image src="/images/heroimage.jpg" alt="Students learning with EduBridge AI" fill className="object-cover object-center" priority />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#F0F4FF] via-transparent to-[#1B3A8A]/8" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#F4F3EF] via-transparent to-[#1B3A8A]/8" />
               </div>
 
               {/* Card 1 — AI Tutor (top left, refined) */}
@@ -285,7 +287,7 @@ export default function LandingPage() {
                 <span className="h-1.5 w-1.5 rounded-full bg-[#E8722A]" />
                 <span className="text-[11px] font-bold text-[#E8722A]/80 uppercase tracking-[0.16em]">Trusted platform</span>
               </div>
-              <h2 className="font-[family-name:var(--font-brand)] text-3xl lg:text-[2.6rem] text-white leading-[1.15] mb-5">
+              <h2 className="font-[family-name:var(--font-jakarta)] text-3xl lg:text-[2.6rem] text-white leading-[1.15] mb-5">
                 The numbers<br />tell the story.
               </h2>
               <p className="text-white/75 text-[15px] leading-relaxed max-w-[260px]">
@@ -323,7 +325,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
             <p className="text-xs font-bold tracking-widest uppercase text-[#E8722A] mb-4">Simple to start</p>
-            <h2 className="font-[family-name:var(--font-brand)] text-4xl lg:text-5xl text-slate-900 leading-tight max-w-xl mx-auto">
+            <h2 className="font-[family-name:var(--font-jakarta)] text-4xl lg:text-5xl text-slate-900 leading-tight max-w-xl mx-auto">
               From sign-up to exam-ready in three steps.
             </h2>
           </div>
@@ -342,7 +344,7 @@ export default function LandingPage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
                     {/* Step number — large background text */}
                     <div className="absolute top-3 right-4">
-                      <span className="text-[5rem] font-[family-name:var(--font-brand)] font-black text-white/10 leading-none select-none">{step.number}</span>
+                      <span className="text-[5rem] font-[family-name:var(--font-jakarta)] font-black text-white/10 leading-none select-none">{step.number}</span>
                     </div>
                     {/* Icon badge at bottom */}
                     <div className="absolute bottom-4 left-4">
@@ -364,12 +366,12 @@ export default function LandingPage() {
       </section>
 
       {/* ─── FEATURES ──────────────────────────────────────────────────── */}
-      <section id="features" className="bg-[#F8F9FF] py-20 lg:py-28">
+      <section id="features" className="bg-[#F8F7F4] py-20 lg:py-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10">
             <div>
               <p className="text-xs font-bold tracking-widest uppercase text-[#E8722A] mb-4">Why EduBridge AI</p>
-              <h2 className="font-[family-name:var(--font-brand)] text-4xl lg:text-5xl text-slate-900 leading-tight max-w-xl">
+              <h2 className="font-[family-name:var(--font-jakarta)] text-4xl lg:text-5xl text-slate-900 leading-tight max-w-xl">
                 Everything a candidate needs in one beautiful place.
               </h2>
             </div>
@@ -432,7 +434,7 @@ export default function LandingPage() {
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div>
               <p className="text-xs font-bold tracking-widest uppercase text-[#E8722A] mb-4">Learn. Earn. Level up.</p>
-              <h2 className="font-[family-name:var(--font-brand)] text-4xl lg:text-5xl text-slate-900 mb-5 leading-tight">
+              <h2 className="font-[family-name:var(--font-jakarta)] text-4xl lg:text-5xl text-slate-900 mb-5 leading-tight">
                 Studying that feels like leveling up your favourite game.
               </h2>
               <p className="text-slate-600 text-[17px] mb-8 leading-relaxed max-w-md">
@@ -454,7 +456,7 @@ export default function LandingPage() {
                   </div>
                   <div className="flex items-end justify-between mb-4">
                     <div className="flex items-baseline gap-1.5">
-                      <span className="font-[family-name:var(--font-brand)] text-6xl font-black leading-none">12</span>
+                      <span className="font-[family-name:var(--font-jakarta)] text-6xl font-black leading-none">12</span>
                       <span className="text-lg text-white/60 mb-1">days</span>
                     </div>
                     <div className="text-right">
@@ -514,7 +516,7 @@ export default function LandingPage() {
       </section>
 
       {/* ─── FOR EVERYONE ──────────────────────────────────────────────── */}
-      <section id="for-everyone" className="bg-[#F8F9FF] py-20 lg:py-28">
+      <section id="for-everyone" className="bg-[#F8F7F4] py-20 lg:py-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="relative rounded-3xl overflow-hidden h-80 lg:h-[500px] hidden lg:block shadow-2xl">
@@ -527,7 +529,7 @@ export default function LandingPage() {
             </div>
             <div>
               <p className="text-xs font-bold tracking-widest uppercase text-[#E8722A] mb-4">Built for everyone</p>
-              <h2 className="font-[family-name:var(--font-brand)] text-4xl lg:text-5xl text-slate-900 mb-10 leading-tight">
+              <h2 className="font-[family-name:var(--font-jakarta)] text-4xl lg:text-5xl text-slate-900 mb-10 leading-tight">
                 One platform, four tailored experiences.
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -550,7 +552,7 @@ export default function LandingPage() {
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
             <div className="lg:sticky lg:top-32">
               <p className="text-xs font-bold tracking-widest uppercase text-[#E8722A] mb-4">Curriculum</p>
-              <h2 className="font-[family-name:var(--font-brand)] text-4xl lg:text-5xl text-slate-900 mb-5 leading-tight">BECE and WASSCE subjects, every one of them.</h2>
+              <h2 className="font-[family-name:var(--font-jakarta)] text-4xl lg:text-5xl text-slate-900 mb-5 leading-tight">BECE and WASSCE subjects, every one of them.</h2>
               <p className="text-slate-600 text-[17px] leading-relaxed mb-8">Tap any subject to jump straight into its topics, lessons and practice questions.</p>
               <Link href="/signup" className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#1B3A8A] hover:bg-[#162f74] text-white font-bold rounded-xl transition-all text-sm shadow-[0_4px_16px_rgba(27,58,138,0.25)] hover:-translate-y-0.5">
                 Browse all subjects <ChevronRight className="h-4 w-4" />
@@ -561,7 +563,7 @@ export default function LandingPage() {
                 <p className="text-xs font-bold tracking-widest text-slate-400 uppercase mb-3">BECE · Junior High</p>
                 <div className="flex flex-wrap gap-2">
                   {beceSubjects.map((s) => (
-                    <Link key={s} href="/signup" className="px-3.5 py-1.5 rounded-full border border-[#E6E4DE] bg-[#F8F7F4] hover:border-[#1B3A8A] hover:bg-[#F0F4FF] hover:text-[#1B3A8A] text-sm text-slate-700 font-medium transition-all">{s}</Link>
+                    <Link key={s} href="/signup" className="px-3.5 py-1.5 rounded-full border border-[#E6E4DE] bg-[#F8F7F4] hover:border-[#1B3A8A] hover:bg-[#F1F0EC] hover:text-[#1B3A8A] text-sm text-slate-700 font-medium transition-all">{s}</Link>
                   ))}
                 </div>
               </div>
@@ -583,7 +585,7 @@ export default function LandingPage() {
         <Image src="/images/students-classroom-gh.jpg" alt="Ghanaian students in the classroom" fill className="object-cover object-center" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#1B3A8A]/88 via-[#1B3A8A]/72 to-[#0D9488]/50" />
         <div className="relative h-full flex flex-col items-center justify-center text-center px-4">
-          <p className="font-[family-name:var(--font-brand)] text-3xl lg:text-5xl text-white font-bold max-w-3xl leading-tight mb-4">
+          <p className="font-[family-name:var(--font-jakarta)] text-3xl lg:text-5xl text-white font-bold max-w-3xl leading-tight mb-4">
             &ldquo;Every Ghanaian student deserves a world-class education.&rdquo;
           </p>
           <p className="text-white/75 text-sm font-medium">— EduBridge AI Mission</p>
@@ -591,14 +593,14 @@ export default function LandingPage() {
       </section>
 
       {/* ─── CTA ───────────────────────────────────────────────────────── */}
-      <section className="bg-[#F8F9FF] py-20 lg:py-28">
+      <section className="bg-[#F8F7F4] py-20 lg:py-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative overflow-hidden bg-[#1B3A8A] rounded-3xl shadow-[0_24px_64px_rgba(27,58,138,0.3)]">
             <div className="absolute top-0 left-0 h-40 w-40 rounded-full bg-[#E8722A]/20 -translate-y-1/2 -translate-x-1/4 blur-2xl" />
             <div className="absolute bottom-0 right-1/3 h-32 w-32 rounded-full bg-[#0D9488]/15 translate-y-1/2 blur-xl" />
             <div className="grid lg:grid-cols-2 gap-0 items-stretch">
               <div className="px-8 py-16 sm:px-14 lg:px-16 relative z-10">
-                <h2 className="font-[family-name:var(--font-brand)] text-4xl lg:text-5xl text-white mb-4 leading-tight">Your best result is one practice away.</h2>
+                <h2 className="font-[family-name:var(--font-jakarta)] text-4xl lg:text-5xl text-white mb-4 leading-tight">Your best result is one practice away.</h2>
                 <p className="text-white/80 text-lg mb-8">Join EduBridge AI today. Free for students, always.</p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Link href="/signup" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#E8722A] hover:bg-[#d4641e] text-white font-bold rounded-xl transition-all shadow-[0_4px_20px_rgba(232,114,42,0.5)] hover:-translate-y-0.5 text-sm">
