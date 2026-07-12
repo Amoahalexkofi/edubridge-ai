@@ -600,6 +600,7 @@ export default function LandingPage() {
             <div className="absolute bottom-0 right-1/3 h-32 w-32 rounded-full bg-[#0D9488]/15 translate-y-1/2 blur-xl" />
             <div className="grid lg:grid-cols-2 gap-0 items-stretch">
               <div className="px-8 py-16 sm:px-14 lg:px-16 relative z-10">
+                <p className="text-xs font-bold tracking-widest uppercase text-[#E8722A] mb-4">Start today</p>
                 <h2 className="font-[family-name:var(--font-jakarta)] text-4xl lg:text-5xl text-white mb-4 leading-tight">Your best result is one practice away.</h2>
                 <p className="text-white/80 text-lg mb-8">Join EduBridge AI today. Free for students, always.</p>
                 <div className="flex flex-col sm:flex-row gap-3">
@@ -623,8 +624,8 @@ export default function LandingPage() {
       {/* ─── FOOTER ────────────────────────────────────────────────────── */}
       <footer className="bg-slate-900 text-white">
         <div className="h-[3px] bg-gradient-to-r from-[#1B3A8A] via-[#0D9488] to-[#E8722A]" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
             <div className="md:col-span-2">
               <div className="mb-4">
                 <Image src="/logo-no-bg.png" alt="EduBridge Educational Solutions" width={130} height={130} className="h-16 w-auto object-contain brightness-0 invert" />
@@ -636,7 +637,7 @@ export default function LandingPage() {
               </div>
             </div>
             <div>
-              <h4 className="font-bold text-sm mb-4 text-white">Platform</h4>
+              <h4 className="text-[11px] font-bold uppercase tracking-wider mb-4 text-slate-500">Platform</h4>
               <ul className="space-y-2.5 text-sm text-slate-400">
                 <li><a href="#features"    className="hover:text-white transition-colors">Features</a></li>
                 <li><a href="#curriculum"  className="hover:text-white transition-colors">Subjects</a></li>
@@ -645,7 +646,7 @@ export default function LandingPage() {
               </ul>
             </div>
             <div>
-              <h4 className="font-bold text-sm mb-4 text-white">Get started</h4>
+              <h4 className="text-[11px] font-bold uppercase tracking-wider mb-4 text-slate-500">Get started</h4>
               <ul className="space-y-2.5 text-sm text-slate-400">
                 <li><Link href="/signup" className="hover:text-white transition-colors">Create account</Link></li>
                 <li><Link href="/login"  className="hover:text-white transition-colors">Sign in</Link></li>
