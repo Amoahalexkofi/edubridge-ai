@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, Save, Eye, EyeOff } from "lucide-react";
+import { Loader2, Save, Eye, EyeOff, ImagePlus } from "lucide-react";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
+import { uploadContentImage } from "@/lib/uploads";
+import LessonContent from "@/app/student/lessons/[id]/_components/LessonContent";
 
 type Topic = {
   id: string;
@@ -40,6 +42,34 @@ export default function LessonEditor({
   const [content, setContent] = useState(initialContent);
   const [saving, setSaving] = useState(false);
   const [preview, setPreview] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const imgInputRef = useRef<HTMLInputElement>(null);
+
+  async function handleImage(file: File | null) {
+    if (!file) return;
+    if (!file.type.startsWith("image/")) { toast.error("Please choose an image file."); return; }
+    if (file.size > 5 * 1024 * 1024) { toast.error("Image must be under 5 MB."); return; }
+    setUploading(true);
+    const form = new FormData();
+    form.append("file", file);
+    const res = await uploadContentImage(form);
+    setUploading(false);
+    if (res.error || !res.url) { toast.error(res.error ?? "Upload failed."); return; }
+
+    // Insert markdown image at the cursor (alt text doubles as a caption)
+    const alt = file.name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ").trim();
+    const snippet = `\n\n![${alt}](${res.url})\n\n`;
+    const el = textareaRef.current;
+    if (el) {
+      const at = el.selectionStart ?? content.length;
+      setContent(content.slice(0, at) + snippet + content.slice(at));
+    } else {
+      setContent(content + snippet);
+    }
+    toast.success("Image inserted.");
+    if (imgInputRef.current) imgInputRef.current.value = "";
+  }
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
@@ -123,31 +153,46 @@ export default function LessonEditor({
       <div className="bg-white rounded-2xl border border-[#E6E4DE] eb-card p-5">
         <div className="flex items-center justify-between mb-3">
           <label className="block text-sm font-semibold text-[#334155]">Lesson content</label>
-          <button
-            type="button"
-            onClick={() => setPreview(!preview)}
-            className="flex items-center gap-1.5 text-xs text-[#1D4ED8] hover:underline font-semibold"
-          >
-            {preview ? <><EyeOff className="h-3.5 w-3.5" /> Edit</> : <><Eye className="h-3.5 w-3.5" /> Preview</>}
-          </button>
+          <div className="flex items-center gap-3">
+            <input
+              ref={imgInputRef}
+              type="file"
+              accept="image/png,image/jpeg,image/webp,image/gif"
+              className="hidden"
+              onChange={(e) => handleImage(e.target.files?.[0] ?? null)}
+            />
+            {!preview && (
+              <button
+                type="button"
+                onClick={() => imgInputRef.current?.click()}
+                disabled={uploading}
+                className="flex items-center gap-1.5 text-xs text-[#1D4ED8] hover:underline font-semibold disabled:opacity-60"
+              >
+                {uploading ? <><Loader2 className="h-3.5 w-3.5 animate-spin" /> Uploading…</> : <><ImagePlus className="h-3.5 w-3.5" /> Insert image</>}
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => setPreview(!preview)}
+              className="flex items-center gap-1.5 text-xs text-[#1D4ED8] hover:underline font-semibold"
+            >
+              {preview ? <><EyeOff className="h-3.5 w-3.5" /> Edit</> : <><Eye className="h-3.5 w-3.5" /> Preview</>}
+            </button>
+          </div>
         </div>
         <p className="text-xs text-[#94a3b8] mb-3">
           Use # for headings, ## for sub-headings, - for bullet points. Separate paragraphs with a blank line.
+          Add diagrams with <b>Insert image</b> — they appear where your cursor is.
         </p>
         {preview ? (
-          <div className="min-h-[300px] border border-[#E6E4DE] rounded-xl p-4 bg-[#F8F7F4] prose prose-slate max-w-none text-sm space-y-3">
-            {content.split(/\n{2,}/).filter(Boolean).map((para, i) => {
-              if (para.startsWith("# ")) return <h2 key={i} className="text-base font-bold text-[#0f172a]">{para.slice(2)}</h2>;
-              if (para.startsWith("## ")) return <h3 key={i} className="text-sm font-bold text-[#334155]">{para.slice(3)}</h3>;
-              if (para.startsWith("- ")) {
-                const items = para.split("\n").filter(Boolean);
-                return <ul key={i} className="list-disc pl-5 space-y-1">{items.map((item, j) => <li key={j} className="text-[#334155] text-sm">{item.replace(/^- /, "")}</li>)}</ul>;
-              }
-              return <p key={i} className="text-[#334155] leading-relaxed">{para}</p>;
-            })}
+          <div className="min-h-[300px] border border-[#E6E4DE] rounded-xl p-4 bg-[#F8F7F4]">
+            {content.trim()
+              ? <LessonContent content={content} />
+              : <p className="text-sm text-[#94a3b8]">Nothing to preview yet — write some content first.</p>}
           </div>
         ) : (
           <textarea
+            ref={textareaRef}
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder={`# Introduction\n\nWrite your lesson content here.\n\n## Key Points\n\n- Point one\n- Point two\n\nExplain the main concept clearly...`}

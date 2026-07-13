@@ -72,6 +72,19 @@ export default function LessonContent({ content }: { content: string }) {
             <td className="px-4 py-2 border border-[#E6E4DE] text-[#334155]">{children}</td>
           ),
           hr: () => <hr className="border-[#E6E4DE] my-6" />,
+          img: ({ src, alt }) =>
+            typeof src === "string" ? (
+              <figure className="my-4">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={src}
+                  alt={alt ?? ""}
+                  loading="lazy"
+                  className="max-w-full h-auto rounded-xl border border-[#E6E4DE] mx-auto block"
+                />
+                {alt && <figcaption className="text-center text-xs text-[#94a3b8] mt-2">{alt}</figcaption>}
+              </figure>
+            ) : null,
         }}
       >
         {content}
