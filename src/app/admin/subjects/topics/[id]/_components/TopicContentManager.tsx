@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
-  BookOpen, PenLine, Plus, Pencil, Trash2, X, CheckCircle2, Sparkles,
+  BookOpen, PenLine, Plus, Pencil, Trash2, X, CheckCircle2, Sparkles, ImageIcon,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import LessonEditor from "@/app/teacher/lessons/new/_components/LessonEditor";
@@ -16,6 +16,7 @@ interface OptionItem { id: string; text: string }
 interface Question {
   id: string; prompt: string; options: OptionItem[];
   correct_answer: string; explanation: string | null; difficulty: string | null;
+  image_url: string | null;
 }
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type TopicOpt = { id: string; title: string; order_index: number; subject_id: string; subjects: any };
@@ -150,6 +151,11 @@ export default function TopicContentManager({ topicId, lessons, questions, allTo
                           {q.difficulty}
                         </span>
                       )}
+                      {q.image_url && (
+                        <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#EFF6FF] text-[#1D4ED8]">
+                          <ImageIcon className="h-3 w-3" /> Diagram
+                        </span>
+                      )}
                     </div>
                   </div>
                   <button
@@ -215,6 +221,7 @@ export default function TopicContentManager({ topicId, lessons, questions, allTo
                   initialCorrect={drawer.kind === "question-edit" ? drawer.question.correct_answer : undefined}
                   initialExplanation={drawer.kind === "question-edit" ? (drawer.question.explanation ?? "") : ""}
                   initialDifficulty={drawer.kind === "question-edit" ? (drawer.question.difficulty ?? "medium") : undefined}
+                  initialImageUrl={drawer.kind === "question-edit" ? drawer.question.image_url : null}
                   onSaved={onSaved}
                 />
               )}

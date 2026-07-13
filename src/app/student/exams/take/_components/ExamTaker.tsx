@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Clock, AlertTriangle, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import QuestionImage from "@/components/QuestionImage";
 
 type Question = {
   id: string;
@@ -11,6 +12,7 @@ type Question = {
   options: Array<{ id: string; text: string }>;
   correct_answer: string;
   explanation: string | null;
+  image_url: string | null;
   topic_id: string;
   topics: { title: string } | null;
 };
@@ -155,9 +157,10 @@ export default function ExamTaker({ attemptId, subject, questions, durationMinut
           <p className="text-sm font-semibold text-[#64748B] mb-3">
             Question {currentIdx + 1} of {questions.length}
           </p>
-          <p className="text-sm sm:text-base font-semibold text-[#0f172a] leading-relaxed mb-5">
+          <p className="text-sm sm:text-base font-semibold text-[#0f172a] leading-relaxed mb-3">
             {current.prompt}
           </p>
+          <QuestionImage src={current.image_url} className="mb-5" />
 
           <div className="space-y-2.5">
             {current.options.map((opt) => {

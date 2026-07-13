@@ -34,7 +34,7 @@ export default async function AdminTopicPage({
       .order("order_index"),
     supabase
       .from("questions")
-      .select("id, prompt, options, correct_answer, explanation, difficulty")
+      .select("id, prompt, options, correct_answer, explanation, difficulty, image_url")
       .eq("topic_id", id)
       .order("created_at"),
     supabase

@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, Plus, Save, Trash2 } from "lucide-react";
+import { Loader2, Plus, Save, Trash2, ImagePlus, X } from "lucide-react";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
+import { uploadContentImage } from "@/lib/uploads";
 
 type Topic = {
   id: string;
@@ -31,6 +32,7 @@ interface Props {
   initialCorrect?: string;
   initialExplanation?: string;
   initialDifficulty?: string;
+  initialImageUrl?: string | null;
   /** When provided, called after a successful save instead of navigating —
       lets the editor be reused inline (e.g. the topic content manager).
       keepOpen=true (from "add another") asks the parent to refresh but not close. */
@@ -46,6 +48,7 @@ export default function QuestionEditor({
   initialCorrect = "a",
   initialExplanation = "",
   initialDifficulty = "medium",
+  initialImageUrl = null,
   onSaved,
 }: Props) {
   const router = useRouter();
@@ -55,8 +58,26 @@ export default function QuestionEditor({
   const [correct, setCorrect] = useState(initialCorrect);
   const [explanation, setExplanation] = useState(initialExplanation);
   const [difficulty, setDifficulty] = useState(initialDifficulty);
+  const [imageUrl, setImageUrl] = useState<string | null>(initialImageUrl);
+  const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [addAnother, setAddAnother] = useState(false);
+  const imgInputRef = useRef<HTMLInputElement>(null);
+
+  async function handleImage(file: File | null) {
+    if (!file) return;
+    if (!file.type.startsWith("image/")) { toast.error("Please choose an image file."); return; }
+    if (file.size > 5 * 1024 * 1024) { toast.error("Image must be under 5 MB."); return; }
+    setUploading(true);
+    const form = new FormData();
+    form.append("file", file);
+    const res = await uploadContentImage(form);
+    setUploading(false);
+    if (res.error || !res.url) { toast.error(res.error ?? "Upload failed."); return; }
+    setImageUrl(res.url);
+    toast.success("Diagram added.");
+    if (imgInputRef.current) imgInputRef.current.value = "";
+  }
 
   function setOption(idx: number, text: string) {
     setOptions((opts) => opts.map((o, i) => i === idx ? { ...o, text } : o));
@@ -90,6 +111,7 @@ export default function QuestionEditor({
       correct_answer: correct,
       explanation: explanation.trim() || null,
       difficulty,
+      image_url: imageUrl,
     };
 
     if (questionId) {
@@ -108,6 +130,7 @@ export default function QuestionEditor({
         setOptions(DEFAULT_OPTIONS);
         setCorrect("a");
         setExplanation("");
+        setImageUrl(null);
         if (onSaved) onSaved(true); // refresh the parent's list but keep the form open
       } else if (onSaved) {
         onSaved();
@@ -167,6 +190,43 @@ export default function QuestionEditor({
             rows={3}
             className="w-full px-4 py-3 rounded-xl border border-[#E6E4DE] bg-white text-[#334155] text-sm placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1D4ED8] focus:ring-2 focus:ring-[#1D4ED8]/10 transition-all resize-none"
           />
+        </div>
+
+        {/* Optional diagram */}
+        <div>
+          <label className="block text-sm font-semibold text-[#334155] mb-1.5">
+            Diagram <span className="font-normal text-[#94a3b8]">(optional — for figures, graphs, geometry)</span>
+          </label>
+          <input
+            ref={imgInputRef}
+            type="file"
+            accept="image/png,image/jpeg,image/webp,image/gif"
+            className="hidden"
+            onChange={(e) => handleImage(e.target.files?.[0] ?? null)}
+          />
+          {imageUrl ? (
+            <div className="relative inline-block">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={imageUrl} alt="Question diagram" className="max-h-48 w-auto rounded-xl border border-[#E6E4DE] bg-white" />
+              <button
+                type="button"
+                onClick={() => setImageUrl(null)}
+                className="absolute -top-2 -right-2 h-7 w-7 rounded-full bg-white border border-[#E6E4DE] shadow-sm flex items-center justify-center text-slate-500 hover:text-red-500 hover:border-red-200"
+                aria-label="Remove diagram"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => imgInputRef.current?.click()}
+              disabled={uploading}
+              className="flex items-center gap-2 h-11 px-4 rounded-xl border border-dashed border-[#CBD5E1] text-sm font-semibold text-[#64748B] hover:border-[#1D4ED8] hover:text-[#1D4ED8] transition-colors disabled:opacity-60"
+            >
+              {uploading ? <><Loader2 className="h-4 w-4 animate-spin" /> Uploading…</> : <><ImagePlus className="h-4 w-4" /> Add a diagram</>}
+            </button>
+          )}
         </div>
 
         {/* Options */}

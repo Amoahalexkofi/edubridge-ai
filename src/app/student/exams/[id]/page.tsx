@@ -3,6 +3,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthUser } from "@/lib/auth";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
+import QuestionImage from "@/components/QuestionImage";
 import {
   Trophy, CheckCircle2, XCircle, ArrowLeft,
   RotateCcw, BookOpen, Clock, Brain, Target,
@@ -61,7 +62,7 @@ export default async function ExamResultPage({
   const { data: questions } = questionIds.length > 0
     ? await admin
         .from("questions")
-        .select("id, prompt, options, correct_answer, explanation, topics(title)")
+        .select("id, prompt, options, correct_answer, explanation, image_url, topics(title)")
         .in("id", questionIds)
     : { data: [] };
 
@@ -292,6 +293,7 @@ export default async function ExamResultPage({
                         <span className="text-[#94a3b8] mr-1">{i + 1}.</span>
                         {q.prompt}
                       </p>
+                      <QuestionImage src={(q as { image_url?: string | null }).image_url} />
                       {topicName && (
                         <p className="text-[11px] text-[#94a3b8] mt-1">{topicName}</p>
                       )}

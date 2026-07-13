@@ -7,6 +7,7 @@ import {
   Trophy, BookOpen, PenLine, GraduationCap, Target, ChevronRight,
 } from "lucide-react";
 import { subjectGradient, subjectIcon } from "@/lib/subject-style";
+import QuestionImage from "@/components/QuestionImage";
 
 type Subject = { id: string; name: string; slug: string; icon: string | null; color: string | null };
 type Question = {
@@ -15,6 +16,7 @@ type Question = {
   options: Array<{ id: string; text: string }>;
   correct_answer: string;
   explanation: string | null;
+  image_url: string | null;
   topic_id: string;
   topics: { title: string } | null;
 };
@@ -291,6 +293,7 @@ export default function PracticeClient({ subjects, activeSubjectId, questions, e
         <p className="text-sm sm:text-base font-semibold text-[#0f172a] leading-relaxed">
           {current.prompt}
         </p>
+        <QuestionImage src={current.image_url} />
 
         <div className="space-y-2.5">
           {current.options.map((opt) => {

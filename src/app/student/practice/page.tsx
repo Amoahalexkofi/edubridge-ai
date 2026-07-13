@@ -38,6 +38,7 @@ export default async function PracticePage({
     options: Array<{ id: string; text: string }>;
     correct_answer: string;
     explanation: string | null;
+    image_url: string | null;
     topic_id: string;
     topics: { title: string } | null;
   }> = [];
@@ -53,7 +54,7 @@ export default async function PracticePage({
       const ids = topicIds.map((t) => t.id);
       const { data: rawQuestions } = await supabase
         .from("questions")
-        .select("id, prompt, options, correct_answer, explanation, topic_id, topics(title)")
+        .select("id, prompt, options, correct_answer, explanation, image_url, topic_id, topics(title)")
         .in("topic_id", ids)
         .limit(20);
 

@@ -42,7 +42,7 @@ export default async function TakeExamPage({
 
   const { data: rawQuestions } = await admin
     .from("questions")
-    .select("id, prompt, options, correct_answer, explanation, topic_id, topics(title)")
+    .select("id, prompt, options, correct_answer, explanation, image_url, topic_id, topics(title)")
     .in("topic_id", topicIds)
     .limit(60);
 
@@ -55,6 +55,7 @@ export default async function TakeExamPage({
     options: Array<{ id: string; text: string }>;
     correct_answer: string;
     explanation: string | null;
+    image_url: string | null;
     topic_id: string;
     topics: { title: string } | null;
   }>).sort(() => Math.random() - 0.5).slice(0, 40);
