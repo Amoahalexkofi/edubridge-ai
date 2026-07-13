@@ -4,11 +4,12 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
-  BookOpen, PenLine, Plus, Pencil, Trash2, X, CheckCircle2,
+  BookOpen, PenLine, Plus, Pencil, Trash2, X, CheckCircle2, Sparkles,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import LessonEditor from "@/app/teacher/lessons/new/_components/LessonEditor";
 import QuestionEditor from "@/app/teacher/questions/new/_components/QuestionEditor";
+import QuestionImporter from "./QuestionImporter";
 
 interface Lesson { id: string; title: string; order_index: number; content: string | null }
 interface OptionItem { id: string; text: string }
@@ -31,6 +32,7 @@ type Drawer =
   | { kind: "lesson-edit"; lesson: Lesson }
   | { kind: "question-new" }
   | { kind: "question-edit"; question: Question }
+  | { kind: "question-import" }
   | null;
 
 const DIFF_STYLE: Record<string, string> = {
@@ -115,12 +117,20 @@ export default function TopicContentManager({ topicId, lessons, questions, allTo
             <h2 className="font-bold text-slate-900">Questions</h2>
             <span className="text-xs font-bold text-slate-400 tabular-nums">{questions.length}</span>
           </div>
-          <button
-            onClick={() => setDrawer({ kind: "question-new" })}
-            className="flex items-center gap-1.5 h-9 px-3.5 rounded-lg bg-[#E8722A] hover:bg-[#d4641e] text-white text-xs font-bold transition-colors"
-          >
-            <Plus className="h-3.5 w-3.5" /> Add question
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setDrawer({ kind: "question-import" })}
+              className="flex items-center gap-1.5 h-9 px-3.5 rounded-lg border border-[#1D4ED8] text-[#1D4ED8] hover:bg-[#EFF6FF] text-xs font-bold transition-colors"
+            >
+              <Sparkles className="h-3.5 w-3.5" /> Import with AI
+            </button>
+            <button
+              onClick={() => setDrawer({ kind: "question-new" })}
+              className="flex items-center gap-1.5 h-9 px-3.5 rounded-lg bg-[#E8722A] hover:bg-[#d4641e] text-white text-xs font-bold transition-colors"
+            >
+              <Plus className="h-3.5 w-3.5" /> Add question
+            </button>
+          </div>
         </div>
 
         {questions.length > 0 ? (
@@ -178,6 +188,7 @@ export default function TopicContentManager({ topicId, lessons, questions, allTo
                 {drawer.kind === "lesson-edit" && "Edit lesson"}
                 {drawer.kind === "question-new" && "New question"}
                 {drawer.kind === "question-edit" && "Edit question"}
+                {drawer.kind === "question-import" && "Import questions with AI"}
               </p>
               <button onClick={() => setDrawer(null)} className="h-8 w-8 rounded-lg text-slate-500 hover:bg-[#F2F1EE] flex items-center justify-center" aria-label="Close">
                 <X className="h-4 w-4" />
@@ -206,6 +217,9 @@ export default function TopicContentManager({ topicId, lessons, questions, allTo
                   initialDifficulty={drawer.kind === "question-edit" ? (drawer.question.difficulty ?? "medium") : undefined}
                   onSaved={onSaved}
                 />
+              )}
+              {drawer.kind === "question-import" && (
+                <QuestionImporter topicId={topicId} onSaved={onSaved} />
               )}
             </div>
           </div>
