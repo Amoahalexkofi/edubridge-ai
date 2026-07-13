@@ -31,6 +31,10 @@ interface Props {
   initialCorrect?: string;
   initialExplanation?: string;
   initialDifficulty?: string;
+  /** When provided, called after a successful save instead of navigating —
+      lets the editor be reused inline (e.g. the topic content manager).
+      keepOpen=true (from "add another") asks the parent to refresh but not close. */
+  onSaved?: (keepOpen?: boolean) => void;
 }
 
 export default function QuestionEditor({
@@ -42,6 +46,7 @@ export default function QuestionEditor({
   initialCorrect = "a",
   initialExplanation = "",
   initialDifficulty = "medium",
+  onSaved,
 }: Props) {
   const router = useRouter();
   const [topicId, setTopicId] = useState(preselectedTopicId ?? topics[0]?.id ?? "");
@@ -92,7 +97,7 @@ export default function QuestionEditor({
       setSaving(false);
       if (error) { toast.error(error.message); return; }
       toast.success("Question updated!");
-      router.refresh();
+      if (onSaved) onSaved(); else router.refresh();
     } else {
       const { error } = await supabase.from("questions").insert(payload);
       setSaving(false);
@@ -103,6 +108,9 @@ export default function QuestionEditor({
         setOptions(DEFAULT_OPTIONS);
         setCorrect("a");
         setExplanation("");
+        if (onSaved) onSaved(true); // refresh the parent's list but keep the form open
+      } else if (onSaved) {
+        onSaved();
       } else {
         router.push("/teacher/questions");
       }

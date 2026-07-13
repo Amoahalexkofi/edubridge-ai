@@ -21,6 +21,9 @@ interface Props {
   lessonId?: string;
   initialTitle?: string;
   initialContent?: string;
+  /** When provided, called after a successful save instead of navigating —
+      lets the editor be reused inline (e.g. the topic content manager). */
+  onSaved?: () => void;
 }
 
 export default function LessonEditor({
@@ -29,6 +32,7 @@ export default function LessonEditor({
   lessonId,
   initialTitle = "",
   initialContent = "",
+  onSaved,
 }: Props) {
   const router = useRouter();
   const [topicId, setTopicId] = useState(preselectedTopicId ?? topics[0]?.id ?? "");
@@ -52,7 +56,7 @@ export default function LessonEditor({
       setSaving(false);
       if (error) { toast.error(error.message); return; }
       toast.success("Lesson updated!");
-      router.refresh();
+      if (onSaved) onSaved(); else router.refresh();
     } else {
       const { data: existing } = await supabase
         .from("lessons")
@@ -73,7 +77,7 @@ export default function LessonEditor({
       setSaving(false);
       if (error) { toast.error(error.message); return; }
       toast.success("Lesson created!");
-      router.push(`/teacher/lessons/${data.id}/edit`);
+      if (onSaved) onSaved(); else router.push(`/teacher/lessons/${data.id}/edit`);
     }
   }
 

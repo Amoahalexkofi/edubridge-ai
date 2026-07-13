@@ -29,7 +29,7 @@ export default async function AdminSubjectsPage() {
       <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="font-display text-2xl sm:text-3xl font-bold text-[#0f172a]">Subjects & Topics</h1>
-          <p className="text-sm text-[#64748B] mt-1">Manage the curriculum structure for BECE and WASSCE</p>
+          <p className="text-sm text-[#64748B] mt-1">Click any topic to add or edit its lessons and questions</p>
         </div>
         <AddSubjectPanel />
       </div>
@@ -156,13 +156,14 @@ function SubjectSection({
               {sortedTopics.length > 0 && (
                 <div className="flex flex-wrap gap-2">
                   {sortedTopics.map((topic) => (
-                    <span
+                    <Link
                       key={topic.id}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#E6E4DE] bg-[#F8F7F4] text-xs font-medium text-[#475569]"
+                      href={`/admin/subjects/topics/${topic.id}`}
+                      className="group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#E6E4DE] bg-[#F8F7F4] text-xs font-medium text-[#475569] hover:border-[#1D4ED8] hover:bg-[#EFF6FF] hover:text-[#1D4ED8] transition-colors"
                     >
-                      <span className="text-[10px] font-bold text-[#CBD5E1]">{topic.order_index}</span>
+                      <span className="text-[10px] font-bold text-[#CBD5E1] group-hover:text-[#1D4ED8]">{topic.order_index}</span>
                       {topic.title}
-                    </span>
+                    </Link>
                   ))}
                 </div>
               )}
