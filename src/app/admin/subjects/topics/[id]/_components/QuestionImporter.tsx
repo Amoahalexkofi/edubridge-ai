@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Sparkles, Loader2, Trash2, Save, AlertTriangle, ArrowLeft } from "lucide-react";
+import { Sparkles, Loader2, Trash2, Save, AlertTriangle, ArrowLeft, Upload, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
 
@@ -34,20 +34,18 @@ interface Props {
 
 export default function QuestionImporter({ topicId, onSaved }: Props) {
   const keyRef = useRef(0);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [mode, setMode] = useState<"upload" | "paste">("upload");
   const [raw, setRaw] = useState("");
+  const [file, setFile] = useState<File | null>(null);
   const [extracting, setExtracting] = useState(false);
   const [items, setItems] = useState<EditableQ[] | null>(null);
   const [saving, setSaving] = useState(false);
 
-  async function extract() {
-    if (raw.trim().length < 20) { toast.error("Paste some question text first."); return; }
+  async function runExtract(init: RequestInit) {
     setExtracting(true);
     try {
-      const res = await fetch("/api/admin/import-questions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ rawText: raw }),
-      });
+      const res = await fetch("/api/admin/import-questions", { method: "POST", ...init });
       const data = await res.json();
       if (!res.ok) { toast.error(data.error ?? "Extraction failed."); return; }
       const parsed: EditableQ[] = (data.questions as RawQ[]).map((q) => ({
@@ -59,7 +57,7 @@ export default function QuestionImporter({ topicId, onSaved }: Props) {
         difficulty: q.difficulty ?? "medium",
         confidence: q.confidence ?? "low",
       }));
-      if (parsed.length === 0) { toast.error("No questions found in that text."); return; }
+      if (parsed.length === 0) { toast.error("No questions found in that material."); return; }
       setItems(parsed);
       toast.success(`Found ${parsed.length} question${parsed.length === 1 ? "" : "s"}. Review and save.`);
     } catch {
@@ -67,6 +65,30 @@ export default function QuestionImporter({ topicId, onSaved }: Props) {
     } finally {
       setExtracting(false);
     }
+  }
+
+  function extractText() {
+    if (raw.trim().length < 20) { toast.error("Paste some question text first."); return; }
+    runExtract({
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ rawText: raw }),
+    });
+  }
+
+  function extractFile() {
+    if (!file) { toast.error("Choose a PDF or Word file first."); return; }
+    const form = new FormData();
+    form.append("file", file);
+    runExtract({ body: form }); // browser sets the multipart Content-Type + boundary
+  }
+
+  function pickFile(f: File | null) {
+    if (!f) return;
+    const name = f.name.toLowerCase();
+    const ok = name.endsWith(".pdf") || name.endsWith(".docx");
+    if (!ok) { toast.error("Please choose a PDF or Word (.docx) file."); return; }
+    if (f.size > 4.4 * 1024 * 1024) { toast.error("That file is too large — keep it under ~4 MB. For a big scanned paper, split it or paste the text."); return; }
+    setFile(f);
   }
 
   function update(key: number, patch: Partial<EditableQ>) {
@@ -197,32 +219,92 @@ export default function QuestionImporter({ topicId, onSaved }: Props) {
     );
   }
 
-  // ── Paste stage ──
+  // ── Input stage (upload or paste) ──
   return (
     <div className="space-y-4">
       <div className="bg-[#EFF6FF] border border-[#BFDBFE] rounded-xl p-4 flex items-start gap-2.5">
         <Sparkles className="h-4 w-4 text-[#1D4ED8] flex-shrink-0 mt-0.5" />
         <div className="text-xs text-[#1e40af] leading-relaxed">
-          <p className="font-bold mb-0.5">Paste a whole past paper at once.</p>
-          <p>Include the answer key / marking scheme if you have it (e.g. a list like &ldquo;1. B 2. A 3. D&rdquo;) — the AI will use it to set the correct answers. No key? It will work out the answers itself and flag each one for you to check.</p>
+          <p className="font-bold mb-0.5">Import a whole past paper at once.</p>
+          <p>Upload the paper (PDF or Word) or paste its text. Include the answer key / marking scheme if you have it — the AI uses it to set the correct answers. No key? It works them out itself and flags each one for you to check.</p>
         </div>
       </div>
 
-      <textarea
-        value={raw}
-        onChange={(e) => setRaw(e.target.value)}
-        placeholder={`Paste your questions here, for example:\n\n1. The capital of Ghana is\n   A. Kumasi  B. Accra  C. Tamale  D. Cape Coast\n\n2. Water boils at ___ °C at sea level.\n   A. 50  B. 90  C. 100  D. 120\n\nAnswers: 1. B  2. C`}
-        rows={12}
-        className="w-full px-4 py-3 rounded-xl border border-[#E6E4DE] bg-white text-slate-800 text-sm placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1D4ED8] focus:ring-2 focus:ring-[#1D4ED8]/10 resize-none font-mono"
-      />
+      {/* Mode tabs */}
+      <div className="flex gap-1 p-1 bg-[#F2F1EE] rounded-xl">
+        {(["upload", "paste"] as const).map((m) => (
+          <button
+            key={m}
+            onClick={() => setMode(m)}
+            className={`flex-1 h-9 rounded-lg text-sm font-bold capitalize transition-all ${
+              mode === m ? "bg-white text-[#1D4ED8] shadow-sm" : "text-[#64748B] hover:text-slate-900"
+            }`}
+          >
+            {m === "upload" ? "Upload file" : "Paste text"}
+          </button>
+        ))}
+      </div>
 
-      <button
-        onClick={extract}
-        disabled={extracting || raw.trim().length < 20}
-        className="w-full h-12 flex items-center justify-center gap-2 bg-[#1D4ED8] hover:bg-[#1e40af] text-white font-bold rounded-xl transition-all disabled:opacity-60 text-sm"
-      >
-        {extracting ? <><Loader2 className="h-4 w-4 animate-spin" /> Reading with AI…</> : <><Sparkles className="h-4 w-4" /> Extract questions</>}
-      </button>
+      {mode === "upload" ? (
+        <>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            className="hidden"
+            onChange={(e) => pickFile(e.target.files?.[0] ?? null)}
+          />
+          <div
+            onClick={() => fileInputRef.current?.click()}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => { e.preventDefault(); pickFile(e.dataTransfer.files?.[0] ?? null); }}
+            className="cursor-pointer border-2 border-dashed border-[#CBD5E1] hover:border-[#1D4ED8] hover:bg-[#F8FAFF] rounded-xl p-8 text-center transition-colors"
+          >
+            {file ? (
+              <div className="flex items-center justify-center gap-2.5">
+                <FileText className="h-6 w-6 text-[#1D4ED8] flex-shrink-0" />
+                <div className="text-left min-w-0">
+                  <p className="text-sm font-semibold text-slate-800 truncate">{file.name}</p>
+                  <p className="text-xs text-[#94a3b8]">{(file.size / 1024 / 1024).toFixed(1)} MB · click to change</p>
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center gap-2">
+                <div className="h-11 w-11 rounded-xl bg-[#EFF6FF] flex items-center justify-center">
+                  <Upload className="h-5 w-5 text-[#1D4ED8]" />
+                </div>
+                <p className="text-sm font-semibold text-slate-700">Drop a PDF or Word file here, or click to browse</p>
+                <p className="text-xs text-[#94a3b8]">PDF works best — it reads scanned pages and diagrams too. Up to ~4 MB.</p>
+              </div>
+            )}
+          </div>
+
+          <button
+            onClick={extractFile}
+            disabled={extracting || !file}
+            className="w-full h-12 flex items-center justify-center gap-2 bg-[#1D4ED8] hover:bg-[#1e40af] text-white font-bold rounded-xl transition-all disabled:opacity-60 text-sm"
+          >
+            {extracting ? <><Loader2 className="h-4 w-4 animate-spin" /> Reading with AI…</> : <><Sparkles className="h-4 w-4" /> Extract questions</>}
+          </button>
+        </>
+      ) : (
+        <>
+          <textarea
+            value={raw}
+            onChange={(e) => setRaw(e.target.value)}
+            placeholder={`Paste your questions here, for example:\n\n1. The capital of Ghana is\n   A. Kumasi  B. Accra  C. Tamale  D. Cape Coast\n\n2. Water boils at ___ °C at sea level.\n   A. 50  B. 90  C. 100  D. 120\n\nAnswers: 1. B  2. C`}
+            rows={12}
+            className="w-full px-4 py-3 rounded-xl border border-[#E6E4DE] bg-white text-slate-800 text-sm placeholder:text-[#94a3b8] focus:outline-none focus:border-[#1D4ED8] focus:ring-2 focus:ring-[#1D4ED8]/10 resize-none font-mono"
+          />
+          <button
+            onClick={extractText}
+            disabled={extracting || raw.trim().length < 20}
+            className="w-full h-12 flex items-center justify-center gap-2 bg-[#1D4ED8] hover:bg-[#1e40af] text-white font-bold rounded-xl transition-all disabled:opacity-60 text-sm"
+          >
+            {extracting ? <><Loader2 className="h-4 w-4 animate-spin" /> Reading with AI…</> : <><Sparkles className="h-4 w-4" /> Extract questions</>}
+          </button>
+        </>
+      )}
       <p className="text-center text-xs text-[#94a3b8]">You&apos;ll review everything before anything is saved.</p>
     </div>
   );
