@@ -18,10 +18,31 @@ export default function SessionForm({ subjects }: { subjects: Subject[] }) {
   const [endsAt, setEndsAt] = useState("");
   const [questionCount, setQuestionCount] = useState(40);
   const [duration, setDuration] = useState(40);
+  const [closesEdited, setClosesEdited] = useState(false);
+
+  // Add `mins` to a datetime-local value ("YYYY-MM-DDTHH:mm"), returning the same format
+  function addMinutes(localDatetime: string, mins: number): string {
+    if (!localDatetime) return "";
+    const d = new Date(localDatetime);
+    if (isNaN(d.getTime())) return "";
+    d.setMinutes(d.getMinutes() + mins);
+    const pad = (n: number) => String(n).padStart(2, "0");
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  }
+
+  // Closes auto-follows Opens + Duration until the user manually edits Closes
+  function onOpensChange(v: string) {
+    setStartsAt(v);
+    if (!closesEdited) setEndsAt(addMinutes(v, duration));
+  }
+  function onDurationChange(v: number) {
+    setDuration(v);
+    if (!closesEdited && startsAt) setEndsAt(addMinutes(startsAt, v));
+  }
 
   function reset() {
     setTitle(""); setSubjectId(""); setStartsAt(""); setEndsAt("");
-    setQuestionCount(40); setDuration(40);
+    setQuestionCount(40); setDuration(40); setClosesEdited(false);
   }
 
   async function save(e: React.FormEvent) {
@@ -95,11 +116,13 @@ export default function SessionForm({ subjects }: { subjects: Subject[] }) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-semibold text-[#334155] mb-1.5">Opens</label>
-                    <input type="datetime-local" value={startsAt} onChange={(e) => setStartsAt(e.target.value)} className={inputCls} required />
+                    <input type="datetime-local" value={startsAt} onChange={(e) => onOpensChange(e.target.value)} className={inputCls} required />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-[#334155] mb-1.5">Closes</label>
-                    <input type="datetime-local" value={endsAt} onChange={(e) => setEndsAt(e.target.value)} className={inputCls} required />
+                    <label className="block text-sm font-semibold text-[#334155] mb-1.5">
+                      Closes {!closesEdited && <span className="font-normal text-[#94a3b8]">(auto)</span>}
+                    </label>
+                    <input type="datetime-local" value={endsAt} onChange={(e) => { setEndsAt(e.target.value); setClosesEdited(true); }} className={inputCls} required />
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
@@ -109,11 +132,11 @@ export default function SessionForm({ subjects }: { subjects: Subject[] }) {
                   </div>
                   <div>
                     <label className="block text-sm font-semibold text-[#334155] mb-1.5">Duration (min)</label>
-                    <input type="number" min={1} max={240} value={duration} onChange={(e) => setDuration(Number(e.target.value))} className={inputCls} />
+                    <input type="number" min={1} max={240} value={duration} onChange={(e) => onDurationChange(Number(e.target.value))} className={inputCls} />
                   </div>
                 </div>
                 <p className="text-xs text-[#94a3b8]">
-                  Students whose target is this subject&apos;s exam can join any time between Opens and Closes. Questions are drawn at random from the subject&apos;s topics.
+                  <b>Closes</b> is set automatically to Opens + Duration — so a {duration}-minute exam opening at your start time closes {duration} minutes later. Edit Closes yourself if you want a longer join window. Students whose target is this subject&apos;s exam can join any time before it closes; questions are drawn at random from the subject&apos;s topics.
                 </p>
               </div>
 
