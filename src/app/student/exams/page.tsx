@@ -2,8 +2,9 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthUser } from "@/lib/auth";
-import { FileText, Trophy, Clock, ChevronRight, CheckCircle2, BarChart2, AlertCircle, Lock } from "lucide-react";
+import { FileText, Trophy, Clock, ChevronRight, CheckCircle2, BarChart2, AlertCircle, Lock, CalendarClock, PlayCircle } from "lucide-react";
 import { subjectGradient, subjectIcon } from "@/lib/subject-style";
+import { sessionStatus, formatWhen, STATUS_STYLE, STATUS_LABEL } from "@/lib/exam-sessions";
 
 function formatDate(d: string) {
   return new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
@@ -12,6 +13,8 @@ function formatDate(d: string) {
 const ERROR_MESSAGES: Record<string, string> = {
   no_questions: "This subject has no questions yet. Content is being added — check back soon!",
   insert_failed: "Could not start the exam. Please try again or contact support if the issue persists.",
+  session_closed: "That session isn't open right now. You can only join between its open and close times.",
+  session_not_found: "That mock exam session could not be found.",
 };
 
 export default async function ExamsPage({
@@ -71,12 +74,35 @@ export default async function ExamsPage({
 
   const { data: attempts } = await supabase
     .from("exam_attempts")
-    .select("id, status, score, total_marks, started_at, submitted_at, subject_id, subjects(name, icon)")
+    .select("id, status, score, total_marks, started_at, submitted_at, subject_id, session_id, subjects(name, icon)")
     .eq("user_id", user.id)
     .order("started_at", { ascending: false })
-    .limit(20);
+    .limit(30);
 
   const submitted = attempts?.filter((a) => a.status === "submitted") ?? [];
+
+  // Scheduled mock exam sessions for this student's exam target
+  const { data: sessionRows } = await supabase
+    .from("exam_sessions")
+    .select("id, title, question_count, duration_minutes, starts_at, ends_at, subjects(name, icon)")
+    .eq("exam_type", examTarget.toLowerCase())
+    .order("starts_at", { ascending: true });
+
+  // Map session_id → the student's attempt (to show "View result")
+  const attemptBySession: Record<string, { id: string; pct: number | null }> = {};
+  (attempts ?? []).forEach((a) => {
+    if (a.session_id) {
+      const pct = a.score != null && a.total_marks ? Math.round((a.score / a.total_marks) * 100) : null;
+      attemptBySession[a.session_id] = { id: a.id, pct };
+    }
+  });
+
+  const nowMs = Date.now();
+  // Show live + upcoming always; closed only if the student took it (to see their result)
+  const sessions = (sessionRows ?? []).filter((s) => {
+    const st = sessionStatus(s.starts_at, s.ends_at, nowMs);
+    return st !== "closed" || attemptBySession[s.id];
+  });
   const avgScore = submitted.length > 0 && submitted.some((a) => a.score != null)
     ? Math.round(submitted.filter(a => a.score != null).reduce((sum, a) => sum + Math.round((a.score! / a.total_marks!) * 100), 0) / submitted.filter(a => a.score != null).length)
     : null;
@@ -142,9 +168,54 @@ export default async function ExamsPage({
         </div>
       </div>
 
+      {/* ── Scheduled sessions ── */}
+      {sessions.length > 0 && (
+        <div className="space-y-3">
+          <p className="text-xs font-bold text-[#94a3b8] uppercase tracking-widest flex items-center gap-2">
+            <CalendarClock className="h-3.5 w-3.5" /> Scheduled mock exams
+          </p>
+          <div className="space-y-2.5">
+            {sessions.map((s) => {
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              const subj = s.subjects as any;
+              const status = sessionStatus(s.starts_at, s.ends_at, nowMs);
+              const taken = attemptBySession[s.id];
+              return (
+                <div key={s.id} className="flex items-center gap-4 bg-white rounded-2xl border border-[#E6E4DE] eb-card p-4">
+                  <div className="h-11 w-11 rounded-xl bg-[#F8F7F4] border border-[#E6E4DE] flex items-center justify-center text-xl flex-shrink-0">
+                    {subj?.icon ?? "📝"}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <p className="font-bold text-sm text-[#0f172a] truncate">{s.title}</p>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${STATUS_STYLE[status]}`}>{STATUS_LABEL[status]}</span>
+                    </div>
+                    <p className="text-xs text-[#94a3b8] mt-0.5">{subj?.name} · {s.question_count} Q · {s.duration_minutes} min</p>
+                    <p className="text-xs text-[#94a3b8] mt-0.5">
+                      {status === "upcoming" ? `Opens ${formatWhen(s.starts_at)}` : status === "live" ? `Closes ${formatWhen(s.ends_at)}` : `Closed ${formatWhen(s.ends_at)}`}
+                    </p>
+                  </div>
+                  {taken ? (
+                    <Link href={`/student/exams/${taken.id}`} className="flex items-center gap-1.5 h-10 px-4 rounded-xl border border-[#E6E4DE] text-[#334155] hover:bg-[#F8F7F4] text-sm font-semibold flex-shrink-0">
+                      {taken.pct != null ? `${taken.pct}% · Review` : "View result"}
+                    </Link>
+                  ) : status === "live" ? (
+                    <Link href={`/student/exams/take?session=${s.id}`} className="flex items-center gap-1.5 h-10 px-4 rounded-xl bg-[#16A34A] hover:bg-[#15803D] text-white text-sm font-bold flex-shrink-0 shadow-[0_4px_14px_rgba(22,163,74,0.3)]">
+                      <PlayCircle className="h-4 w-4" /> Join now
+                    </Link>
+                  ) : (
+                    <span className="text-xs font-semibold text-[#94a3b8] flex-shrink-0 px-3">Not open yet</span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* ── Subject grid ── */}
       <div className="space-y-4">
-        <p className="text-xs font-bold text-[#94a3b8] uppercase tracking-widest">Choose a subject to start</p>
+        <p className="text-xs font-bold text-[#94a3b8] uppercase tracking-widest">Or practice any subject anytime</p>
 
         {subjects && subjects.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">

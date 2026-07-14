@@ -2,19 +2,54 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthUser } from "@/lib/auth";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
+import { sessionStatus } from "@/lib/exam-sessions";
 import ExamTaker from "./_components/ExamTaker";
 
 export default async function TakeExamPage({
   searchParams,
 }: {
-  searchParams: Promise<{ subject?: string }>;
+  searchParams: Promise<{ subject?: string; session?: string }>;
 }) {
   const supabase = await createClient();
   const user = await getAuthUser();
   if (!user) redirect("/login");
   if (user.user_metadata?.app_verified === false) redirect("/student?verify=1"); // unverified students are limited to dashboard + profile
 
-  const { subject: subjectId } = await searchParams;
+  const { subject: subjectParam, session: sessionId } = await searchParams;
+
+  // Session parameters (null for an ordinary on-demand mock)
+  let subjectId = subjectParam ?? null;
+  let durationMinutes = 40;
+  let questionLimit = 40;
+  let sessionIdToStore: string | null = null;
+
+  if (sessionId) {
+    const { data: session } = await supabase
+      .from("exam_sessions")
+      .select("id, subject_id, duration_minutes, question_count, starts_at, ends_at")
+      .eq("id", sessionId)
+      .single();
+    if (!session) redirect("/student/exams?error=session_not_found");
+    if (sessionStatus(session.starts_at, session.ends_at) !== "live") {
+      redirect("/student/exams?error=session_closed");
+    }
+    // Already attempted? Send them to their result rather than starting again.
+    const { data: existingRows } = await supabase
+      .from("exam_attempts")
+      .select("id")
+      .eq("user_id", user.id)
+      .eq("session_id", sessionId)
+      .order("started_at", { ascending: false })
+      .limit(1);
+    if (existingRows && existingRows.length > 0) {
+      redirect(`/student/exams/${existingRows[0].id}`);
+    }
+    subjectId = session.subject_id;
+    durationMinutes = session.duration_minutes;
+    questionLimit = session.question_count;
+    sessionIdToStore = session.id;
+  }
+
   if (!subjectId) redirect("/student/exams");
 
   const { data: subject } = await supabase
@@ -44,11 +79,11 @@ export default async function TakeExamPage({
     .from("questions")
     .select("id, prompt, options, correct_answer, explanation, image_url, topic_id, topics(title)")
     .in("topic_id", topicIds)
-    .limit(60);
+    .limit(300);
 
   if (!rawQuestions || rawQuestions.length === 0) redirect("/student/exams?error=no_questions");
 
-  // Shuffle and take up to 40
+  // Shuffle and take up to the requested count
   const questions = ([...rawQuestions] as unknown as Array<{
     id: string;
     prompt: string;
@@ -58,7 +93,7 @@ export default async function TakeExamPage({
     image_url: string | null;
     topic_id: string;
     topics: { title: string } | null;
-  }>).sort(() => Math.random() - 0.5).slice(0, 40);
+  }>).sort(() => Math.random() - 0.5).slice(0, questionLimit);
 
   // Use service role for insert — RLS INSERT policy may not allow all columns
   const { data: attempt, error: insertError } = await admin
@@ -69,6 +104,7 @@ export default async function TakeExamPage({
       exam_type: subject.exam_type,
       total_marks: questions.length,
       status: "in_progress",
+      session_id: sessionIdToStore,
     })
     .select("id")
     .single();
@@ -80,7 +116,7 @@ export default async function TakeExamPage({
       attemptId={attempt.id}
       subject={subject}
       questions={questions}
-      durationMinutes={40}
+      durationMinutes={durationMinutes}
     />
   );
 }
