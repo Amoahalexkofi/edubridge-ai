@@ -128,7 +128,7 @@ export async function POST(request: Request) {
 
   const recentMessages = Array.isArray(messages) ? messages.slice(-MAX_HISTORY_MESSAGES) : messages;
 
-  const result = await streamText({
+  const result = streamText({
     model: anthropic("claude-sonnet-4-6"),
     system: SYSTEM_PROMPT(examTarget.toUpperCase(), firstName),
     messages: recentMessages,
@@ -136,5 +136,18 @@ export async function POST(request: Request) {
     temperature: 0.7,
   });
 
-  return result.toDataStreamResponse();
+  // Map model/provider failures to a student-safe message (never leak billing
+  // details). The client renders whatever text we return here.
+  return result.toDataStreamResponse({
+    getErrorMessage: (error) => {
+      const msg = error instanceof Error ? error.message : String(error ?? "");
+      if (/credit balance|billing|quota|insufficient|payment/i.test(msg)) {
+        return "The AI Tutor is temporarily unavailable. Please try again later — your lessons, practice questions and mock exams are all still available in the meantime.";
+      }
+      if (/overloaded|rate.?limit|429|529|too many/i.test(msg)) {
+        return "The AI Tutor is very busy right now. Please wait a moment and try again.";
+      }
+      return "The AI Tutor hit a snag. Please try again in a moment.";
+    },
+  });
 }
