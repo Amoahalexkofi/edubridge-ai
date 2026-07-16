@@ -12,6 +12,7 @@ const roleColors: Record<string, string> = {
   teacher: "bg-orange-50 text-orange-700",
   parent:  "bg-green-50 text-green-700",
   admin:   "bg-purple-50 text-purple-700",
+  super_admin: "bg-indigo-50 text-indigo-700",
 };
 
 const roleTabs = [
@@ -42,6 +43,7 @@ export default async function AdminUsersPage({
 
   const roleMap: Record<string, string> = {};
   roles?.forEach((r) => { roleMap[r.user_id] = r.role; });
+  const callerRole = roleMap[user.id] ?? "student";
 
   const authMap: Record<string, { email: string; verified: boolean; deactivated: boolean }> = {};
   authData?.users?.forEach((u) => {
@@ -83,6 +85,7 @@ export default async function AdminUsersPage({
     teacher: "bg-orange-500",
     parent:  "bg-green-600",
     admin:   "bg-purple-600",
+    super_admin: "bg-indigo-600",
   };
 
   return (
@@ -191,8 +194,8 @@ export default async function AdminUsersPage({
 
                 {/* Role + actions */}
                 <div className="flex items-center gap-2 justify-end">
-                  <RoleChanger userId={u.id} currentRole={u.role} />
-                  <DeactivateButton userId={u.id} deactivated={u.deactivated} isSelf={u.id === user.id} />
+                  <RoleChanger userId={u.id} currentRole={u.role} callerRole={callerRole} />
+                  <DeactivateButton userId={u.id} deactivated={u.deactivated} isSelf={u.id === user.id} targetRole={u.role} callerRole={callerRole} />
                 </div>
               </div>
             ))}

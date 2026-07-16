@@ -1,26 +1,41 @@
 "use client";
 
 import { useState } from "react";
-import { Loader2, Check, ChevronDown } from "lucide-react";
+import { Loader2, Check, ChevronDown, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-const ROLES = ["student", "teacher", "parent", "admin"] as const;
-type Role = (typeof ROLES)[number];
+const ASSIGNABLE = ["student", "teacher", "parent", "admin"] as const;
+type Role = "student" | "teacher" | "parent" | "admin" | "super_admin";
 
 const roleStyles: Record<Role, { pill: string; dot: string; label: string }> = {
   student: { pill: "bg-blue-50 text-blue-700 border-blue-200",   dot: "bg-blue-500",   label: "Student" },
   teacher: { pill: "bg-orange-50 text-orange-700 border-orange-200", dot: "bg-orange-500", label: "Teacher" },
   parent:  { pill: "bg-green-50 text-green-700 border-green-200",  dot: "bg-green-500",  label: "Parent"  },
   admin:   { pill: "bg-purple-50 text-purple-700 border-purple-200", dot: "bg-purple-500", label: "Admin"   },
+  super_admin: { pill: "bg-indigo-50 text-indigo-700 border-indigo-200", dot: "bg-indigo-600", label: "Super Admin" },
 };
 
-export default function RoleChanger({ userId, currentRole }: { userId: string; currentRole: string }) {
+export default function RoleChanger({
+  userId,
+  currentRole,
+  callerRole,
+}: {
+  userId: string;
+  currentRole: string;
+  callerRole: string;
+}) {
   const router = useRouter();
   const [role, setRole] = useState(currentRole as Role);
   const [saving, setSaving] = useState(false);
   const [open, setOpen] = useState(false);
   const style = roleStyles[role] ?? roleStyles.student;
+
+  const callerIsSuper = callerRole === "super_admin";
+  // Options this caller may assign: super admins can grant Admin; others can't.
+  const options: Role[] = callerIsSuper ? [...ASSIGNABLE] : ["student", "teacher", "parent"];
+  // A super admin row can't be edited here; an admin row is only editable by a super admin.
+  const locked = role === "super_admin" || (role === "admin" && !callerIsSuper);
 
   async function changeRole(newRole: Role) {
     if (newRole === role) { setOpen(false); return; }
@@ -42,6 +57,18 @@ export default function RoleChanger({ userId, currentRole }: { userId: string; c
     router.refresh();
   }
 
+  // Locked rows (super admins, or admins viewed by a non-super) render a static badge.
+  if (locked) {
+    return (
+      <span className={`inline-flex items-center gap-1.5 pl-2 pr-2.5 py-1 rounded-full border text-xs font-semibold flex-shrink-0 ${style.pill}`}>
+        {role === "super_admin"
+          ? <ShieldCheck className="h-3 w-3" />
+          : <span className={`h-1.5 w-1.5 rounded-full ${style.dot}`} />}
+        {style.label}
+      </span>
+    );
+  }
+
   return (
     <div className="relative flex-shrink-0">
       <button
@@ -61,7 +88,7 @@ export default function RoleChanger({ userId, currentRole }: { userId: string; c
         <>
           <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
           <div className="absolute right-0 bottom-full mb-2 z-50 w-36 bg-white border border-[#E6E4DE] rounded-xl shadow-xl overflow-hidden py-1">
-            {ROLES.map((r) => {
+            {options.map((r) => {
               const s = roleStyles[r];
               return (
                 <button

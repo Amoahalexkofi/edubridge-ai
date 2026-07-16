@@ -17,9 +17,11 @@ export async function POST(req: NextRequest) {
     .select("role")
     .eq("user_id", user.id)
     .single();
-  if (!["admin", "super_admin"].includes(callerRole?.role ?? "")) {
+  const caller = callerRole?.role ?? "";
+  if (!["admin", "super_admin"].includes(caller)) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
+  const callerIsSuper = caller === "super_admin";
 
   const { userId, deactivate } = await req.json() as { userId: string; deactivate: boolean };
   if (!userId || typeof deactivate !== "boolean") {
@@ -29,6 +31,21 @@ export async function POST(req: NextRequest) {
   // Safety: an admin can't deactivate their own account.
   if (userId === user.id) {
     return NextResponse.json({ error: "You can't deactivate your own account." }, { status: 400 });
+  }
+
+  // Protect elevated accounts: super admins are untouchable here; only a super
+  // admin may deactivate a fellow admin.
+  const { data: targetRow } = await admin
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", userId)
+    .maybeSingle();
+  const targetRole = targetRow?.role ?? "student";
+  if (targetRole === "super_admin") {
+    return NextResponse.json({ error: "Super admin accounts can't be deactivated here." }, { status: 403 });
+  }
+  if (targetRole === "admin" && !callerIsSuper) {
+    return NextResponse.json({ error: "Only a super admin can deactivate an admin." }, { status: 403 });
   }
 
   // Soft deactivate via auth ban (reversible). ban_duration "none" reactivates.

@@ -9,15 +9,22 @@ export default function DeactivateButton({
   userId,
   deactivated,
   isSelf,
+  targetRole,
+  callerRole,
 }: {
   userId: string;
   deactivated: boolean;
   isSelf: boolean;
+  targetRole: string;
+  callerRole: string;
 }) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
 
   if (isSelf) return null; // can't deactivate yourself
+  // Super admins are untouchable; only a super admin may deactivate an admin.
+  if (targetRole === "super_admin") return null;
+  if (targetRole === "admin" && callerRole !== "super_admin") return null;
 
   async function toggle() {
     const next = !deactivated;
