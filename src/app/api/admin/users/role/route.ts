@@ -46,10 +46,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Only a super admin can create or change admins." }, { status: 403 });
   }
 
-  const { error } = await admin
-    .from("user_roles")
-    .upsert({ user_id: userId, role }, { onConflict: "user_id" });
+  // The table's unique key is (user_id, role), not user_id alone, so an
+  // ON CONFLICT(user_id) upsert has nothing to match. Clear the user's existing
+  // role(s) and set the new one — guarantees exactly one role per user.
+  const { error: delError } = await admin.from("user_roles").delete().eq("user_id", userId);
+  if (delError) return NextResponse.json({ error: delError.message }, { status: 500 });
 
+  const { error } = await admin.from("user_roles").insert({ user_id: userId, role });
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
   return NextResponse.json({ ok: true });
