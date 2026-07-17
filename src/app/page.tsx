@@ -615,8 +615,8 @@ export default function LandingPage() {
                 }`}
               >
                 {plan.featured && (
-                  <span className="absolute -top-3 left-8 inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#E8722A] text-white text-[11px] font-bold shadow-[0_4px_12px_rgba(232,114,42,0.4)]">
-                    <Star className="h-3 w-3" /> Most popular
+                  <span className="absolute -top-3 left-8 inline-flex items-center px-3 py-1 rounded-full bg-[#E8722A] text-white text-[11px] font-bold shadow-[0_4px_12px_rgba(232,114,42,0.4)]">
+                    Most popular
                   </span>
                 )}
 
