@@ -229,7 +229,7 @@ export default function LandingPage() {
             <div className="relative hidden lg:block">
               {/* Image with subtle frame */}
               <div className="relative rounded-t-[2rem] overflow-hidden h-[520px] shadow-[0_32px_64px_rgba(27,58,138,0.18)]">
-                <Image src="/images/heroimage.jpg" alt="Students learning with EduBridge AI" fill className="object-cover object-center" priority />
+                <Image src="/images/heroimage.jpg" alt="Students learning with EduBridge AI" fill sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover object-center" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#F4F3EF] via-transparent to-[#1B3A8A]/8" />
               </div>
 
@@ -350,7 +350,7 @@ export default function LandingPage() {
               return (
                 <div key={step.number} className="group relative bg-white rounded-3xl overflow-hidden border border-[#EEEDE8] hover:border-[#E6E4DE] hover:shadow-xl transition-all duration-300">
                   <div className="relative h-52 overflow-hidden">
-                    <Image src={step.img} alt={step.title} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <Image src={step.img} alt={step.title} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
                     {/* Step number — large background text */}
                     <div className="absolute top-3 right-4">
@@ -530,7 +530,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="relative rounded-3xl overflow-hidden h-80 lg:h-[500px] hidden lg:block shadow-2xl">
-              <Image src="/images/teacher.jpg" alt="Teacher with students" fill className="object-cover object-center" />
+              <Image src="/images/teacher.jpg" alt="Teacher with students" fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover object-center" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#1B3A8A]/60 to-transparent" />
               <div className="absolute bottom-8 left-8 right-8 bg-white/95 backdrop-blur-sm rounded-2xl p-4 border border-white/50">
                 <p className="font-bold text-slate-800 text-sm mb-1">Every role. One platform.</p>
@@ -669,7 +669,7 @@ export default function LandingPage() {
 
       {/* ─── QUOTE ─────────────────────────────────────────────────────── */}
       <section className="relative h-72 lg:h-96 overflow-hidden">
-        <Image src="/images/students-classroom-gh.jpg" alt="Ghanaian students in the classroom" fill className="object-cover object-center" />
+        <Image src="/images/students-classroom-gh.jpg" alt="Ghanaian students in the classroom" fill sizes="100vw" className="object-cover object-center" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#1B3A8A]/88 via-[#1B3A8A]/72 to-[#0D9488]/50" />
         <div className="relative h-full flex flex-col items-center justify-center text-center px-4">
           <p className="font-[family-name:var(--font-jakarta)] text-3xl lg:text-5xl text-white font-bold max-w-3xl leading-tight mb-4">
@@ -700,7 +700,7 @@ export default function LandingPage() {
                 </div>
               </div>
               <div className="relative hidden lg:block min-h-[340px]">
-                <Image src="/images/students-shs-uniforms.jpg" alt="EduBridge students in school uniforms" fill className="object-cover object-center" />
+                <Image src="/images/students-shs-uniforms.jpg" alt="EduBridge students in school uniforms" fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover object-center" />
                 <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#1B3A8A]/60" />
               </div>
             </div>
