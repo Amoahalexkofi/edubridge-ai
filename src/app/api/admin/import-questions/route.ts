@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 export const runtime = "nodejs";
-export const maxDuration = 60;
+export const maxDuration = 300; // extraction can run long; avoid a 60s timeout
 
 const MAX_TEXT = 60_000;
 // Vercel serverless functions cap the request body at ~4.5 MB; stay just under it

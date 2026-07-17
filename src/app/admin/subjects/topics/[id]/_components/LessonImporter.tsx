@@ -26,12 +26,22 @@ export default function LessonImporter({ topicId, allTopics, onSaved }: Props) {
     setExtracting(true);
     try {
       const res = await fetch("/api/admin/import-lesson", { method: "POST", ...init });
-      const data = await res.json();
-      if (!res.ok || !data.content) { toast.error(data.error ?? "Couldn't convert that."); return; }
+      // The response may be a non-JSON error page (e.g. a timeout) — read defensively.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let data: any = null;
+      try { data = await res.json(); } catch { /* not JSON */ }
+      if (!res.ok) {
+        toast.error(data?.error ?? `The import didn't complete (${res.status}). Try a shorter file, or paste the text.`);
+        return;
+      }
+      if (!data?.content) {
+        toast.error("Couldn't turn that into a lesson. Try pasting the text instead.");
+        return;
+      }
       setResult({ title: data.title ?? "", content: data.content });
       toast.success("Lesson drafted — review and save.");
     } catch {
-      toast.error("Something went wrong. Please try again.");
+      toast.error("Network error — check your connection and try again.");
     } finally {
       setExtracting(false);
     }

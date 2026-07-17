@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 export const runtime = "nodejs";
-export const maxDuration = 60;
+export const maxDuration = 300; // lesson generation can run long; avoid a 60s timeout
 
 const MAX_TEXT = 80_000;
 const MAX_FILE_BYTES = 4.4 * 1024 * 1024; // stay under Vercel's ~4.5 MB body cap
