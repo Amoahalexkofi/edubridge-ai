@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard, BookOpen, PenLine,
   FileText, User, LogOut, GraduationCap, Flame, Brain, Trophy, Lock,
-  CalendarCheck,
+  CalendarCheck, Crown,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
@@ -70,6 +70,9 @@ export default function StudentNav({ userName, examTarget, avatarUrl, previewOff
               {examTarget}
             </span>
           )}
+          <Link href="/student/upgrade" aria-label="Upgrade plan" className="h-8 w-8 rounded-full bg-[#E8722A]/10 flex items-center justify-center">
+            <Crown className="h-4 w-4 text-[#E8722A]" />
+          </Link>
           <Link href="/student/profile" aria-label="Profile and sign out">
             {avatarUrl ? (
               <Image src={avatarUrl} alt={userName} width={32} height={32} className="h-8 w-8 rounded-full object-cover" />
@@ -159,6 +162,16 @@ export default function StudentNav({ userName, examTarget, avatarUrl, previewOff
             );
           })}
         </nav>
+
+        {/* Upgrade CTA */}
+        <div className="px-3 pb-1">
+          <Link
+            href="/student/upgrade"
+            className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-[#E8722A] to-[#f0863f] hover:opacity-90 transition-opacity shadow-[0_4px_14px_rgba(232,114,42,0.28)]"
+          >
+            <Crown className="h-[18px] w-[18px]" /> Upgrade
+          </Link>
+        </div>
 
         {/* User section */}
         <div className="border-t border-[#EEEDE8] p-3 space-y-1">
