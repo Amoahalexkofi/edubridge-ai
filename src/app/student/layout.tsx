@@ -17,7 +17,7 @@ export default async function StudentLayout({ children }: { children: React.Reac
     supabase.from("user_roles").select("role").eq("user_id", user.id).single(),
   ]);
 
-  const isPreviewingAdmin = roleRow?.role === "admin" || roleRow?.role === "teacher";
+  const isPreviewingAdmin = ["admin", "super_admin", "teacher"].includes(roleRow?.role ?? "");
   const isRealStudent = roleRow?.role === "student";
 
   // Real students who never set an exam target (e.g. signed up via Google OAuth,
@@ -39,7 +39,7 @@ export default async function StudentLayout({ children }: { children: React.Reac
         <div className="fixed top-0 left-0 right-0 z-50 bg-[#E8722A] text-white px-4 py-2 flex items-center justify-between gap-3 text-sm font-semibold shadow-md">
           <div className="flex items-center gap-2">
             <Eye className="h-4 w-4 flex-shrink-0" />
-            <span>Preview Mode — you are viewing the student experience as an {roleRow?.role}</span>
+            <span>Preview Mode — you are viewing the student experience as {roleRow?.role === "teacher" ? "a teacher" : "an " + (roleRow?.role ?? "admin").replace("_", " ")}</span>
           </div>
           <Link
             href="/admin/subjects"

@@ -178,9 +178,9 @@ export default async function AdminUsersPage({
                 {/* Email */}
                 <p className="text-sm text-slate-500 truncate">{u.email || "—"}</p>
 
-                {/* Exam */}
+                {/* Exam — only meaningful for students */}
                 <div>
-                  {u.exam_target ? (
+                  {u.exam_target && u.role === "student" ? (
                     <span className={`inline-flex px-2.5 py-1 rounded-lg text-xs font-bold ${roleColors[u.role] ?? "bg-[#F1F0EC] text-slate-600"}`}>
                       {u.exam_target}
                     </span>
