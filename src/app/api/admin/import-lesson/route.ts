@@ -31,7 +31,8 @@ Produce:
   • Use a Markdown table (header row, a |---|---| separator row, each row on its own line) whenever comparing 2+ things.
   • Write for a 14–18 year old: clear, simple, exam-focused, encouraging.
   • Preserve the source's facts and structure faithfully. Clean up OCR noise, broken line-breaks and obvious typos — but do NOT invent facts that aren't in the material.
-  • If the material references a diagram/figure you cannot reproduce as text, insert a line like "*(Diagram: short description — add image here)*" so the teacher can attach it later.`;
+  • If the material ALREADY contains images (as <img src="..."> tags or image URLs), reproduce every one IN PLACE using Markdown image syntax ![](exact same URL). Keep each image in the same order and position as the source — never drop, move, or reorder an image. Ignore any <img> whose src is empty.
+  • If the material references a diagram/figure that has NO image you can use (e.g. a PDF where you can only see it), insert a line like "*(Diagram: short description — add image here)*" so the teacher can attach it later.`;
 
 function fail(message: string, status = 400) {
   return Response.json({ error: message }, { status });
@@ -78,10 +79,37 @@ export async function POST(request: Request) {
         };
       } else if (name.endsWith(".docx") || file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
         sourceLabel = "docx";
-        const { value } = await mammoth.extractRawText({ buffer: Buffer.from(bytes) });
-        const text = (value ?? "").trim();
+        // Convert to HTML so images stay IN POSITION. Each embedded image is
+        // uploaded to content-images and its <img src> becomes a public URL;
+        // Claude then preserves them in place as Markdown images.
+        const WEB_EXT: Record<string, string> = {
+          "image/png": "png", "image/jpeg": "jpg", "image/jpg": "jpg", "image/gif": "gif", "image/webp": "webp",
+        };
+        let imgIdx = 0;
+        const { value: html } = await mammoth.convertToHtml(
+          { buffer: Buffer.from(bytes) },
+          {
+            convertImage: mammoth.images.imgElement(async (image) => {
+              const ext = WEB_EXT[image.contentType];
+              if (!ext) return { src: "" }; // skip vector/EMF/WMF the browser can't render
+              try {
+                const imgBuf = await image.read();
+                const path = `${user.id}/lesson-import/${Date.now()}-${imgIdx++}.${ext}`;
+                const { error } = await admin.storage
+                  .from("content-images")
+                  .upload(path, imgBuf, { contentType: image.contentType, upsert: false });
+                if (error) return { src: "" };
+                const { data: { publicUrl } } = admin.storage.from("content-images").getPublicUrl(path);
+                return { src: publicUrl };
+              } catch {
+                return { src: "" };
+              }
+            }),
+          },
+        );
+        const text = (html ?? "").trim();
         if (text.length < 20) return fail("Couldn't read any text from that Word file. If it's mostly images, export it as a PDF instead.");
-        genOptions = { prompt: `${INSTRUCTION}\n\nMATERIAL:\n"""\n${text.slice(0, MAX_TEXT)}\n"""` };
+        genOptions = { prompt: `${INSTRUCTION}\n\nMATERIAL (HTML — images are already hosted at the URLs in each <img src>):\n"""\n${text.slice(0, MAX_TEXT)}\n"""` };
       } else if (name.endsWith(".doc")) {
         return fail("Old .doc format isn't supported. Save it as .docx or PDF and try again.");
       } else {
