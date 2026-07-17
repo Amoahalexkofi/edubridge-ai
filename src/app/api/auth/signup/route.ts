@@ -120,10 +120,10 @@ export async function POST(request: Request) {
   if (!email || !password || !fullName || !role) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
   }
-  // SECURITY: public signup is self-serve for students and parents only. Teacher,
-  // admin and super_admin are all granted by an admin (Admin → Users), never via
-  // open registration — this keeps content-authoring and billed AI tools gated.
-  const PUBLIC_ROLES = ["student", "parent"];
+  // SECURITY: public signup may only create these self-serve roles. admin and
+  // super_admin can NEVER be minted via open registration — they're granted by a
+  // super admin. (This is the escalation fix; teacher remains a signup option.)
+  const PUBLIC_ROLES = ["student", "teacher", "parent"];
   if (!PUBLIC_ROLES.includes(String(role))) {
     return NextResponse.json({ error: "Invalid account type." }, { status: 400 });
   }
