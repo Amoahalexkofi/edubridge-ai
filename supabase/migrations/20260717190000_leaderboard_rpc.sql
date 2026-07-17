@@ -36,7 +36,7 @@ language sql stable security definer set search_path = public as $$
     where status = 'submitted' and score is not null and total_marks > 0
     group by user_id
   ) ea on ea.user_id = p.id
-  where p.exam_target = p_exam_target
+  where p.exam_target::text = p_exam_target
   order by lessons desc, exams desc;
 $$;
 
