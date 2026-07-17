@@ -31,6 +31,7 @@ export function periodMonths(cycle: Cycle): number {
 
 // Enforcement switch. OFF during the pilot → every feature stays open regardless
 // of plan. Flip NEXT_PUBLIC_PAYMENTS_ENFORCED=true at launch to turn gating on.
+// (Payments themselves are always accepted — the live Paystack key is active.)
 export const PAYMENTS_ENFORCED = process.env.NEXT_PUBLIC_PAYMENTS_ENFORCED === "true";
 
 type SubProfile = { subscription_tier?: string | null; subscription_expires_at?: string | null };

@@ -27,7 +27,7 @@ export default async function UpgradePage() {
         </p>
         {!PAYMENTS_ENFORCED && (
           <p className="text-xs text-[#94a3b8] mt-3 bg-[#FFFBEB] border border-[#FDE68A] text-[#92400E] rounded-xl px-3 py-2 inline-block">
-            Pilot mode — everything is currently free. Subscribing is live and testable, but no features are locked yet.
+            During the pilot every feature is free — subscribing supports EduBridge, and locks in your plan for when premium features roll out.
           </p>
         )}
       </div>
