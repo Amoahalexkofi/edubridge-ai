@@ -49,6 +49,11 @@ export async function POST(request: Request) {
   if (!["teacher", "admin", "super_admin"].includes(callerRole?.role ?? "")) {
     return fail("Forbidden", 403);
   }
+  // Teachers need admin approval before they can author content.
+  if (callerRole?.role === "teacher") {
+    const { data: prof } = await admin.from("profiles").select("content_approved").eq("id", user.id).single();
+    if (!prof?.content_approved) return fail("Your account is pending admin approval to publish content.", 403);
+  }
 
   const contentType = request.headers.get("content-type") ?? "";
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

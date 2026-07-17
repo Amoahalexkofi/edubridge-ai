@@ -98,6 +98,11 @@ export async function POST(request: Request) {
   if (!["teacher", "admin", "super_admin"].includes(callerRole?.role ?? "")) {
     return fail("Forbidden", 403);
   }
+  // Teachers need admin approval before they can author content.
+  if (callerRole?.role === "teacher") {
+    const { data: prof } = await admin.from("profiles").select("content_approved").eq("id", user.id).single();
+    if (!prof?.content_approved) return fail("Your account is pending admin approval to publish content.", 403);
+  }
 
   // Build the model call from either an uploaded file or pasted text.
   // PDFs go to Claude natively (it reads scanned pages + diagrams); .docx is

@@ -6,6 +6,7 @@ import { Users, AlertTriangle } from "lucide-react";
 import RoleChanger from "./_components/RoleChanger";
 import VerifyButton from "./_components/VerifyButton";
 import DeactivateButton from "./_components/DeactivateButton";
+import ContentApprovalToggle from "./_components/ContentApprovalToggle";
 
 const roleColors: Record<string, string> = {
   student: "bg-blue-50 text-blue-700",
@@ -37,7 +38,7 @@ export default async function AdminUsersPage({
 
   const [{ data: roles }, { data: profiles }, { data: authData }] = await Promise.all([
     admin.from("user_roles").select("user_id, role"),
-    admin.from("profiles").select("id, full_name, exam_target, school, created_at").order("created_at", { ascending: false }),
+    admin.from("profiles").select("id, full_name, exam_target, school, created_at, content_approved").order("created_at", { ascending: false }),
     admin.auth.admin.listUsers(),
   ]);
 
@@ -194,6 +195,10 @@ export default async function AdminUsersPage({
 
                 {/* Role + actions */}
                 <div className="flex items-center gap-2 justify-end">
+                  {u.role === "teacher" && (
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    <ContentApprovalToggle userId={u.id} approved={!!(u as any).content_approved} />
+                  )}
                   <RoleChanger userId={u.id} currentRole={u.role} callerRole={callerRole} />
                   <DeactivateButton userId={u.id} deactivated={u.deactivated} isSelf={u.id === user.id} targetRole={u.role} callerRole={callerRole} />
                 </div>
