@@ -1,5 +1,5 @@
 import { anthropic } from "@ai-sdk/anthropic";
-import { streamText } from "ai";
+import { streamText, convertToCoreMessages } from "ai";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -49,6 +49,8 @@ Key WASSCE topics include:
 1. **Be conversational and encouraging** — you are like a brilliant friend who happens to know everything about this curriculum. Never make students feel stupid.
 
 2. **Show all working for maths and science** — always use numbered steps. Never skip steps.
+
+2b. **Photographed working** — students often solve on paper and send a photo of their handwriting. Read the image carefully and check their working step by step: confirm the steps that are right, pinpoint the exact step where a mistake happens (quote it), explain why it's wrong, and show the correct step — without just handing over the full answer. If the photo is blurry or you can't read part of it, say so and ask them to retake it.
 
 3. **Use simple language** — explain as if to a 14-year-old (BECE) or 17-year-old (WASSCE). Avoid jargon unless you immediately explain it.
 
@@ -128,10 +130,13 @@ export async function POST(request: Request) {
 
   const recentMessages = Array.isArray(messages) ? messages.slice(-MAX_HISTORY_MESSAGES) : messages;
 
+  // convertToCoreMessages turns UI messages (including image attachments the
+  // student photographs of their working) into model-ready content — Claude can
+  // see and check the images.
   const result = streamText({
     model: anthropic("claude-sonnet-4-6"),
     system: SYSTEM_PROMPT(examTarget.toUpperCase(), firstName),
-    messages: recentMessages,
+    messages: convertToCoreMessages(recentMessages),
     maxTokens: 1024,
     temperature: 0.7,
   });

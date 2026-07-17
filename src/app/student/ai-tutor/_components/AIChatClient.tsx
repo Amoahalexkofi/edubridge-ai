@@ -4,7 +4,7 @@ import { useChat } from "@ai-sdk/react";
 import { useRef, useEffect, useState } from "react";
 import {
   Brain, Send, Loader2, Copy, Check, Zap,
-  Plus, MessageSquare, BarChart2, X, Menu, AlertTriangle,
+  Plus, MessageSquare, BarChart2, X, Menu, AlertTriangle, ImagePlus,
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkMath from "remark-math";
@@ -14,6 +14,34 @@ import "katex/dist/katex.min.css";
 import type { Message } from "ai";
 import type { ExamContext } from "../page";
 import { createClient } from "@/lib/supabase/client";
+
+// Downscale + JPEG-compress a photo before sending, so students on metered data
+// upload small files and the vision token cost stays reasonable.
+async function compressImage(file: File, maxDim = 1568, quality = 0.8): Promise<string> {
+  const dataUrl = await new Promise<string>((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(r.result as string);
+    r.onerror = rej;
+    r.readAsDataURL(file);
+  });
+  const img = await new Promise<HTMLImageElement>((res, rej) => {
+    const im = new window.Image();
+    im.onload = () => res(im);
+    im.onerror = rej;
+    im.src = dataUrl;
+  });
+  let { width, height } = img;
+  if (width > maxDim || height > maxDim) {
+    const scale = maxDim / Math.max(width, height);
+    width = Math.round(width * scale);
+    height = Math.round(height * scale);
+  }
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  canvas.getContext("2d")!.drawImage(img, 0, 0, width, height);
+  return canvas.toDataURL("image/jpeg", quality);
+}
 
 export interface ChatSession {
   id: string;
@@ -178,6 +206,34 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
     body: { examTarget, firstName },
     initialMessages: activeSession?.messages ?? [],
   });
+
+  // Photo of the student's handwritten working, attached to the next message.
+  const [attachment, setAttachment] = useState<{ url: string; name: string } | null>(null);
+  const [attaching, setAttaching] = useState(false);
+  const imgInputRef = useRef<HTMLInputElement>(null);
+
+  async function pickImage(file: File | null) {
+    if (!file || !file.type.startsWith("image/")) return;
+    setAttaching(true);
+    try {
+      const url = await compressImage(file);
+      setAttachment({ url, name: file.name || "photo.jpg" });
+    } catch {
+      // ignore — student can retry
+    } finally {
+      setAttaching(false);
+      if (imgInputRef.current) imgInputRef.current.value = "";
+    }
+  }
+
+  function submitMessage(e: React.FormEvent) {
+    e.preventDefault();
+    if (!input.trim() && !attachment) return;
+    handleSubmit(e, attachment
+      ? { experimental_attachments: [{ name: attachment.name, contentType: "image/jpeg", url: attachment.url }] }
+      : undefined);
+    setAttachment(null);
+  }
 
   // Persist messages into the active session (localStorage immediately,
   // database debounced so we don't write on every streamed token)
@@ -430,6 +486,10 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
                     <div className={`max-w-[68%] bg-[#1B3A8A] text-white px-4 py-3 text-sm leading-relaxed shadow-sm ${
                       isFirstInGroup ? "rounded-2xl rounded-br-md" : "rounded-2xl rounded-r-md"
                     } ${isLastInGroup ? "" : "mb-0.5"}`}>
+                      {msg.experimental_attachments?.filter((a) => a.contentType?.startsWith("image/")).map((a, idx) => (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img key={idx} src={a.url} alt="Your working" className="mb-2 rounded-lg max-h-56 w-auto" />
+                      ))}
                       {msg.content}
                     </div>
                   </div>
@@ -584,14 +644,41 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
         {/* Input */}
         <div className="flex-shrink-0 bg-white border-t border-[#E6E4DE] px-4 sm:px-6 py-3">
           <div className="max-w-3xl mx-auto">
-            <form id="chat-form" onSubmit={handleSubmit} className="flex items-end gap-2.5">
+            {/* Attached photo preview */}
+            {attachment && (
+              <div className="mb-2 inline-flex items-center gap-2 bg-[#F2F1EE] border border-[#E6E4DE] rounded-xl p-1.5 pr-3">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={attachment.url} alt="Your working" className="h-12 w-12 rounded-lg object-cover" />
+                <span className="text-xs text-[#64748B]">Photo attached</span>
+                <button onClick={() => setAttachment(null)} className="h-6 w-6 rounded-md text-slate-400 hover:text-red-500 hover:bg-white flex items-center justify-center" aria-label="Remove photo">
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            )}
+            <input
+              ref={imgInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={e => pickImage(e.target.files?.[0] ?? null)}
+            />
+            <form id="chat-form" onSubmit={submitMessage} className="flex items-end gap-2.5">
+              <button
+                type="button"
+                onClick={() => imgInputRef.current?.click()}
+                disabled={attaching}
+                title="Attach a photo of your working"
+                className="h-11 w-11 rounded-xl bg-[#F2F1EE] hover:bg-[#EEEDE8] flex items-center justify-center flex-shrink-0 transition-colors disabled:opacity-60"
+              >
+                {attaching ? <Loader2 className="h-4 w-4 text-[#64748B] animate-spin" /> : <ImagePlus className="h-[18px] w-[18px] text-[#64748B]" />}
+              </button>
               <textarea
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={e => {
                   if (e.key === "Enter" && !e.shiftKey) {
                     e.preventDefault();
-                    if (input.trim()) handleSubmit(e as unknown as React.FormEvent);
+                    if (input.trim() || attachment) submitMessage(e as unknown as React.FormEvent);
                   }
                 }}
                 placeholder={activeSession?.type === "exam"
@@ -608,7 +695,7 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
               ) : (
                 <button
                   type="submit"
-                  disabled={!input.trim()}
+                  disabled={!input.trim() && !attachment}
                   className="h-11 w-11 rounded-xl bg-[#1B3A8A] hover:bg-[#162f74] disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center flex-shrink-0 transition-all shadow-[0_2px_8px_rgba(27,58,138,0.25)] hover:shadow-[0_4px_14px_rgba(27,58,138,0.35)] active:scale-95"
                 >
                   <Send className="h-4 w-4 text-white" />
