@@ -6,7 +6,7 @@
 
 import { useChat } from "@ai-sdk/react";
 import { useRef, useEffect, useState } from "react";
-import { Brain, Send, X, Minus, Loader2, Copy, Check, Maximize2 } from "lucide-react";
+import { Brain, Send, X, Minus, Loader2, Copy, Check, Maximize2, ImagePlus } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkMath from "remark-math";
 import remarkGfm from "remark-gfm";
@@ -14,6 +14,7 @@ import rehypeKatex from "rehype-katex";
 import "katex/dist/katex.min.css";
 import Link from "next/link";
 import type { Message } from "ai";
+import { compressImage } from "@/lib/image-compress";
 
 interface Props {
   userId: string;
@@ -69,6 +70,33 @@ export default function TutorPanel({ userId, firstName, examTarget, onClose }: P
     body: { examTarget, firstName },
     initialMessages: savedMessages,
   });
+
+  // Photo of the student's working, attached to the next message.
+  const [attachment, setAttachment] = useState<{ url: string; name: string } | null>(null);
+  const [attaching, setAttaching] = useState(false);
+  const imgInputRef = useRef<HTMLInputElement>(null);
+
+  async function pickImage(file: File | null) {
+    if (!file || !file.type.startsWith("image/")) return;
+    setAttaching(true);
+    try {
+      setAttachment({ url: await compressImage(file), name: file.name || "photo.jpg" });
+    } catch {
+      /* retry */
+    } finally {
+      setAttaching(false);
+      if (imgInputRef.current) imgInputRef.current.value = "";
+    }
+  }
+
+  function submitMessage(e: React.FormEvent) {
+    e.preventDefault();
+    if (!input.trim() && !attachment) return;
+    handleSubmit(e, attachment
+      ? { experimental_attachments: [{ name: attachment.name, contentType: "image/jpeg", url: attachment.url }] }
+      : undefined);
+    setAttachment(null);
+  }
 
   // Persist chat + mark everything seen (the panel is open by definition here).
   useEffect(() => {
@@ -131,6 +159,10 @@ export default function TutorPanel({ userId, firstName, examTarget, onClose }: P
               )}
               {msg.role === "user" ? (
                 <div className="max-w-[78%] bg-[#1B3A8A] text-white px-3 py-2 rounded-xl rounded-br-sm text-[13px] leading-relaxed">
+                  {msg.experimental_attachments?.filter((a) => a.contentType?.startsWith("image/")).map((a, idx) => (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img key={idx} src={a.url} alt="Your working" className="mb-1.5 rounded-lg max-h-44 w-auto" />
+                  ))}
                   {msg.content}
                 </div>
               ) : (
@@ -192,7 +224,27 @@ export default function TutorPanel({ userId, firstName, examTarget, onClose }: P
 
         {/* Input */}
         <div className="flex-shrink-0 px-3 py-3 bg-white border-t border-[#E6E4DE] rounded-b-2xl">
-          <form onSubmit={handleSubmit} className="flex items-end gap-2">
+          {attachment && (
+            <div className="mb-2 inline-flex items-center gap-2 bg-[#F2F1EE] border border-[#E6E4DE] rounded-lg p-1 pr-2.5">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={attachment.url} alt="Your working" className="h-9 w-9 rounded-md object-cover" />
+              <span className="text-[11px] text-[#64748B]">Photo attached</span>
+              <button onClick={() => setAttachment(null)} className="h-5 w-5 rounded text-slate-400 hover:text-red-500 flex items-center justify-center" aria-label="Remove photo">
+                <X className="h-3 w-3" />
+              </button>
+            </div>
+          )}
+          <input ref={imgInputRef} type="file" accept="image/*" className="hidden" onChange={(e) => pickImage(e.target.files?.[0] ?? null)} />
+          <form onSubmit={submitMessage} className="flex items-end gap-2">
+            <button
+              type="button"
+              onClick={() => imgInputRef.current?.click()}
+              disabled={attaching}
+              title="Attach a photo of your working"
+              className="h-10 w-10 rounded-xl bg-[#F2F1EE] hover:bg-[#EEEDE8] flex items-center justify-center flex-shrink-0 transition-colors disabled:opacity-60"
+            >
+              {attaching ? <Loader2 className="h-4 w-4 text-slate-400 animate-spin" /> : <ImagePlus className="h-4 w-4 text-[#64748B]" />}
+            </button>
             <textarea
               ref={inputRef}
               value={input}
@@ -200,7 +252,7 @@ export default function TutorPanel({ userId, firstName, examTarget, onClose }: P
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
-                  if (input.trim()) handleSubmit(e as unknown as React.FormEvent);
+                  if (input.trim() || attachment) submitMessage(e as unknown as React.FormEvent);
                 }
               }}
               placeholder="Ask anything…"
@@ -213,7 +265,7 @@ export default function TutorPanel({ userId, firstName, examTarget, onClose }: P
                 <Loader2 className="h-4 w-4 text-slate-400 animate-spin" />
               </button>
             ) : (
-              <button type="submit" disabled={!input.trim()} className="h-10 w-10 rounded-xl bg-[#1B3A8A] hover:bg-[#162f74] disabled:opacity-35 flex items-center justify-center flex-shrink-0 transition-all active:scale-95 shadow-sm">
+              <button type="submit" disabled={!input.trim() && !attachment} className="h-10 w-10 rounded-xl bg-[#1B3A8A] hover:bg-[#162f74] disabled:opacity-35 flex items-center justify-center flex-shrink-0 transition-all active:scale-95 shadow-sm">
                 <Send className="h-3.5 w-3.5 text-white" />
               </button>
             )}
