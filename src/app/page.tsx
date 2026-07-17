@@ -15,7 +15,17 @@ const navLinks = [
   { label: "Features",     href: "#features" },
   { label: "How it works", href: "#how-it-works" },
   { label: "Subjects",     href: "#curriculum" },
+  { label: "Pricing",      href: "#pricing" },
   { label: "For everyone", href: "#for-everyone" },
+];
+
+const pricingPlans = [
+  { name: "Free", price: "0", cycle: "forever", yearly: null,
+    perks: ["Limited lessons", "Practice questions", "Community support"], featured: false },
+  { name: "Basic", price: "40", cycle: "per month", yearly: "or GHS 480 / year",
+    perks: ["Full lessons", "Quizzes", "Progress tracking"], featured: false },
+  { name: "Premium", price: "60", cycle: "per month", yearly: "or GHS 720 / year",
+    perks: ["Everything in Basic", "AI Tutor", "Mock exams", "Offline access", "Career guidance"], featured: true },
 ];
 
 const stats = [
@@ -577,6 +587,76 @@ export default function LandingPage() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ─── PRICING ───────────────────────────────────────────────────── */}
+      <section id="pricing" className="bg-[#F8F7F4] py-20 lg:py-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <p className="text-xs font-bold tracking-widest uppercase text-[#E8722A] mb-4">Pricing</p>
+            <h2 className="font-[family-name:var(--font-jakarta)] text-4xl lg:text-5xl text-slate-900 leading-tight">
+              Simple plans, built for Ghanaian students.
+            </h2>
+            <p className="text-slate-600 text-[17px] leading-relaxed mt-5">
+              Start free and upgrade when you&apos;re ready. Pay easily with <strong>MTN MoMo</strong> or <strong>card</strong>.
+            </p>
+            <span className="inline-flex items-center gap-2 mt-6 px-4 py-2 rounded-full bg-[#EFF6FF] border border-[#BFDBFE] text-[#1B3A8A] text-sm font-bold">
+              <Star className="h-4 w-4 text-[#E8722A]" /> Free during early access — paid plans launching soon
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5 items-start max-w-5xl mx-auto">
+            {pricingPlans.map((plan) => (
+              <div
+                key={plan.name}
+                className={`relative rounded-2xl p-7 border eb-lift ${
+                  plan.featured
+                    ? "bg-[#1B3A8A] border-[#1B3A8A] eb-card-navy md:-mt-3 md:pb-9"
+                    : "bg-white border-[#E6E4DE] eb-card hover:border-slate-300"
+                }`}
+              >
+                {plan.featured && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#E8722A] text-white text-[11px] font-bold shadow-[0_4px_12px_rgba(232,114,42,0.4)]">
+                    <Star className="h-3 w-3" /> Most popular
+                  </span>
+                )}
+                <h3 className={`font-bold text-lg ${plan.featured ? "text-white" : "text-slate-900"}`}>{plan.name}</h3>
+                <div className="mt-3 flex items-baseline gap-1.5">
+                  <span className={`text-sm font-semibold ${plan.featured ? "text-white/60" : "text-slate-400"}`}>GHS</span>
+                  <span className={`text-4xl font-black tabular-nums ${plan.featured ? "text-white" : "text-slate-900"}`}>{plan.price}</span>
+                  <span className={`text-sm ${plan.featured ? "text-white/60" : "text-slate-400"}`}>/ {plan.cycle}</span>
+                </div>
+                <p className={`text-xs mt-1 h-4 ${plan.featured ? "text-white/50" : "text-slate-400"}`}>{plan.yearly ?? ""}</p>
+
+                <ul className="mt-6 space-y-3">
+                  {plan.perks.map((perk) => (
+                    <li key={perk} className={`flex items-start gap-2.5 text-sm ${plan.featured ? "text-white/85" : "text-slate-600"}`}>
+                      <CheckCircle2 className={`h-4 w-4 flex-shrink-0 mt-0.5 ${plan.featured ? "text-[#5EEAD4]" : "text-[#16A34A]"}`} />
+                      {perk}
+                    </li>
+                  ))}
+                </ul>
+
+                <Link
+                  href="/signup"
+                  className={`mt-7 w-full inline-flex items-center justify-center gap-2 h-12 rounded-xl text-sm font-bold transition-all hover:-translate-y-0.5 ${
+                    plan.featured
+                      ? "bg-[#E8722A] hover:bg-[#d4641e] text-white shadow-[0_4px_20px_rgba(232,114,42,0.4)]"
+                      : "border-2 border-[#1B3A8A] text-[#1B3A8A] hover:bg-[#1B3A8A] hover:text-white"
+                  }`}
+                >
+                  Start free <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          {/* Institutional line */}
+          <p className="text-center text-sm text-slate-500 mt-10">
+            Teachers, schools &amp; NGOs — plans from <strong className="text-slate-700">GHS 600 / year</strong>.{" "}
+            <a href="mailto:info@edubridgegh.com" className="font-bold text-[#1B3A8A] hover:underline">Get in touch →</a>
+          </p>
         </div>
       </section>
 
