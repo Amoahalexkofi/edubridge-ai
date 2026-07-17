@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthUser } from "@/lib/auth";
-import { createClient as createServiceClient } from "@supabase/supabase-js";
 import { Trophy, BookOpen, Medal, Flame, Star, GraduationCap } from "lucide-react";
 
 export default async function LeaderboardPage() {
@@ -19,65 +18,18 @@ export default async function LeaderboardPage() {
   const examTarget = (profile?.exam_target ?? "bece").toLowerCase();
   const examLabel = examTarget.toUpperCase();
 
-  const admin = createServiceClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
-
-  // Service role bypasses RLS so we see all students, not just the current user's row
-  const { data: studentRoles } = await admin
-    .from("user_roles")
-    .select("user_id")
-    .eq("role", "student");
-
-  const studentIds = studentRoles?.map((r) => r.user_id) ?? [];
-
-  const { data: profiles } = await supabase
-    .from("profiles")
-    .select("id, full_name, exam_target, avatar_url")
-    .in("id", studentIds.length > 0 ? studentIds : ["none"])
-    .eq("exam_target", examTarget);
-
-  // Lessons completed per student
-  const { data: allProgress } = await supabase
-    .from("lesson_progress")
-    .select("user_id")
-    .eq("completed", true)
-    .in("user_id", studentIds.length > 0 ? studentIds : ["none"]);
-
-  const lessonCounts: Record<string, number> = {};
-  allProgress?.forEach((p) => {
-    lessonCounts[p.user_id] = (lessonCounts[p.user_id] ?? 0) + 1;
-  });
-
-  // Exam attempts per student
-  const { data: allAttempts } = await supabase
-    .from("exam_attempts")
-    .select("user_id, score, total_marks")
-    .eq("status", "submitted")
-    .in("user_id", studentIds.length > 0 ? studentIds : ["none"]);
-
-  const examCounts: Record<string, number> = {};
-  const examScores: Record<string, number[]> = {};
-  allAttempts?.forEach((a) => {
-    examCounts[a.user_id] = (examCounts[a.user_id] ?? 0) + 1;
-    // Store the percentage, not the raw mark, so averages are comparable across exams
-    if (a.score != null && a.total_marks) {
-      examScores[a.user_id] = [...(examScores[a.user_id] ?? []), (a.score / a.total_marks) * 100];
-    }
-  });
-
-  const ranked = (profiles ?? [])
-    .map((p) => {
-      const lessons = lessonCounts[p.id] ?? 0;
-      const exams = examCounts[p.id] ?? 0;
-      const scores = examScores[p.id] ?? [];
-      const avgScore = scores.length > 0
-        ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)
-        : null;
-      return { ...p, lessons, exams, avgScore };
-    })
-    .sort((a, b) => b.lessons - a.lessons || b.exams - a.exams);
+  // Ranking is aggregated in the database (one GROUP BY query) rather than pulling
+  // every student's full lesson/exam history to the server and counting in JS.
+  const { data: rows } = await supabase.rpc("leaderboard", { p_exam_target: examTarget });
+  const ranked = ((rows ?? []) as Array<{
+    id: string; full_name: string | null; lessons: number | string; exams: number | string; avg_score: number | string | null;
+  }>).map((r) => ({
+    id: r.id,
+    full_name: r.full_name,
+    lessons: Number(r.lessons),
+    exams: Number(r.exams),
+    avgScore: r.avg_score != null ? Number(r.avg_score) : null,
+  }));
 
   const myRank = ranked.findIndex((r) => r.id === user.id) + 1;
   const myStats = ranked.find((r) => r.id === user.id);

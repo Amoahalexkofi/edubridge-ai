@@ -68,7 +68,7 @@ export default async function StudentDashboard() {
     { data: examScores },
     { data: recentProgress },
     { data: streakData },
-    { data: studentRoles },
+    { data: leaderboardRows },
     recommendations,
     badgeState,
   ] = await Promise.all([
@@ -78,7 +78,7 @@ export default async function StudentDashboard() {
     supabase.from("exam_attempts").select("score, total_marks").eq("user_id", user.id).eq("status", "submitted").not("score", "is", null),
     supabase.from("lesson_progress").select("lesson_id, last_viewed_at, completed, lessons(title, topic_id, topics(title, subject_id, subjects(name, slug)))").eq("user_id", user.id).order("last_viewed_at", { ascending: false }).limit(1).single(),
     supabase.from("lesson_progress").select("last_viewed_at").eq("user_id", user.id).eq("completed", true).order("last_viewed_at", { ascending: false }).limit(365),
-    supabase.from("user_roles").select("user_id").eq("role", "student"),
+    supabase.rpc("leaderboard", { p_exam_target: (profile?.exam_target ?? "bece").toLowerCase() }),
     getRecommendations(supabase, user.id, profile?.exam_target ?? "bece"),
     checkAndAwardBadges(supabase, user.id),
   ]);
@@ -102,21 +102,10 @@ export default async function StudentDashboard() {
   // Streak
   const streak = calculateStreak((streakData ?? []).map((d) => d.last_viewed_at));
 
-  // Top 3 leaderboard teaser
-  const studentIds = studentRoles?.map((r) => r.user_id) ?? [];
-  const { data: peerProfiles } = studentIds.length > 0
-    ? await supabase.from("profiles").select("id, full_name").in("id", studentIds).eq("exam_target", examTarget)
-    : { data: [] };
-  const { data: peerProgress } = studentIds.length > 0
-    ? await supabase.from("lesson_progress").select("user_id").eq("completed", true).in("user_id", studentIds)
-    : { data: [] };
-
-  const peerCounts: Record<string, number> = {};
-  peerProgress?.forEach((p) => { peerCounts[p.user_id] = (peerCounts[p.user_id] ?? 0) + 1; });
-  const top3 = (peerProfiles ?? [])
-    .map((p) => ({ ...p, lessons: peerCounts[p.id] ?? 0 }))
-    .sort((a, b) => b.lessons - a.lessons)
-    .slice(0, 3);
+  // Top 3 leaderboard teaser — already ranked by the leaderboard RPC.
+  const top3 = ((leaderboardRows ?? []) as Array<{ id: string; full_name: string | null; lessons: number | string }>)
+    .slice(0, 3)
+    .map((s) => ({ id: s.id, full_name: s.full_name, lessons: Number(s.lessons) }));
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const recent = recentProgress as any;
