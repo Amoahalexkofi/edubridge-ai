@@ -137,3 +137,13 @@ h1 {
   .eb-lift { transition: box-shadow 0.15s ease; }
   .eb-lift:hover { transform: none; }
 }
+
+/* Chat message entrance — a calm fade + rise as each reply arrives. */
+@keyframes eb-msg-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+.eb-msg-in { animation: eb-msg-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@media (prefers-reduced-motion: reduce) {
+  .eb-msg-in { animation: none; }
+}

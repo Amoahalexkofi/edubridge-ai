@@ -446,7 +446,7 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
 
         {/* Messages */}
         <div className="flex-1 overflow-y-auto bg-[#F8F7F4]">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 space-y-4">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 space-y-6">
 
             {messages.map((msg, i) => {
               const prev = messages[i - 1];
@@ -455,8 +455,8 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
 
               if (msg.role === "user") {
                 return (
-                  <div key={msg.id} className="flex justify-end">
-                    <div className={`max-w-[68%] bg-[#1B3A8A] text-white px-4 py-3 text-sm leading-relaxed shadow-sm ${
+                  <div key={msg.id} className="flex justify-end eb-msg-in">
+                    <div className={`max-w-[75%] bg-[#1B3A8A] text-white px-4 py-3 text-sm leading-relaxed shadow-sm ${
                       isFirstInGroup ? "rounded-2xl rounded-br-md" : "rounded-2xl rounded-r-md"
                     } ${isLastInGroup ? "" : "mb-0.5"}`}>
                       {msg.experimental_attachments?.filter((a) => a.contentType?.startsWith("image/")).map((a, idx) => (
@@ -471,7 +471,7 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
 
               // Assistant message
               return (
-                <div key={msg.id} className={`flex items-end gap-2.5 ${isLastInGroup ? "" : "mb-0.5"}`}>
+                <div key={msg.id} className={`flex items-end gap-2.5 eb-msg-in ${isLastInGroup ? "" : "mb-0.5"}`}>
                   {/* Avatar — only on last in group */}
                   <div className="flex-shrink-0 w-8">
                     {isLastInGroup ? (

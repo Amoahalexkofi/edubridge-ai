@@ -119,8 +119,8 @@ export default function TutorPanel({ userId, firstName, examTarget, onClose }: P
 
   return (
     <>
-      <div className={`fixed z-50 bottom-20 right-4 lg:bottom-6 lg:right-6 w-[calc(100vw-2rem)] sm:w-[380px] bg-white rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.18)] border border-[#E6E4DE] flex flex-col transition-all duration-200 ${
-        minimised ? "h-[56px] overflow-hidden" : "h-[520px] sm:h-[560px] max-h-[calc(100dvh-6rem)]"
+      <div className={`fixed z-50 bottom-20 right-4 lg:bottom-6 lg:right-6 w-[calc(100vw-2rem)] sm:w-[400px] bg-white rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.18)] border border-[#E6E4DE] flex flex-col transition-all duration-200 ${
+        minimised ? "h-[56px] overflow-hidden" : "h-[560px] sm:h-[600px] max-h-[calc(100dvh-6rem)]"
       }`}>
 
         {/* Panel header */}
@@ -149,9 +149,9 @@ export default function TutorPanel({ userId, firstName, examTarget, onClose }: P
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 bg-[#F8F7F4]">
+        <div className="flex-1 overflow-y-auto px-4 py-5 space-y-5 bg-[#F8F7F4]">
           {messages.map((msg) => (
-            <div key={msg.id} className={`flex items-end gap-2 ${msg.role === "user" ? "flex-row-reverse" : ""}`}>
+            <div key={msg.id} className={`flex items-end gap-2 eb-msg-in ${msg.role === "user" ? "flex-row-reverse" : ""}`}>
               {msg.role === "assistant" && (
                 <div className="h-6 w-6 rounded-lg bg-gradient-to-br from-[#1B3A8A] to-[#1D4ED8] flex items-center justify-center flex-shrink-0 shadow-sm">
                   <Brain className="h-3 w-3 text-white" />
