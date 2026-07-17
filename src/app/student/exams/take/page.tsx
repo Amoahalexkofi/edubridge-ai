@@ -33,12 +33,15 @@ export default async function TakeExamPage({
     if (sessionStatus(session.starts_at, session.ends_at) !== "live") {
       redirect("/student/exams?error=session_closed");
     }
-    // Already attempted? Send them to their result rather than starting again.
+    // Already SUBMITTED this session? Send them to their result. (An in-progress
+    // attempt is left alone so they re-enter the session rather than being bounced
+    // to a non-session exam.)
     const { data: existingRows } = await supabase
       .from("exam_attempts")
       .select("id")
       .eq("user_id", user.id)
       .eq("session_id", sessionId)
+      .eq("status", "submitted")
       .order("started_at", { ascending: false })
       .limit(1);
     if (existingRows && existingRows.length > 0) {
@@ -111,11 +114,22 @@ export default async function TakeExamPage({
 
   if (!attempt || insertError) redirect("/student/exams?error=insert_failed");
 
+  // SECURITY: never send correct_answer / explanation to the browser during the
+  // exam — grading happens server-side on submit. Strip them here.
+  const clientQuestions = questions.map((q) => ({
+    id: q.id,
+    prompt: q.prompt,
+    options: q.options,
+    image_url: q.image_url,
+    topic_id: q.topic_id,
+    topics: q.topics,
+  }));
+
   return (
     <ExamTaker
       attemptId={attempt.id}
       subject={subject}
-      questions={questions}
+      questions={clientQuestions}
       durationMinutes={durationMinutes}
     />
   );

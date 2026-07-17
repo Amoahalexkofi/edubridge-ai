@@ -12,7 +12,12 @@ export async function POST(req: Request) {
   const body = await req.text();
   const signature = req.headers.get("x-paystack-signature") ?? "";
   const expected = crypto.createHmac("sha512", secret).update(body).digest("hex");
-  if (signature !== expected) return new Response("Invalid signature", { status: 401 });
+  // Constant-time compare (equal length required by timingSafeEqual).
+  const sigBuf = Buffer.from(signature);
+  const expBuf = Buffer.from(expected);
+  if (sigBuf.length !== expBuf.length || !crypto.timingSafeEqual(sigBuf, expBuf)) {
+    return new Response("Invalid signature", { status: 401 });
+  }
 
   let event: { event?: string; data?: { reference?: string } };
   try { event = JSON.parse(body); } catch { return new Response("Bad payload", { status: 400 }); }

@@ -6,12 +6,12 @@ import { Clock, AlertTriangle, ChevronLeft, ChevronRight, Loader2 } from "lucide
 import { toast } from "sonner";
 import QuestionImage from "@/components/QuestionImage";
 
+// No correct_answer / explanation here — those never reach the client; grading
+// is done server-side on submit.
 type Question = {
   id: string;
   prompt: string;
   options: Array<{ id: string; text: string }>;
-  correct_answer: string;
-  explanation: string | null;
   image_url: string | null;
   topic_id: string;
   topics: { title: string } | null;

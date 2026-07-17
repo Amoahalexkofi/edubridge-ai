@@ -77,7 +77,9 @@ export default async function ExamResultPage({
   });
 
   const totalCorrect = Object.values(topicStats).reduce((s, t) => s + t.correct, 0);
-  const totalQuestions = Object.values(topicStats).reduce((s, t) => s + t.total, 0) || attempt.total_marks || 1;
+  // Denominator is the REAL exam size (unanswered questions count as wrong), not
+  // just the questions the student answered.
+  const totalQuestions = attempt.total_marks || Object.values(topicStats).reduce((s, t) => s + t.total, 0) || 1;
   const totalWrong = totalQuestions - totalCorrect;
   const pct = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
 

@@ -120,6 +120,12 @@ export async function POST(request: Request) {
   if (!email || !password || !fullName || !role) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
   }
+  // SECURITY: never let public signup mint elevated roles. Only these self-serve
+  // roles are allowed; admin/super_admin can only be granted by a super admin.
+  const PUBLIC_ROLES = ["student", "teacher", "parent"];
+  if (!PUBLIC_ROLES.includes(String(role))) {
+    return NextResponse.json({ error: "Invalid account type." }, { status: 400 });
+  }
   if (typeof password !== "string" || password.length < 8) {
     return NextResponse.json({ error: "Password must be at least 8 characters." }, { status: 400 });
   }

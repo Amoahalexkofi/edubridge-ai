@@ -22,10 +22,11 @@ export async function POST(req: NextRequest) {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
-  // Verify this attempt belongs to this user
+  // Verify this attempt belongs to this user. total_marks was set to the REAL
+  // number of questions served, at attempt creation — that's the denominator.
   const { data: attempt } = await admin
     .from("exam_attempts")
-    .select("id, user_id, status")
+    .select("id, user_id, status, total_marks")
     .eq("id", attemptId)
     .eq("user_id", user.id)
     .single();
@@ -42,8 +43,11 @@ export async function POST(req: NextRequest) {
     .select("id, correct_answer")
     .in("id", questionIds.length > 0 ? questionIds : ["none"]);
 
-  const score = (questions ?? []).filter((q) => answers[q.id] === q.correct_answer).length;
-  const total_marks = questionIds.length;
+  // Denominator is the served exam size (not just answered questions), so blanks
+  // count as wrong. Cap the score so injected extra answers can't exceed 100%.
+  const total_marks = attempt.total_marks ?? questionIds.length;
+  const correct = (questions ?? []).filter((q) => answers[q.id] === q.correct_answer).length;
+  const score = Math.min(correct, total_marks);
 
   const { error } = await admin
     .from("exam_attempts")
