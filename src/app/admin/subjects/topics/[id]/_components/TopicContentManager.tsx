@@ -10,6 +10,7 @@ import { createClient } from "@/lib/supabase/client";
 import LessonEditor from "@/app/teacher/lessons/new/_components/LessonEditor";
 import QuestionEditor from "@/app/teacher/questions/new/_components/QuestionEditor";
 import QuestionImporter from "./QuestionImporter";
+import LessonImporter from "./LessonImporter";
 
 interface Lesson { id: string; title: string; order_index: number; content: string | null }
 interface OptionItem { id: string; text: string }
@@ -30,6 +31,7 @@ interface Props {
 
 type Drawer =
   | { kind: "lesson-new" }
+  | { kind: "lesson-import" }
   | { kind: "lesson-edit"; lesson: Lesson }
   | { kind: "question-new" }
   | { kind: "question-edit"; question: Question }
@@ -72,12 +74,20 @@ export default function TopicContentManager({ topicId, lessons, questions, allTo
             <h2 className="font-bold text-slate-900">Lessons</h2>
             <span className="text-xs font-bold text-slate-400 tabular-nums">{lessons.length}</span>
           </div>
-          <button
-            onClick={() => setDrawer({ kind: "lesson-new" })}
-            className="flex items-center gap-1.5 h-9 px-3.5 rounded-lg bg-[#1D4ED8] hover:bg-[#1e40af] text-white text-xs font-bold transition-colors"
-          >
-            <Plus className="h-3.5 w-3.5" /> Add lesson
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setDrawer({ kind: "lesson-import" })}
+              className="flex items-center gap-1.5 h-9 px-3.5 rounded-lg border border-[#1D4ED8] text-[#1D4ED8] hover:bg-[#EFF6FF] text-xs font-bold transition-colors"
+            >
+              <Sparkles className="h-3.5 w-3.5" /> Import with AI
+            </button>
+            <button
+              onClick={() => setDrawer({ kind: "lesson-new" })}
+              className="flex items-center gap-1.5 h-9 px-3.5 rounded-lg bg-[#1D4ED8] hover:bg-[#1e40af] text-white text-xs font-bold transition-colors"
+            >
+              <Plus className="h-3.5 w-3.5" /> Add lesson
+            </button>
+          </div>
         </div>
 
         {lessons.length > 0 ? (
@@ -191,6 +201,7 @@ export default function TopicContentManager({ topicId, lessons, questions, allTo
             <div className="sticky top-0 z-10 flex items-center justify-between bg-white/90 backdrop-blur border-b border-[#E6E4DE] px-5 h-14">
               <p className="font-bold text-slate-900 text-sm">
                 {drawer.kind === "lesson-new" && "New lesson"}
+                {drawer.kind === "lesson-import" && "Import a lesson with AI"}
                 {drawer.kind === "lesson-edit" && "Edit lesson"}
                 {drawer.kind === "question-new" && "New question"}
                 {drawer.kind === "question-edit" && "Edit question"}
@@ -227,6 +238,9 @@ export default function TopicContentManager({ topicId, lessons, questions, allTo
               )}
               {drawer.kind === "question-import" && (
                 <QuestionImporter topicId={topicId} onSaved={onSaved} />
+              )}
+              {drawer.kind === "lesson-import" && (
+                <LessonImporter topicId={topicId} allTopics={allTopics} onSaved={onSaved} />
               )}
             </div>
           </div>
