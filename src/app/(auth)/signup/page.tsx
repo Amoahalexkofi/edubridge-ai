@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import {
-  Eye, EyeOff, Loader2, BookOpen, Users, User,
+  Eye, EyeOff, Loader2, BookOpen, User,
   CheckCircle2, ArrowRight, ArrowLeft, ChevronDown,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -29,14 +29,8 @@ const roles: { value: Role; label: string; description: string; icon: React.Elem
     color: "border-[#1B3A8A] bg-[#EEF2FF]",
     iconBg: "bg-[#1B3A8A]",
   },
-  {
-    value: "teacher",
-    label: "Teacher",
-    description: "Upload lessons, create assessments and track class progress",
-    icon: Users,
-    color: "border-[#E8722A] bg-orange-50",
-    iconBg: "bg-[#E8722A]",
-  },
+  // Teacher accounts are not self-serve — an admin promotes trusted people to
+  // teacher (Admin → Users). Keeps content-authoring + billed AI tools gated.
   {
     value: "parent",
     label: "Parent / Guardian",
