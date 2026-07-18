@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, Users, BookOpen, Link2, LogOut, Settings, BarChart2, CalendarClock } from "lucide-react";
+import { LayoutDashboard, Users, BookOpen, Link2, LogOut, Settings, BarChart2, CalendarClock, AlertTriangle } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 const navItems = [
@@ -12,6 +12,7 @@ const navItems = [
   { href: "/admin/subjects",  label: "Subjects",    icon: BookOpen        },
   { href: "/admin/exams",     label: "Mock Exams",  icon: CalendarClock   },
   { href: "/admin/analytics", label: "Analytics",   icon: BarChart2       },
+  { href: "/admin/errors",    label: "Errors",      icon: AlertTriangle   },
   { href: "/admin/links",     label: "Parent links",icon: Link2           },
   { href: "/admin/settings",  label: "Settings",    icon: Settings        },
 ];

@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
+import ErrorLogger from "@/components/ErrorLogger";
 
 // One warm, humanist family across the whole product — headings and body.
 // Reads as serious and trustworthy without the quirk of a display grotesque;
@@ -37,6 +38,7 @@ export default function RootLayout({
       <body className="min-h-full antialiased">
         {children}
         <ServiceWorkerRegister />
+        <ErrorLogger />
         <Toaster richColors position="top-right" />
       </body>
     </html>
