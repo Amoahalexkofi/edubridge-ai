@@ -169,11 +169,11 @@ export default function TutorPanel({ userId, firstName, examTarget, onClose }: P
                 <div className="group flex items-start gap-1 flex-1">
                   <div className="flex-1 bg-white border border-[#E6E4DE] rounded-xl rounded-bl-sm px-3 py-2.5 shadow-[0_1px_3px_rgba(0,0,0,0.05)]">
                     <div className="prose prose-xs max-w-none text-[#334155]
-                      prose-p:my-1 prose-p:text-[13px] prose-p:leading-relaxed
+                      prose-p:my-2.5 prose-p:text-[13px] prose-p:leading-[1.7]
                       prose-headings:text-[#1B3A8A] prose-headings:font-bold
                       prose-h3:text-[13px] prose-h3:mt-3 prose-h3:mb-1
                       prose-strong:text-[#0f172a] prose-strong:font-semibold
-                      prose-ul:my-1 prose-ol:my-1 prose-li:my-0.5 prose-li:text-[13px]
+                      prose-ul:my-2.5 prose-ol:my-2.5 prose-li:my-1.5 prose-li:text-[13px] prose-li:leading-[1.7] prose-ul:space-y-1 prose-ol:space-y-1
                       prose-code:bg-[#EEF2FF] prose-code:text-[#1B3A8A] prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-[11px] prose-code:before:content-none prose-code:after:content-none
                       prose-hr:my-2 prose-hr:border-[#E6E4DE]">
                       <ReactMarkdown

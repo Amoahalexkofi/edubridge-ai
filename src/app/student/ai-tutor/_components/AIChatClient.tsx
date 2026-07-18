@@ -486,12 +486,12 @@ export default function AIChatClient({ userId, firstName, examTarget, examContex
                       isFirstInGroup ? "rounded-2xl rounded-bl-md" : "rounded-2xl rounded-l-md"
                     }`}>
                       <div className="prose prose-sm max-w-none text-[#1e293b]
-                        prose-p:my-1.5 prose-p:leading-relaxed prose-p:text-[#1e293b]
+                        prose-p:my-3 prose-p:leading-[1.7] prose-p:text-[#1e293b]
                         prose-headings:font-bold prose-headings:text-[#1B3A8A]
                         prose-h3:text-[14px] prose-h3:mt-4 prose-h3:mb-1.5 prose-h3:pb-1.5 prose-h3:border-b prose-h3:border-[#EEF2FF]
                         prose-h4:text-[13px] prose-h4:mt-3 prose-h4:mb-1 prose-h4:text-[#334155]
                         prose-strong:text-[#0f172a] prose-strong:font-semibold
-                        prose-ul:my-1.5 prose-ol:my-1.5 prose-li:my-0.5 prose-li:leading-relaxed prose-li:text-[#334155]
+                        prose-ul:my-3 prose-ol:my-3 prose-li:my-2 prose-li:leading-[1.7] prose-li:text-[#334155] prose-ul:space-y-1 prose-ol:space-y-1
                         prose-hr:border-[#E6E4DE] prose-hr:my-3
                         prose-code:bg-[#EEF2FF] prose-code:text-[#4338CA] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:text-[11px] prose-code:font-mono prose-code:font-semibold prose-code:before:content-none prose-code:after:content-none
                         prose-blockquote:border-l-[3px] prose-blockquote:border-[#0D9488] prose-blockquote:bg-[#F0FDFA] prose-blockquote:rounded-r-xl prose-blockquote:px-4 prose-blockquote:py-2 prose-blockquote:not-italic">
