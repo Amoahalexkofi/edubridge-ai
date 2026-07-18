@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
 
+// Unique per build — baked into the client bundle AND readable server-side, so the
+// app can tell when a newer version has been deployed and refresh itself.
+const BUILD_ID = process.env.VERCEL_GIT_COMMIT_SHA || String(Date.now());
+
 const nextConfig: NextConfig = {
+  env: { NEXT_PUBLIC_BUILD_ID: BUILD_ID },
   images: {
     remotePatterns: [
       // Supabase Storage — user-uploaded avatars
