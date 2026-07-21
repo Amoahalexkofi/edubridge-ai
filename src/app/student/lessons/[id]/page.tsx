@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, CheckCircle2, BookOpen, ChevronRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthUser } from "@/lib/auth";
+import { hasBasic } from "@/lib/pricing";
 import LessonCompleteButton from "./_components/LessonCompleteButton";
 import LessonContent from "./_components/LessonContent";
 
@@ -48,6 +49,17 @@ export default async function LessonPage({
   const currentIdx = siblings?.findIndex((l) => l.id === id) ?? 0;
   const prevLesson = siblings?.[currentIdx - 1] ?? null;
   const nextLesson = siblings?.[currentIdx + 1] ?? null;
+
+  // First lesson in each topic is a free preview; the rest need Basic+.
+  const isFreePreview = currentIdx === 0;
+  if (!isFreePreview) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("subscription_tier, subscription_expires_at, trial_ends_at, grandfathered")
+      .eq("id", user.id)
+      .single();
+    if (!hasBasic(profile)) redirect("/student/upgrade");
+  }
 
   // Mark as viewed (upsert progress row)
   await supabase.from("lesson_progress").upsert(

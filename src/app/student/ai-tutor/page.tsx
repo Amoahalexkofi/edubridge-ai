@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthUser } from "@/lib/auth";
+import { hasPremium } from "@/lib/pricing";
 import AIChatClient, { type ChatSession } from "./_components/AIChatClient";
 
 export interface ExamContext {
@@ -23,9 +24,11 @@ export default async function AITutorPage({
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("full_name, exam_target")
+    .select("full_name, exam_target, subscription_tier, subscription_expires_at, trial_ends_at, grandfathered")
     .eq("id", user.id)
     .single();
+
+  if (!hasPremium(profile)) redirect("/student/upgrade");
 
   const firstName = profile?.full_name?.split(" ")[0] ?? "there";
   const examTarget = (profile?.exam_target ?? "bece").toUpperCase() as "BECE" | "WASSCE";

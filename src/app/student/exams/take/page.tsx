@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getAuthUser } from "@/lib/auth";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
 import { sessionStatus } from "@/lib/exam-sessions";
+import { hasPremium } from "@/lib/pricing";
 import ExamTaker from "./_components/ExamTaker";
 
 export default async function TakeExamPage({
@@ -14,6 +15,13 @@ export default async function TakeExamPage({
   const user = await getAuthUser();
   if (!user) redirect("/login");
   if (user.user_metadata?.app_verified === false) redirect("/student?verify=1"); // unverified students are limited to dashboard + profile
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("subscription_tier, subscription_expires_at, trial_ends_at, grandfathered")
+    .eq("id", user.id)
+    .single();
+  if (!hasPremium(profile)) redirect("/student/upgrade");
 
   const { subject: subjectParam, session: sessionId } = await searchParams;
 

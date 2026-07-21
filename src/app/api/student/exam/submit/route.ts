@@ -1,12 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
+import { hasPremium } from "@/lib/pricing";
 
 export async function POST(req: NextRequest) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   if (user.user_metadata?.app_verified === false) return NextResponse.json({ error: "Verify your email to submit exams." }, { status: 403 });
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("subscription_tier, subscription_expires_at, trial_ends_at, grandfathered")
+    .eq("id", user.id)
+    .single();
+  if (!hasPremium(profile)) return NextResponse.json({ error: "Upgrade to Premium to submit mock exams." }, { status: 403 });
 
   const { attemptId, answers } = await req.json() as {
     attemptId: string;

@@ -6,7 +6,7 @@
 
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Brain } from "lucide-react";
 
 const TutorPanel = dynamic(() => import("./TutorPanel"), { ssr: false });
@@ -18,10 +18,12 @@ interface Props {
   userId: string;
   firstName: string;
   examTarget: string;
+  canUseAiTutor: boolean;
 }
 
-export default function FloatingTutor({ userId, firstName, examTarget }: Props) {
+export default function FloatingTutor({ userId, firstName, examTarget, canUseAiTutor }: Props) {
   const pathname = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [unread, setUnread] = useState(0);
 
@@ -54,7 +56,10 @@ export default function FloatingTutor({ userId, firstName, examTarget }: Props) 
 
       {!open && (
         <button
-          onClick={() => { setOpen(true); setUnread(0); }}
+          onClick={() => {
+            if (!canUseAiTutor) { router.push("/student/upgrade"); return; }
+            setOpen(true); setUnread(0);
+          }}
           title="Ask the AI Tutor"
           className="group fixed z-50 bottom-20 right-4 lg:bottom-6 lg:right-6 flex items-center h-14 w-14 sm:w-auto justify-center sm:justify-start rounded-full sm:gap-3 sm:pl-4 sm:pr-5 bg-gradient-to-br from-[#1B3A8A] to-[#1D4ED8] text-white shadow-[0_8px_28px_rgba(27,58,138,0.45)] hover:shadow-[0_14px_40px_rgba(27,58,138,0.55)] hover:-translate-y-0.5 transition-all active:scale-95"
         >

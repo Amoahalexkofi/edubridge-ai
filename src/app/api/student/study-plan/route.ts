@@ -3,6 +3,7 @@ import { generateText } from "ai";
 import { createClient } from "@/lib/supabase/server";
 import { generateStudyPlan, summariseWeakForCoach } from "@/lib/study-plan";
 import { getTopicStats } from "@/lib/recommendations";
+import { hasPremium } from "@/lib/pricing";
 
 export const maxDuration = 60;
 
@@ -25,9 +26,12 @@ export async function POST(request: Request) {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("full_name, exam_target")
+    .select("full_name, exam_target, subscription_tier, subscription_expires_at, trial_ends_at, grandfathered")
     .eq("id", user.id)
     .single();
+  if (!hasPremium(profile)) {
+    return Response.json({ error: "Upgrade to Premium to use the Study Planner." }, { status: 403 });
+  }
   const examTarget = profile?.exam_target ?? "bece";
   const firstName = profile?.full_name?.split(" ")[0] ?? "there";
 

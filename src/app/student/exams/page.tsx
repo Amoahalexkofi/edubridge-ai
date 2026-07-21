@@ -5,6 +5,7 @@ import { getAuthUser } from "@/lib/auth";
 import { FileText, Trophy, Clock, ChevronRight, CheckCircle2, BarChart2, AlertCircle, Lock, CalendarClock, PlayCircle } from "lucide-react";
 import { subjectGradient, subjectIcon } from "@/lib/subject-style";
 import { sessionStatus, formatWhen, STATUS_STYLE, STATUS_LABEL } from "@/lib/exam-sessions";
+import { hasPremium } from "@/lib/pricing";
 
 function formatDate(d: string) {
   return new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
@@ -32,9 +33,11 @@ export default async function ExamsPage({
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("exam_target")
+    .select("exam_target, subscription_tier, subscription_expires_at, trial_ends_at, grandfathered")
     .eq("id", user.id)
     .single();
+
+  if (!hasPremium(profile)) redirect("/student/upgrade");
 
   const examTarget = profile?.exam_target ?? "BECE";
   const examLabel = examTarget.toUpperCase();

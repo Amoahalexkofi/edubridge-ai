@@ -2,6 +2,7 @@ import { anthropic } from "@ai-sdk/anthropic";
 import { streamText, convertToCoreMessages } from "ai";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { hasPremium } from "@/lib/pricing";
 
 export const maxDuration = 60;
 
@@ -101,6 +102,13 @@ export async function POST(request: Request) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return new Response("Unauthorized", { status: 401 });
   if (user.user_metadata?.app_verified === false) return new Response("Verify your email to use the AI Tutor.", { status: 403 });
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("subscription_tier, subscription_expires_at, trial_ends_at, grandfathered")
+    .eq("id", user.id)
+    .single();
+  if (!hasPremium(profile)) return new Response("Upgrade to Premium to use the AI Tutor.", { status: 403 });
 
   const { messages, examTarget = "BECE", firstName = "there" } = await request.json();
 

@@ -6,6 +6,7 @@ import FloatingTutor from "./_components/FloatingTutor";
 import VerifyEmailBanner from "./_components/VerifyEmailBanner";
 import Link from "next/link";
 import { Eye, ArrowLeft } from "lucide-react";
+import { hasPremium } from "@/lib/pricing";
 
 export default async function StudentLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
@@ -13,7 +14,7 @@ export default async function StudentLayout({ children }: { children: React.Reac
   if (!user) redirect("/login");
 
   const [{ data: profile }, { data: roleRow }] = await Promise.all([
-    supabase.from("profiles").select("full_name, exam_target, avatar_url").eq("id", user.id).single(),
+    supabase.from("profiles").select("full_name, exam_target, avatar_url, subscription_tier, subscription_expires_at, trial_ends_at, grandfathered").eq("id", user.id).single(),
     supabase.from("user_roles").select("role").eq("user_id", user.id).single(),
   ]);
 
@@ -76,6 +77,7 @@ export default async function StudentLayout({ children }: { children: React.Reac
           userId={user.id}
           firstName={profile?.full_name?.split(" ")[0] ?? "there"}
           examTarget={(profile?.exam_target ?? "bece").toUpperCase()}
+          canUseAiTutor={hasPremium(profile)}
         />
       )}
     </div>
