@@ -20,11 +20,11 @@ const navLinks = [
 ];
 
 const pricingPlans = [
-  { name: "Free", price: "Free", sub: "no cost, always", includesFrom: null,
+  { name: "Free", price: "Free", sub: "no cost, always", includesFrom: null, trial: false,
     perks: ["A selection of lessons", "Practice questions", "Community support"], featured: false },
-  { name: "Basic", price: "GHS 40", sub: "per month · or GHS 480/year", includesFrom: "Free",
+  { name: "Basic", price: "GHS 40", sub: "per month · or GHS 480/year", includesFrom: "Free", trial: true,
     perks: ["All lessons, every subject", "Quizzes on every topic", "Progress tracking"], featured: false },
-  { name: "Premium", price: "GHS 60", sub: "per month · or GHS 720/year", includesFrom: "Basic",
+  { name: "Premium", price: "GHS 60", sub: "per month · or GHS 720/year", includesFrom: "Basic", trial: true,
     perks: ["24/7 AI Tutor", "Timed mock exams", "Offline access", "Career guidance"], featured: true },
 ];
 
@@ -599,7 +599,7 @@ export default function LandingPage() {
               Start free. Upgrade when it counts.
             </h2>
             <p className="text-slate-600 text-[17px] leading-relaxed mt-5">
-              Every plan is <strong className="text-slate-800">free during our early-access pilot</strong> — pay later with MTN&nbsp;MoMo or card, only when you&apos;re ready. No card needed to begin.
+              Try Basic or Premium free for <strong className="text-slate-800">14 days</strong> — no card required. Stay on the Free plan for as long as you like, or pay with MTN&nbsp;MoMo or card when you&apos;re ready.
             </p>
           </div>
 
@@ -626,6 +626,11 @@ export default function LandingPage() {
                   <span className={`text-[2.5rem] leading-none font-black tabular-nums ${plan.featured ? "text-white" : "text-slate-900"}`}>{plan.price}</span>
                 </div>
                 <p className={`text-sm mt-2 ${plan.featured ? "text-white/65" : "text-slate-500"}`}>{plan.sub}</p>
+                {plan.trial && (
+                  <p className={`text-xs font-bold mt-2 inline-flex items-center gap-1.5 ${plan.featured ? "text-[#5EEAD4]" : "text-[#0f766e]"}`}>
+                    <Clock className="h-3 w-3" /> 14 days free, no card needed
+                  </p>
+                )}
 
                 <Link
                   href="/signup"
@@ -637,7 +642,7 @@ export default function LandingPage() {
                         : "border-2 border-[#1B3A8A] text-[#1B3A8A] hover:bg-[#1B3A8A] hover:text-white"
                   }`}
                 >
-                  Start free <ArrowRight className="h-4 w-4" />
+                  {plan.trial ? "Start 14-day trial" : "Start free"} <ArrowRight className="h-4 w-4" />
                 </Link>
 
                 <div className={`mt-7 pt-6 border-t ${plan.featured ? "border-white/15" : "border-[#EEEDE8]"}`}>
