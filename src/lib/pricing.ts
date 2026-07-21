@@ -38,6 +38,7 @@ type SubProfile = {
   subscription_tier?: string | null;
   subscription_expires_at?: string | null;
   trial_ends_at?: string | null;
+  grandfathered?: boolean | null;
 };
 
 // The paid tier a user is actually entitled to right now (expired → free).
@@ -67,10 +68,12 @@ export function trialDaysLeft(profile: SubProfile | null | undefined): number | 
 }
 
 // The tier a user is entitled to right now for gating (hasBasic/hasPremium):
-// their paid tier, or full Premium during an active free trial, else free.
+// their paid tier, permanent Premium if grandfathered (pre-trial pilot
+// accounts), Premium during an active free trial, else free.
 export function activeTier(profile: SubProfile | null | undefined): Tier {
   const paid = paidTier(profile);
   if (paid !== "free") return paid;
+  if (profile?.grandfathered) return "premium";
   return trialEndsAt(profile) ? "premium" : "free";
 }
 

@@ -6,8 +6,8 @@ import { toast } from "sonner";
 import { PRICING, FREE_PERKS, type Cycle, type Tier } from "@/lib/pricing";
 
 export default function UpgradeClient({
-  currentTier, expiresAt, trialActive,
-}: { currentTier: Tier; expiresAt: string | null; trialActive?: boolean }) {
+  currentTier, expiresAt, trialActive, grandfathered,
+}: { currentTier: Tier; expiresAt: string | null; trialActive?: boolean; grandfathered?: boolean }) {
   const [cycle, setCycle] = useState<Cycle>("monthly");
   const [loading, setLoading] = useState<string | null>(null);
 
@@ -92,7 +92,7 @@ export default function UpgradeClient({
           highlight
           icon={<Crown className="h-4 w-4 text-[#E8722A]" />}
           current={currentTier === "premium"}
-          trial={trialActive}
+          badgeLabel={trialActive ? "Trial" : grandfathered ? "Member" : undefined}
           cta={
             <SubscribeButton
               label={currentTier === "premium" ? "Renew Premium" : "Go Premium"}
@@ -114,10 +114,10 @@ export default function UpgradeClient({
 }
 
 function PlanCard({
-  name, price, sub, perks, highlight, current, trial, cta, icon,
+  name, price, sub, perks, highlight, current, badgeLabel, cta, icon,
 }: {
   name: string; price: string; sub: string; perks: readonly string[];
-  highlight?: boolean; current?: boolean; trial?: boolean; cta?: React.ReactNode; icon?: React.ReactNode;
+  highlight?: boolean; current?: boolean; badgeLabel?: string; cta?: React.ReactNode; icon?: React.ReactNode;
 }) {
   return (
     <div className={`rounded-2xl border p-6 flex flex-col ${highlight ? "border-[#E8722A] bg-white eb-card shadow-[0_8px_30px_rgba(232,114,42,0.12)]" : "border-[#E6E4DE] bg-white eb-card"}`}>
@@ -125,7 +125,7 @@ function PlanCard({
         {icon}
         <h3 className="font-bold text-lg text-[#0f172a]">{name}</h3>
         {current && <span className="ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#EFF6FF] text-[#1D4ED8]">Current</span>}
-        {!current && trial && <span className="ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#F0FDF4] text-[#166534]">Trial</span>}
+        {!current && badgeLabel && <span className="ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#F0FDF4] text-[#166534]">{badgeLabel}</span>}
       </div>
       <div className="mt-3">
         <span className="text-3xl font-black text-[#0f172a] tabular-nums">{price}</span>
