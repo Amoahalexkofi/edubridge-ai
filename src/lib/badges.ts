@@ -110,7 +110,7 @@ export const BADGES: BadgeDef[] = [
   },
 ];
 
-function calculateStreak(dates: string[]): number {
+export function calculateStreak(dates: string[]): number {
   if (!dates.length) return 0;
   const uniqueDays = [...new Set(dates.map(d => d.split("T")[0]))].sort().reverse();
   const today = new Date().toISOString().split("T")[0];

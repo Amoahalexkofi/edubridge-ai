@@ -10,39 +10,7 @@ import { getAuthUser } from "@/lib/auth";
 import { getRecommendations, type Recommendation } from "@/lib/recommendations";
 import { checkAndAwardBadges, BADGES } from "@/lib/badges";
 import { subjectGradient, subjectIcon } from "@/lib/subject-style";
-
-const LESSON_XP = 10;
-const EXAM_XP = 20;
-const HIGH_SCORE_BONUS = 10;
-
-const LEVELS = [
-  { level: 1, label: "Beginner",  min: 0    },
-  { level: 2, label: "Explorer",  min: 500  },
-  { level: 3, label: "Achiever",  min: 1000 },
-  { level: 4, label: "Scholar",   min: 2000 },
-  { level: 5, label: "Champion",  min: 4000 },
-];
-
-function getLevel(xp: number) {
-  return [...LEVELS].reverse().find((l) => xp >= l.min) ?? LEVELS[0];
-}
-
-function calculateStreak(dates: string[]): number {
-  if (!dates.length) return 0;
-  const uniqueDays = [...new Set(dates.map((d) => d.split("T")[0]))].sort().reverse();
-  const today = new Date().toISOString().split("T")[0];
-  const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0];
-  if (uniqueDays[0] !== today && uniqueDays[0] !== yesterday) return 0;
-  let streak = 1;
-  for (let i = 1; i < uniqueDays.length; i++) {
-    const diff = Math.round(
-      (new Date(uniqueDays[i - 1]).getTime() - new Date(uniqueDays[i]).getTime()) / 86400000
-    );
-    if (diff === 1) streak++;
-    else break;
-  }
-  return streak;
-}
+import { LESSON_XP, EXAM_XP, HIGH_SCORE_BONUS, LEVELS, getLevel } from "@/lib/xp";
 
 export default async function StudentDashboard() {
   const supabase = await createClient();
@@ -67,7 +35,6 @@ export default async function StudentDashboard() {
     { count: examsTaken },
     { data: examScores },
     { data: recentProgress },
-    { data: streakData },
     { data: leaderboardRows },
     recommendations,
     badgeState,
@@ -77,7 +44,6 @@ export default async function StudentDashboard() {
     supabase.from("exam_attempts").select("*", { count: "exact", head: true }).eq("user_id", user.id).eq("status", "submitted"),
     supabase.from("exam_attempts").select("score, total_marks").eq("user_id", user.id).eq("status", "submitted").not("score", "is", null),
     supabase.from("lesson_progress").select("lesson_id, last_viewed_at, completed, lessons(title, topic_id, topics(title, subject_id, subjects(name, slug)))").eq("user_id", user.id).order("last_viewed_at", { ascending: false }).limit(1).single(),
-    supabase.from("lesson_progress").select("last_viewed_at").eq("user_id", user.id).eq("completed", true).order("last_viewed_at", { ascending: false }).limit(365),
     supabase.rpc("leaderboard", { p_exam_target: (profile?.exam_target ?? "bece").toLowerCase() }),
     getRecommendations(supabase, user.id, profile?.exam_target ?? "bece"),
     checkAndAwardBadges(supabase, user.id),
@@ -99,8 +65,9 @@ export default async function StudentDashboard() {
     ? Math.min(100, Math.round(((totalXP - currentLevel.min) / (nextLevel.min - currentLevel.min)) * 100))
     : 100;
 
-  // Streak
-  const streak = calculateStreak((streakData ?? []).map((d) => d.last_viewed_at));
+  // Streak — computed once inside checkAndAwardBadges from the same lesson_progress
+  // data; reuse it instead of re-querying and re-deriving it here.
+  const streak = badgeState.stats.streak;
 
   // Top 3 leaderboard teaser — already ranked by the leaderboard RPC.
   const top3 = ((leaderboardRows ?? []) as Array<{ id: string; full_name: string | null; lessons: number | string }>)

@@ -22,18 +22,19 @@ export default async function LeaderboardPage() {
   // every student's full lesson/exam history to the server and counting in JS.
   const { data: rows } = await supabase.rpc("leaderboard", { p_exam_target: examTarget });
   const ranked = ((rows ?? []) as Array<{
-    id: string; full_name: string | null; lessons: number | string; exams: number | string; avg_score: number | string | null;
+    id: string; full_name: string | null; lessons: number | string; exams: number | string; avg_score: number | string | null; xp: number | string;
   }>).map((r) => ({
     id: r.id,
     full_name: r.full_name,
     lessons: Number(r.lessons),
     exams: Number(r.exams),
     avgScore: r.avg_score != null ? Number(r.avg_score) : null,
+    xp: Number(r.xp),
   }));
 
   const myRank = ranked.findIndex((r) => r.id === user.id) + 1;
   const myStats = ranked.find((r) => r.id === user.id);
-  const topScore = ranked[0]?.lessons ?? 0;
+  const topScore = ranked[0]?.xp ?? 0;
 
   function initials(name: string) {
     return (name ?? "?").split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase();
@@ -179,7 +180,7 @@ export default async function LeaderboardPage() {
               {ranked.map((student, idx) => {
                 const rank = idx + 1;
                 const isMe = student.id === user.id;
-                const pct = topScore > 0 ? Math.round((student.lessons / topScore) * 100) : 0;
+                const pct = topScore > 0 ? Math.round((student.xp / topScore) * 100) : 0;
                 const isTop3 = rank <= 3;
                 const medals = ["🥇", "🥈", "🥉"];
 
@@ -250,7 +251,7 @@ export default async function LeaderboardPage() {
                     {/* Points */}
                     <div className="text-right flex-shrink-0">
                       <p className={`text-lg font-black tabular-nums ${isMe ? "text-[#1D4ED8]" : "text-[#0f172a]"}`}>
-                        {student.lessons}
+                        {student.xp}
                       </p>
                       <p className="text-[10px] text-[#94a3b8] uppercase tracking-wider">pts</p>
                     </div>
@@ -265,7 +266,7 @@ export default async function LeaderboardPage() {
       {/* ── Footer note ─────────────────────────────────────── */}
       <div className="flex items-center justify-center gap-2 text-xs text-[#94a3b8]">
         <GraduationCap className="h-3.5 w-3.5" />
-        <span>{examLabel} students only · Points = lessons completed · Updates in real time</span>
+        <span>{examLabel} students only · Points = XP (same as your dashboard) · Updates in real time</span>
       </div>
 
     </div>
